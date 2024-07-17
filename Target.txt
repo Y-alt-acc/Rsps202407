@@ -1,0 +1,7 @@
+1. Pengukur Virus, resistensi, machine learning
+2. Skoring?
+3. Iklan timer, automation
+	- User Input
+	- Option : Add , Remove, Change
+	- Display Things
+	- 
