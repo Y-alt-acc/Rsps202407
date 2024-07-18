@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=
+        "width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+</head>
+
+<body>
+    <form action="fileUpload.php" method="post" 
+        enctype="multipart/form-data">
+        <label for="images[]">Select Image Files:</label>
+        <input type="file" name="images[]" multiple>
+        <br><br>
+        <label for="folder_name">folder name</label>
+        <input type="text" name="folder_name">
+        <br><br>
+        <!--<label for="file_decs">Deskripsi</label>
+        <input type="text" name="file_decs">
+        <br><br> -->
+        <label for="exp_date">Expired Date:</label>
+        <input type="datetime-local" id="exp_date" name="exp_date">
+        <br><br>
+        <input type="submit" name="submit" value="Upload">
+    </form>
+    <form action="./homeUser.html" method="post" 
+        enctype="button">
+        <input type="submit" name="submit" value="cancel">
+    </form>
+</body>
+
+</html>
