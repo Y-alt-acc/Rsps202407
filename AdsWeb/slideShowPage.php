@@ -15,43 +15,55 @@
     vertical-align: baseline;
     background: transparent;
 }
-.mySlides {display: none;}
+.container {
+  display: grid;
+  grid-template-columns: 80% 1% 19%;
+  /* clear: both; */
+  font-size: 4em;
+  width: 100vw;
+  background-color: #66A94980;
+  /* background-color: #66b8EE80; */
+}
+.mySlides {display: none;   }
 img {
-  
     display: block; 
     margin-left: auto; 
     margin-right: auto; 
-    max-width: 100%; 
-    height:100vh; 
-    object-fit: cover; 
+    max-width: 100% !important; 
+    min-height:100vh !important; 
+    object-fit: contain; 
     background: cover;
+    
 }
-
+video {
+  display: block; 
+  margin-left: auto; 
+  margin-right: auto; 
+  max-width: 100% !important; 
+  min-height:100vh !important; 
+  object-fit: contain; 
+}
 .fade {
   animation-name: fade;
   animation-duration: 1.5s;
 }
-
 @keyframes fade {
   from {opacity: .4} 
   to {opacity: 1}
 }
-
-.container {
-  position: relative;
-  
+.borderbase {
+  background-color: #66b8EE80;
 }
 .text-block {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background-color: #66A94940;
+  overflow-wrap: break-word;
+  display: block; 
   color: white;
+  text-align: center;
+  margin: auto;
+
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-.tester{
+} 
+.quotes{
 
 }
 </style>
@@ -62,20 +74,30 @@ img {
 <body style="background-color:black;">
   <div class="container">
     
-    <div id="display-image">
+    <div id="display-media">
       <?php
         $result = serverGetImg();
         if($result->num_rows == 0)
         {
-          redirect("./home.html");
+          redirect("./home.html");  
         }
         while ($data = mysqli_fetch_assoc($result)) 
         {
-          echo '<div class="mySlides fade" ><img src="'. $data['img_path'].'"></div>';
+          $mime = mime_content_type($data['img_path']);
+          if(strstr($mime, "video/")){
+            echo '<div class="mySlides fade" name ="vid" >
+            <video src="'. $data['img_path'].'" type='. $mime .'>
+            </div>';
+          }else if(strstr($mime, "image/")){
+            echo '<div class="mySlides fade" name ="img" >
+            <img src="'. $data['img_path'].'">
+            </div>';
+          }
         }
         ?>
     </div>
-    <div class="text-block">
+    <div id="display-border" class=" borderbase"></div>
+    <div id="display-text" >
         <?php
         $result = serverGetTxt();
         if($result->num_rows == 0)
@@ -84,38 +106,63 @@ img {
         }
         while ($data = mysqli_fetch_assoc($result)) 
         {
-          echo '<div class="tester"><h1>' . $data['img_txt'] . '</h1></div>';
+          echo '<div class="text-block"><h1>' . $data['img_txt'] . '</h1></div>';
           
         }
         ?>
     </div>
   </div>
-    
 </body>
 
 <script>
 let slideIndex = 0;
+let clicked = false;
+document.addEventListener('click', e => {
+  clicked = true;
+  if(document.getElementsByClassName("mySlides")[slideIndex-1].getAttribute('name') == "vid")
+  {
+      video.muted = false; 
+  }
+})
 showSlides();
 function showSlides() {
   let i;
   let slides = document.getElementsByClassName("mySlides");
-  let tester = document.getElementsByClassName("tester");
-  
+  let quotes = document.getElementsByClassName("text-block");
+
   for (i = 0; i < slides.length; i++) 
   {
     slides[i].style.display = "none";  
-    tester[i].style.display = "none";
+    quotes[i].style.display = "none";
   }
   slideIndex++; 
   if (slideIndex > slides.length) 
   {
     slideIndex = 1; 
-    location.reload();
+    //location.reload();
   }
+
   slides[slideIndex-1].style.display = "block";
-  tester[slideIndex-1].style.display = "block";  
-  setTimeout(showSlides, 4000); // Change image every 4 seconds 
-}
+  quotes[slideIndex-1].style.display = "block";
+
+  if(slides[slideIndex-1].getAttribute('name') == "vid")
+  {
+    video = slides[slideIndex-1].querySelector("video")
+    video.load();
+    if(clicked)
+    {
+      video.muted = false; 
+    }else{
+      video.muted = true; 
+    }
+    video.play();
+    video.onloadedmetadata = (event) => {
+      setTimeout(showSlides, video.duration * 1000);
+    }
+  }else{
+    setTimeout(showSlides,  15000); 
+  }
+  }
 </script>
 
 </body>
