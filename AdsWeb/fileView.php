@@ -55,7 +55,7 @@ echo "</table>";
 <br>
 <form action="./homeUser.html" method="post" 
         enctype="button">
-        <input type="submit" name="submit" value="cancel">
+        <input type="submit" name="submit" value="Back">
     </form>
 </body>
 

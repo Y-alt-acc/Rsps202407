@@ -40,9 +40,9 @@ function removeFolder($regDate, $user)
 {
     return "DELETE FROM table_list_ads WHERE reg_date = '$regDate' AND user = '$user'";
 }
-function update($id, $img_txt, $exp_date)
+function update($id, $mediaTag, $mediaTxt, $expDate)
 {
-    return "UPDATE table_list_ads SET img_txt = '$img_txt', exp_date = '$exp_date' WHERE id = '$id'";
+    return "UPDATE table_list_ads SET media_tag = '$mediaTag SET media_txt = '$mediaTxt', exp_date = '$expDate' WHERE id = '$id'";
 }
 function viewAds()
 {
@@ -50,7 +50,7 @@ function viewAds()
     {
         $query = "SELECT  * FROM table_list_ads";    
     }else{
-         $query = "SELECT  id, SUBSTRING_INDEX(img_path, '/', -1) as File_name ,img_txt,exp_date FROM table_list_ads WHERE user='$_SESSION[user]'";
+         $query = "SELECT  id, SUBSTRING_INDEX(media_path, '/', -1) as File_name ,media_txt,exp_date FROM table_list_ads WHERE user='$_SESSION[user]'";
     }
     $conn = conStart();
     $result = mysqli_query($conn, $query);
@@ -60,7 +60,7 @@ function viewAds()
 function viewActiveImg()
 {
     $conn = conStart();
-    $query = "SELECT  img_path FROM table_list_ads WHERE exp_date >= NOW() ORDER BY exp_date ASC, img_path ASC" ;
+    $query = "SELECT  media_path FROM table_list_ads WHERE exp_date >= NOW() ORDER BY exp_date ASC, media_path ASC" ;
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;
@@ -68,7 +68,7 @@ function viewActiveImg()
 function viewDeactiveImg()
 {
     $conn = conStart();
-    $query = "SELECT  img_path FROM table_list_ads WHERE exp_date < NOW() ORDER BY exp_date DESC , img_path  " ;
+    $query = "SELECT  media_path FROM table_list_ads WHERE exp_date < NOW() ORDER BY exp_date DESC , media_path  " ;
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;
@@ -76,7 +76,7 @@ function viewDeactiveImg()
 function viewActiveTxt()
 {
     $conn = conStart();
-    $query = "SELECT  img_txt FROM table_list_ads WHERE exp_date >= NOW() ORDER BY exp_date ASC, img_path ASC" ;
+    $query = "SELECT  media_txt FROM table_list_ads WHERE exp_date >= NOW() ORDER BY exp_date ASC, media_path ASC" ;
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;

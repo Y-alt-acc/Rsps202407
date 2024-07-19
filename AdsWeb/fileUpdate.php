@@ -3,16 +3,13 @@ require_once 'serverfunction.php';
 require_once 'commonfunction.php';
 if (isset($_POST["submit"]))
 {   
-    conquery( update($_POST['id'],$_POST['img_txt'],$_POST['exp_date']));
+    conquery( update($_POST['id'], $_POST['media_tag'],$_POST['media_txt'],$_POST['exp_date']));
 }
-if($_FILES['images'] != NULL)
+if($_FILES['media'] != NULL)
 {
-    if (file_exists($_POST['img_path'])) 
-    {
-        unlink($_POST['img_path']);
-    }
-    $uploadedImage = $_FILES['images'];
-    move_uploaded_file($uploadedImage["tmp_name"], $_POST['img_path']);
+    unlink($_POST['media_path']);
+    $uploadedImage = $_FILES['media'];
+    move_uploaded_file($uploadedImage["tmp_name"], $_POST['media_path']);
 }
 redirect('./fileView.php');
 

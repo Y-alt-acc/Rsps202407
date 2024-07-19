@@ -21,12 +21,15 @@ require_once 'commonfunction.php';
 <form action="fileUpdate.php" method="post" 
         enctype="multipart/form-data">
         <input type="hidden" id="id" name="id" value =<?php echo $data['id']?>> 
-        <input type="hidden" id="img_path" name="img_path" value =<?php echo $data['img_path']?>>
-        <label for="img">Image</label>
-        <input type="file" id="img" name="images">
+        <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['media_path'] ?>>
+        <label for="media">Media:</label>
+        <input type="file" id="media" name="media">
         <br><br>
-        <label for="img_txt">Tag:</label>
-        <input type="text" id="img_txt" name="img_txt" value=<?php echo $data['img_txt'] ?>>
+        <label for="media_tag">Tag:</label>
+        <input type="text" id="media_tag" name="media_tag" value=<?php echo $data['media_tag'] ?>>
+        <br><br>
+        <label for="media_txt">Deskripsi:</label>
+        <input type="text" id="media_txt" name="media_txt" value=<?php echo $data['media_txt'] ?>>
         <br><br>
         <label for="exp_date">Expired Date:</label>
         <input type="datetime-local" id="exp_date" name="exp_date" value="<?php echo $data['exp_date'] ?>">

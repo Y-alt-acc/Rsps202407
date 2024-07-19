@@ -19,7 +19,7 @@
   display: grid;
   grid-template-columns: 80% 1% 19%;
   /* clear: both; */
-  font-size: 4em;
+  font-size: 2em;
   width: 100vw;
   background-color: #66A94980;
   /* background-color: #66b8EE80; */
@@ -83,14 +83,14 @@ video {
         }
         while ($data = mysqli_fetch_assoc($result)) 
         {
-          $mime = mime_content_type($data['img_path']);
+          $mime = mime_content_type($data['media_path']);
           if(strstr($mime, "video/")){
             echo '<div class="mySlides fade" name ="vid" >
-            <video src="'. $data['img_path'].'" type='. $mime .'>
+            <video src="'. $data['media_path'].'" type='. $mime .'>
             </div>';
           }else if(strstr($mime, "image/")){
             echo '<div class="mySlides fade" name ="img" >
-            <img src="'. $data['img_path'].'">
+            <img src="'. $data['media_path'].'">
             </div>';
           }
         }
@@ -106,7 +106,7 @@ video {
         }
         while ($data = mysqli_fetch_assoc($result)) 
         {
-          echo '<div class="text-block"><h1>' . $data['img_txt'] . '</h1></div>';
+          echo '<div class="text-block"><h1>' . $data['media_txt'] . '</h1></div>';
           
         }
         ?>
