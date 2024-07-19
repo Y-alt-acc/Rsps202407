@@ -44,6 +44,19 @@ function update($id, $mediaTag, $mediaTxt, $expDate)
 {
     return "UPDATE table_list_ads SET media_tag = '$mediaTag SET media_txt = '$mediaTxt', exp_date = '$expDate' WHERE id = '$id'";
 }
+function swapId($id, $trgt)
+{
+    return "UPDATE table_list_ads SET id = '$trgt' WHERE table_list_ads.id =  '$id'";
+}
+function swapPos($id, $trgt)
+{
+    $conn = conStart();
+    mysqli_query($conn, swapId($id,0));
+    mysqli_query($conn, swapId($trgt,$id));
+    mysqli_query($conn, swapId(0,$trgt));
+    $conn->close();
+}
+
 function viewAds()
 {
     if($_SESSION["user"] == "admin")

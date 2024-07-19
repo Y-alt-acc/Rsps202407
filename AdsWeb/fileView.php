@@ -36,6 +36,18 @@ while ($row = mysqli_fetch_row($data))
     }
     ?>
     <td>
+        <form action='./fileUp.php' method="post">
+        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
+        <input type="submit" name="submit" value="up">
+    </form>
+    </td>
+    <td>
+        <form action='./fileDown.php' method="post">
+        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
+        <input type="submit" name="submit" value="down">
+    </form>
+    </td>
+    <td>
         <form action='./fileManage.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
         <input type="submit" name="submit" value="change">
