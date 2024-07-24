@@ -29,7 +29,9 @@ require_once 'commonfunction.php';
         <input type="text" id="media_tag" name="media_tag" value=<?php echo $data['media_tag'] ?>>
         <br><br>
         <label for="media_txt">Deskripsi:</label>
-        <input type="text" id="media_txt" name="media_txt" value=<?php echo $data['media_txt'] ?>>
+        <br><br>
+        <textarea id="media_txt" name="media_txt" rows="13"  data-input-max-length="254" ><?php echo $data['media_txt'] ?></textarea>
+        
         <br><br>
         <label for="exp_date">Expired Date:</label>
         <input type="datetime-local" id="exp_date" name="exp_date" value="<?php echo $data['exp_date'] ?>">

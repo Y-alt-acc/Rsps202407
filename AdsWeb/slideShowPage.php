@@ -14,14 +14,15 @@
     font-size: 100%;
     vertical-align: baseline;
     background: transparent;
+    font-family: Arial, sans-serif;
 }
 .container {
   display: grid;
-  grid-template-columns: 80% 1% 19%;
-  /* clear: both; */
+  grid-template-columns: 80% 20%;
   font-size: 2em;
   width: 100vw;
-  background-color: #66A94980;
+  background-color: #66A949BB;
+  align-items: center;
   /* background-color: #66b8EE80; */
 }
 .mySlides {display: none;   }
@@ -85,7 +86,7 @@ video {
         {
           $mime = mime_content_type($data['media_path']);
           if(strstr($mime, "video/")){
-            echo '<div class="mySlides fade" name ="vid" >
+            echo '<div class="mySlides" name ="vid" >
             <video src="'. $data['media_path'].'" type='. $mime .'>
             </div>';
           }else if(strstr($mime, "image/")){
@@ -96,7 +97,7 @@ video {
         }
         ?>
     </div>
-    <div id="display-border" class=" borderbase"></div>
+    <!-- <div id="display-border" class=" borderbase"></div> -->
     <div id="display-text" >
         <?php
         $result = serverGetTxt();
@@ -160,7 +161,7 @@ function showSlides() {
       setTimeout(showSlides, video.duration * 1000);
     }
   }else{
-    setTimeout(showSlides,  15000); 
+    setTimeout(showSlides,  1000); 
   }
   }
 </script>
