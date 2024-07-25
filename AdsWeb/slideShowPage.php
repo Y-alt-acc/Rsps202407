@@ -3,168 +3,263 @@
 ?>
 <!DOCTYPE html>
 <html>
-    
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-* {
+  *{
     margin: 0;
     padding: 0;
     border: 0;
-    outline: 0;
     font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
-    font-family: Arial, sans-serif;
-}
-.container {
-  display: grid;
-  grid-template-columns: 80% 20%;
-  font-size: 2em;
-  width: 100vw;
-  background-color: #66A949BB;
-  align-items: center;
-  /* background-color: #66b8EE80; */
-}
-.mySlides {display: none;   }
-img {
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto; 
-    max-width: 100% !important; 
-    min-height:100vh !important; 
-    object-fit: contain; 
-    background: cover;
     
+  }
+.grid-continer
+{
+  display: grid;
+  grid-template-columns: 2% 78% 18% 2%;
+  grid-template-rows: 3% 94% 3%;
+  grid-template-areas: 
+    "header header header header"
+    "sidebarleft media txt sidebarright"
+    "footer footer footer footer";
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
 }
-video {
-  display: block; 
+.top
+{
+  width: 100%;
+  height:100%;
+  grid-area: header;
+  background-color: #BBBBBB;
+}
+.bottom
+{
+  width: 100%;
+  height:100%;
+  grid-area: footer;
+  background-color: #BBBBBB;
+}
+.sideleft
+{
+  width: 100%;
+  height:100%;
+  grid-area: sidebarleft;
+  background-color: #BBBBBB;
+}
+.sideright
+{
+  width: 100%;
+  height:100%;
+  grid-area: sidebarright;
+  background-color: #BBBBBB;
+}
+.media
+{
+  width: 100%;
+  height:100%;
+  grid-area: media;
+  background-color: #999999;
+}
+.quote
+{
+  width: 100%;
+  height:100%;
+  grid-area: txt;
+  background-color: #444444;
+}
+.myslides
+{
+  display: none;
+}
+.mytext
+{
+  display:none;
+}
+img
+{
+  max-width: 78vw;
+  min-height: 94vh;
+  display:block;
   margin-left: auto; 
   margin-right: auto; 
-  max-width: 100% !important; 
-  min-height:100vh !important; 
-  object-fit: contain; 
+  object-fit: contain;
 }
-.fade {
-  animation-name: fade;
-  animation-duration: 1.5s;
+video
+{
+  max-width: 78vw;
+  min-height: 94vh;
+  display:block;
+  margin-left: auto; 
+  margin-right: auto; 
+  object-fit: contain;  
 }
-@keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
-}
-.borderbase {
-  background-color: #66b8EE80;
-}
-.text-block {
+.text-block
+{
+  
+  display: block;
   overflow-wrap: break-word;
-  display: block; 
   color: white;
-  text-align: center;
-  margin: auto;
-
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-} 
-.quotes{
-
+  text-align: center;
+  font-size : 2em;
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>
-
 <head>
-<title>Slide Show</title>
-</head>
-<body style="background-color:black;">
-  <div class="container">
-    
-    <div id="display-media">
-      <?php
-        $result = serverGetImg();
-        if($result->num_rows == 0)
-        {
-          redirect("./home.html");  
-        }
-        while ($data = mysqli_fetch_assoc($result)) 
-        {
-          $mime = mime_content_type($data['media_path']);
-          if(strstr($mime, "video/")){
-            echo '<div class="mySlides" name ="vid" >
-            <video src="'. $data['media_path'].'" type='. $mime .'>
-            </div>';
-          }else if(strstr($mime, "image/")){
-            echo '<div class="mySlides fade" name ="img" >
-            <img src="'. $data['media_path'].'">
-            </div>';
-          }
-        }
-        ?>
-    </div>
-    <!-- <div id="display-border" class=" borderbase"></div> -->
-    <div id="display-text" >
+  <title> Slide Show</title>
+  <body>
+    <div class=" grid-continer">
+      <div class="top"></div>
+      <div class="sideleft"></div>
+      <div class="media">
+        <?php
+            $result = serverGetImg();
+            if($result->num_rows == 0)
+            {
+              redirect("./home.html");
+            }
+            while($data = mysqli_fetch_assoc($result))
+            {
+              $mime = mime_content_type($data["media_path"]);
+              if(strstr($mime,"video/"))
+              {
+                echo 
+                '<div class="myslides" name="vid">
+                <video preload="metadata">
+                    <source src="'. $data["media_path"]. '"type="'.$mime.'">
+                  Your browser does not support the video tag.
+                </video>
+                </div>';
+              }else if(strstr($mime, "image/")) {
+                echo
+                '<div class ="myslides" name = "img" >
+                  <img src="'.$data["media_path"].'">
+                </div>
+                ';
+              }
+            }
+          ?>
+      </div>
+      <div class="quote">
         <?php
         $result = serverGetTxt();
-        if($result->num_rows == 0)
-        {
-          redirect("./home.html");
-        }
-        while ($data = mysqli_fetch_assoc($result)) 
-        {
-          echo '<div class="text-block"><h1>' . $data['media_txt'] . '</h1></div>';
-          
-        }
+        while($data = mysqli_fetch_assoc($result))
+        echo '
+        <div class="text-block">
+          <p>'. $data["media_txt"].'</p>
+        </div>
+        '
         ?>
+      </div>
+      <div class="sideright"></div>
+      <div class="bottom"></div>
     </div>
-  </div>
-</body>
-
+  </body>
+</head>
 <script>
 let slideIndex = 0;
 let clicked = false;
+let theDuration = [];
+
 document.addEventListener('click', e => {
   clicked = true;
-  if(document.getElementsByClassName("mySlides")[slideIndex-1].getAttribute('name') == "vid")
+  if(document.getElementsByClassName("myslides")[slideIndex].getAttribute('name') == "vid")
   {
       video.muted = false; 
   }
-})
-showSlides();
-function showSlides() {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let quotes = document.getElementsByClassName("text-block");
-
-  for (i = 0; i < slides.length; i++) 
+});
+setDuration();
+showSlides(); 
+function setDuration()
+{
+  let slides = document.getElementsByClassName("myslides");
+  for (let i = 0; i < slides.length; i++) 
   {
-    slides[i].style.display = "none";  
-    quotes[i].style.display = "none";
+    if(slides[i].getAttribute('name') == "vid")
+    {
+      theDuration.push(-1);
+    }else{
+      theDuration.push(5);
+    }
+    
   }
-  slideIndex++; 
-  if (slideIndex > slides.length) 
+}
+function loadVideo(video, i)
+{
+  video.load();
+  if(clicked)
   {
-    slideIndex = 1; 
+    video.muted = false; 
+  }else{
+    video.muted = true; 
+  }
+  video.oncanplay = function(e)
+  {
+    theDuration[i] = video.duration;
+    video.play();
+  }
+}
+function bruteForceVideo(video, time)
+{
+  if(time > theDuration[slideIndex])
+  {
+    showSlides();
+  }else{
+    if(video.error.code > 0)
+    {
+      try
+      {
+        loadVideo(video, slideIndex);
+      }catch{
+      }finally{
+        setTimeout(bruteForceVideo, 1000, video, time + 1);
+      }
+    }else{
+      setTimeout(showSlides, theDuration[slideIndex] * 1000 + 1000);
+    }
+  }
+}
+function showSlides() 
+{
+  let i;
+  let slides = document.getElementsByClassName("myslides");
+  let quotes = document.getElementsByClassName("text-block");
+  slideIndex++; 
+  if (slideIndex >= slides.length) 
+  {
+    slideIndex = 0; 
     //location.reload();
   }
-
-  slides[slideIndex-1].style.display = "block";
-  quotes[slideIndex-1].style.display = "block";
-
-  if(slides[slideIndex-1].getAttribute('name') == "vid")
+  slides[slideIndex].style.display = "block"; 
+  quotes[slideIndex].style.display = "block";
+  
+  for (i = 0; i < slides.length; i++) 
   {
-    video = slides[slideIndex-1].querySelector("video")
-    video.load();
-    if(clicked)
-    {
-      video.muted = false; 
-    }else{
-      video.muted = true; 
+    if(i!=slideIndex)
+    { 
+      slides[i].style.display = "none";  
+      quotes[i].style.display = "none";
     }
-    video.play();
-    video.onloadedmetadata = (event) => {
-      setTimeout(showSlides, video.duration * 1000);
+  }
+  if(slides[slideIndex].getAttribute('name') == "vid")
+  {
+    video = slides[slideIndex].querySelector("video");
+    try
+    {
+      loadVideo(video, slideIndex);
+    }catch{
+    }finally{
+      if(theDuration[slideIndex]>0)
+      {
+        setTimeout(showSlides, theDuration[slideIndex] * 1000 + 1000)
+        // setTimeout(bruteForceVideo, 1000, video, 1);
+      }else{
+        setTimeout(showSlides, 2 * 1000);
+      }
     }
   }else{
-    setTimeout(showSlides,  1000); 
+    setTimeout(showSlides, theDuration[slideIndex] * 1000); 
   }
-  }
+}
 </script>
-
-</body>
 </html>

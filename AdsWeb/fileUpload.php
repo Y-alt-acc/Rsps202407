@@ -9,22 +9,22 @@ if (isset($_POST["submit"]))
     
     $user = $_SESSION['user'];
     
-    $uploadedImages = $_FILES['media'];
+    $uploadedFiles = $_FILES['media'];
     $mediaTag = $_POST['media_tag'];
     $mediaTxt = $_POST['media_txt'];
     $expiredDate = $_POST['exp_date'];
     $targetDir = "slide/".date("Y-m-d-h-i-s",time())."/";
     mkdir($targetDir);
     $i = 1;
-    foreach ($uploadedImages['name'] as $key => $value) {
-        $fileName = basename($uploadedImages['name'][$key]);
+    foreach ($uploadedFiles['name'] as $key => $value) {
+        $fileName = basename($uploadedFiles['name'][$key]);
         $targetFilePath = $targetDir. $fileName;
         $i++;
         if (file_exists($targetFilePath)) 
         {
             echo "Sorry, file already exists.<br>";
         } else {
-            if (move_uploaded_file($uploadedImages["tmp_name"][$key], $targetFilePath)) {
+            if (move_uploaded_file($uploadedFiles["tmp_name"][$key], $targetFilePath)) {
                 $mediaPath = $targetFilePath;
                 $stmt->execute();
             } else {
