@@ -14,7 +14,18 @@ function conquery($query)
 {
     $conn = conStart();
     $result = mysqli_query($conn, $query);
-    $conn->close();
+    conEnd($conn);
+    return $result;
+}
+function aaaaa()
+{
+    $conn = conStart();
+    $stmt = $conn->prepare("");
+    $stmt->bind_param("s",$conn);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    conEnd($conn);
+    conEnd($stmt);
     return $result;
 }
 function userAdd($user, $pass)
@@ -25,7 +36,13 @@ function userAdd($user, $pass)
 }
 function loginadsweb($user, $pass)
 {
-    $hash = conquery("SELECT pass FROM table_list_user WHERE user = '$user'")->fetch_assoc();
+    $conn = conStart();
+    $stmt = $conn->prepare("SELECT pass FROM table_list_user WHERE user = ?");
+    $stmt->bind_param("s", $user);
+    $stmt->execute();
+    $hash = $stmt->get_result()->fetch_assoc();
+    conEnd($conn);
+    conEnd($stmt);
     return  password_verify($pass, $hash["pass"]);
 }
 function find($id)
@@ -42,7 +59,12 @@ function removeFolder($regDate, $user)
 }
 function update($id, $mediaTag, $mediaTxt, $expDate)
 {
-    return "UPDATE table_list_ads SET media_tag = '$mediaTag', media_txt = '$mediaTxt', exp_date = '$expDate' WHERE id = '$id'";
+    $conn = conStart();
+    $stmt = $conn->prepare("UPDATE table_list_ads SET media_tag = ?, media_txt = ?, exp_date = ? WHERE id = ?");
+    $stmt->bind_param("sssi",$mediaTag, $mediaTxt, $expDate, $id);
+    $stmt->execute();
+    conEnd($conn);
+    conEnd($stmt);
     
 }
 function swapId($id, $trgt)

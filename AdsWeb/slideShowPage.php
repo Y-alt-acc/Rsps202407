@@ -24,6 +24,7 @@
     width: 100vw;
     height: 100vh;
     align-items: center;
+    background-color: #222222;
 }
 .top
 {
@@ -63,7 +64,6 @@
 .quote
 {
   width: 100%;
-  height:100%;
   grid-area: txt;
   background-color: #444444;
 }
