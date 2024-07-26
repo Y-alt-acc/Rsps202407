@@ -79,7 +79,19 @@ function swapPos($id, $trgt)
     mysqli_query($conn, swapId(0,$trgt));
     $conn->close();
 }
-
+function viewFolder()
+{
+    if($_SESSION["user"] == "admin")
+    {
+        $query = "SELECT Distinct media_tag, SUBSTRING_INDEX(media_path, '/', 2) as File_name , add_date FROM table_list_ads";    
+    }else{
+         $query = "SELECT  id, SUBSTRING_INDEX(media_path, '/', 2) as File_name ,media_txt, add_date ,exp_date FROM table_list_ads WHERE user='$_SESSION[user]'";
+    }
+    $conn = conStart();
+    $result = mysqli_query($conn, $query);
+    conEnd($conn);
+    return $result;
+}
 function viewAds()
 {
     if($_SESSION["user"] == "admin")

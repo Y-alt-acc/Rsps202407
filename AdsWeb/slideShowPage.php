@@ -177,11 +177,10 @@ function setDuration()
   {
     if(slides[i].getAttribute('name') == "vid")
     {
-      theDuration.push(-1);
-    }else{
       theDuration.push(5);
+    }else{
+      theDuration.push(1);
     }
-    
   }
 }
 function loadVideo(video, i)
@@ -193,9 +192,12 @@ function loadVideo(video, i)
   }else{
     video.muted = true; 
   }
-  video.oncanplay = function(e)
+  video.ondurationchange  =function()
   {
     theDuration[i] = video.duration;
+  }
+  video.oncanplay = function(e)
+  {
     video.play();
   }
 }
@@ -205,7 +207,7 @@ function bruteForceVideo(video, time)
   {
     showSlides();
   }else{
-    if(video.error.code > 0)
+    if(video.paused)
     {
       try
       {
@@ -215,7 +217,7 @@ function bruteForceVideo(video, time)
         setTimeout(bruteForceVideo, 1000, video, time + 1);
       }
     }else{
-      setTimeout(showSlides, theDuration[slideIndex] * 1000 + 1000);
+      setTimeout(showSlides, theDuration[slideIndex] * 1000);
     }
   }
 }
@@ -249,13 +251,9 @@ function showSlides()
       loadVideo(video, slideIndex);
     }catch{
     }finally{
-      if(theDuration[slideIndex]>0)
-      {
-        setTimeout(showSlides, theDuration[slideIndex] * 1000 + 1000)
-        // setTimeout(bruteForceVideo, 1000, video, 1);
-      }else{
-        setTimeout(showSlides, 2 * 1000);
-      }
+
+      //setTimeout(showSlides, theDuration[slideIndex] * 1000 + 1000)
+      setTimeout(bruteForceVideo, 1000, video, 1);
     }
   }else{
     setTimeout(showSlides, theDuration[slideIndex] * 1000); 
