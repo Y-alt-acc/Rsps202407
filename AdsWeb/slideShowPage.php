@@ -16,7 +16,7 @@
 {
   display: grid;
   grid-template-columns: 2% 78% 18% 2%;
-  grid-template-rows: 3% 94% 3%;
+  grid-template-rows: 3% 87% 10%;
   grid-template-areas: 
     "header header header header"
     "sidebarleft media txt sidebarright"
@@ -78,7 +78,7 @@
 img
 {
   max-width: 78vw;
-  min-height: 94vh;
+  min-height: 87vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
@@ -87,7 +87,7 @@ img
 video
 {
   max-width: 78vw;
-  min-height: 94vh;
+  min-height: 87vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
@@ -102,7 +102,7 @@ video
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   text-align: center;
   font-size : 2em;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Times New Roman', Times, serif;
 }
 </style>
 <head>
@@ -151,8 +151,8 @@ video
         '
         ?>
       </div>
-      <div class="sideright"></div>
-      <div class="bottom"></div>
+      <div class="sideright"></div><h1></h1>
+      <div class="bottom"><h1 class = text-block>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1></div>
     </div>
   </body>
 </head>
