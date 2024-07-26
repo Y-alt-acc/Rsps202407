@@ -5,30 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content=
         "width=device-width, initial-scale=1.0">
-    <title>Image Upload</title>
+    <title>File Upload</title>
 </head>
 
 <body>
-    <form action="fileUpload.php" method="post" 
-        enctype="multipart/form-data">
-        <label for="media[]">Select Media Files:</label>
-        <input type="file" name="media[]" multiple>
-        <br><br>
-        <label for="media_tag">Tag</label>
-        <input type="text" name="media_tag">
-        <br><br>
-        <label for="media_txt">Deskripsi Default</label>
-        <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ></textarea>
-        <br><br>
-        <label for="exp_date">Expired Date:</label>
-        <input type="datetime-local" id="exp_date" name="exp_date">
-        <br><br>
-        <input type="submit" name="submit" value="Upload">
-    </form>
-    <form action="./homeUser.html" method="post" 
-        enctype="button">
-        <input type="submit" name="submit" value="cancel">
-    </form>
+<form action="fileUpload.php" method="post" 
+    enctype="multipart/form-data">
+    <label for="media[]">Select Media Files:</label>
+    <input type="file" name="media[]" multiple>
+    <br><br>
+    <label for="media_tag">Tag</label>
+    <input type="text" name="media_tag">
+    <br><br>
+    <label for="media_txt">Deskripsi Default</label>
+    <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ></textarea>
+    <br><br>
+    <label for="exp_date">Expired Date:</label>
+    <input type="datetime-local" id="exp_date" name="exp_date">
+    <br><br>
+    <input type="submit" name="submit" value="Upload">
+</form>
+<form action="./homeUser.html" method="post" 
+    enctype="button">
+    <input type="submit" name="submit" value="cancel">
+</form>
 </body>
 
 </html>

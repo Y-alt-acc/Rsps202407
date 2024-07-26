@@ -26,12 +26,10 @@ require_once 'commonfunction.php';
         <input type="file" id="media" name="media">
         <br><br>
         <label for="media_tag">Tag:</label>
-        <input type="text" id="media_tag" name="media_tag" value=<?php echo $data['media_tag'] ?>>
+        <input type="text" name="media_tag" value=<?php echo $data['media_tag'] ?>>
         <br><br>
         <label for="media_txt">Deskripsi:</label>
-        <br><br>
-        <textarea id="media_txt" name="media_txt" rows="13"  data-input-max-length="254" ><?php echo $data['media_txt'] ?></textarea>
-        
+        <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ><?php echo $data['media_txt'] ?></textarea>
         <br><br>
         <label for="exp_date">Expired Date:</label>
         <input type="datetime-local" id="exp_date" name="exp_date" value="<?php echo $data['exp_date'] ?>">

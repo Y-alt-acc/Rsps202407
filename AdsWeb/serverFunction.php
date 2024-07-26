@@ -42,7 +42,8 @@ function removeFolder($regDate, $user)
 }
 function update($id, $mediaTag, $mediaTxt, $expDate)
 {
-    return "UPDATE table_list_ads SET media_tag = '$mediaTag SET media_txt = '$mediaTxt', exp_date = '$expDate' WHERE id = '$id'";
+    return "UPDATE table_list_ads SET media_tag = '$mediaTag', media_txt = '$mediaTxt', exp_date = '$expDate' WHERE id = '$id'";
+    
 }
 function swapId($id, $trgt)
 {
