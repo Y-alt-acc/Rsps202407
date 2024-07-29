@@ -7,7 +7,36 @@ $data = viewAds();
 
 <!DOCTYPE html>
 <html lang="en">
+<style>
 
+#Adverts {
+
+  font-family: 'Times New Roman', Times, serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+#Adverts table
+{
+    max-width: 100vw;
+}
+
+#Adverts td, #Adverts th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#Adverts tr:nth-child(even){background-color: #f2f2f2;}
+
+#Adverts tr:hover {background-color: #ddd;}
+
+#Adverts th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content=
@@ -17,14 +46,15 @@ $data = viewAds();
 </head>
 
 <body>
+    
 <?php
-echo '<table class="data-table">
+echo '<div ><table id="Adverts" class="data-table">
 <tr class="data-heading">';
 while ($property = mysqli_fetch_field($data)) 
 {
-    echo '<td>' . htmlspecialchars($property->name) . '</td>';  //get field name for header
+    echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<td> change </td><td> delete </td>';
+echo '<th> Up </th><th> Down </th><th> Change </th><th> Delete </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -62,7 +92,7 @@ while ($row = mysqli_fetch_row($data))
     <?php
     echo '</tr>';
 }
-echo "</table>";
+echo "</table> </div>";
 ?>
 <br>
 <form action="./homeUser.html" method="post" 

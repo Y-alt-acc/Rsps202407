@@ -16,7 +16,7 @@
 {
   display: grid;
   grid-template-columns: 2% 78% 18% 2%;
-  grid-template-rows: 3% 90% 7%;
+  grid-template-rows: 3% 91% 6%;
   grid-template-areas: 
     "header header header header"
     "sidebarleft media txt sidebarright"
@@ -82,7 +82,7 @@ body
 img
 {
   max-width: 78vw;
-  min-height: 90vh;
+  min-height: 91vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
@@ -91,7 +91,7 @@ img
 video
 {
   max-width: 78vw;
-  min-height: 90vh;
+  min-height: 91vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
@@ -151,7 +151,7 @@ video
                 echo 
                 '<div class="myslides" name="vid">
                 <video preload="metadata">
-                    <source src="'. $data["media_path"]. '"type="'.$mime.'">
+                    <source src="'. $data["media_path"]. '#t=0.1" type="'.$mime.'">
                   Your browser does not support the video tag.
                 </video>
                 </div>';
@@ -177,7 +177,7 @@ video
         ?>
       </div>
       <div class="sideright"></div><h1></h1>
-      <div class="bottom"><h1 class = "text-mov">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1></div>
+      <div class="bottom"><h1 class = "text-mov">SELAMAT DATANG DI RUMAH SAKIT PREMIER SURABAYA</h1></div>
     </div>
   </body>
 </head>

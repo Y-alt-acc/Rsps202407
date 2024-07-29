@@ -21,8 +21,30 @@ require_once 'commonfunction.php';
 <form action="fileUpdate.php" method="post" 
         enctype="multipart/form-data">
         <input type="hidden" id="id" name="id" value =<?php echo $data['id']?>> 
-        <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['media_path'] ?>>
+        <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['media_path']; ?>>
         <label for="media">Media:</label>
+        <br>
+        
+        <?php 
+            $mime = mime_content_type($data["media_path"]);
+            if(strstr($mime,"video/"))
+            {
+                echo 
+                '<div>
+                <video preload="metadata" controls>
+                    <source src="'. $data["media_path"]. '#t=0.1" type="'.$mime.'">
+                Your browser does not support the video tag.
+                </video>
+                </div>';
+            }else if(strstr($mime, "image/")) {
+                echo
+                '<div>
+                <img src="'.$data["media_path"].'">
+                </div>
+                ';
+            }
+        ?>
+        <br><br>
         <input type="file" id="media" name="media">
         <br><br>
         <label for="media_tag">Tag:</label>
