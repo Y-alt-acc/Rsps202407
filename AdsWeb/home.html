@@ -1,6 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+body {
+margin: 0;
+}
 
+#grid {
+  height: 100vh;
+  transition: 500ms;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  background: crimson;
+}
+
+:where(.left, .right) {
+  background: navajowhite;
+  transition: 300ms;
+}
+
+:where(.left, .right):hover {
+  background: crimson;
+}
+
+#grid:has(.left:hover) {
+  grid-template-columns: 2fr 0.5fr;
+}
+
+#grid:has(.right:hover) {
+  grid-template-columns: 0.5fr 2fr;
+}
+</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content=
@@ -9,14 +39,10 @@
 </head>
 
 <body>
-    <form action="./login.php" method="post" 
-        enctype="button">
-        <input type="submit" name="submit" value="user">
-    </form>
-    <form action="./slideShowGet.php" method="post" 
-        enctype="button">
-        <input type="submit" name="submit" value="view">
-    </form>
+<div id="grid">
+<div class="left" onclick="window.open('./login.php', '_self')"> home</div>
+<div class="right" onclick="window.open('./slideShowGet.php', '_self')">view</div>
+</div>
 </body>
 
 </html>

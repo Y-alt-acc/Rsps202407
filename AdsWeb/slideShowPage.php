@@ -177,7 +177,7 @@ video
         ?>
       </div>
       <div class="sideright"></div><h1></h1>
-      <div class="bottom"><h1 class = "text-mov">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1></div>
+      <div class="bottom"><h1 class = "text-mov">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1></div>
     </div>
   </body>
 </head>
@@ -228,7 +228,8 @@ function loadVideo(video, i)
 }
 function bruteForceVideo(video, time)
 {
-  if(time > theDuration[slideIndex])
+  
+  if(time > theDuration[slideIndex] && video.paused)
   {
     showSlides();
   }else{
