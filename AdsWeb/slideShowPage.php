@@ -16,7 +16,7 @@
 {
   display: grid;
   grid-template-columns: 2% 78% 18% 2%;
-  grid-template-rows: 3% 87% 10%;
+  grid-template-rows: 3% 90% 7%;
   grid-template-areas: 
     "header header header header"
     "sidebarleft media txt sidebarright"
@@ -75,10 +75,14 @@
 {
   display:none;
 }
+body
+{
+  overflow: hidden;
+}
 img
 {
   max-width: 78vw;
-  min-height: 87vh;
+  min-height: 90vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
@@ -87,7 +91,7 @@ img
 video
 {
   max-width: 78vw;
-  min-height: 87vh;
+  min-height: 90vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
@@ -103,6 +107,27 @@ video
   text-align: center;
   font-size : 2em;
   font-family: 'Times New Roman', Times, serif;
+}
+.text-mov
+{
+  
+  display: block;
+  overflow-wrap: break-word;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  text-align: center;
+  font-size : 3em;
+  font-family: 'Times New Roman', Times, serif;
+  position: relative;
+  animation-name: text-mov-bot;
+  animation-duration: 40s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes text-mov-bot
+{
+  from {left: 100%;}
+  to {left: -100%;}
 }
 </style>
 <head>
@@ -152,7 +177,7 @@ video
         ?>
       </div>
       <div class="sideright"></div><h1></h1>
-      <div class="bottom"><h1 class = text-block>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1></div>
+      <div class="bottom"><h1 class = "text-mov">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1></div>
     </div>
   </body>
 </head>
