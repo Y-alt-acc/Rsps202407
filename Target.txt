@@ -5,3 +5,4 @@
 	- Option : Add , Remove, Change
 	- Display Things
 	- 
+change php.ini upload file max and max size file upload into 1gb and 8 gb and max number file into 100
