@@ -15,7 +15,8 @@
 .grid-continer
 {
   display: grid;
-  grid-template-columns: 2% 78% 18% 2%;
+  grid-template-columns: 2% 60% 36% 2%;
+  
   grid-template-rows: 3% 91% 6%;
   grid-template-areas: 
     "header header header header"
@@ -81,21 +82,23 @@ body
 }
 img
 {
-  max-width: 78vw;
+  max-width: 60vw;
   min-height: 91vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
-  object-fit: contain;
+  /* object-fit: contain; */
+  object-fit: fill;
 }
 video
 {
-  max-width: 78vw;
+  max-width: 60vw;
   min-height: 91vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
-  object-fit: contain;  
+  /* object-fit: contain;   */
+  object-fit: fill;
 }
 .text-block
 {
@@ -202,7 +205,7 @@ function setDuration()
   {
     if(slides[i].getAttribute('name') == "vid")
     {
-      theDuration.push(5);
+      theDuration.push(10);
     }else{
       theDuration.push(1);
     }
@@ -240,7 +243,7 @@ function bruteForceVideo(video, time)
         loadVideo(video, slideIndex);
       }catch{
       }finally{
-        setTimeout(bruteForceVideo, 1000, video, time + 1);
+        setTimeout(bruteForceVideo, 2000, video, time + 2);
       }
     }else{
       setTimeout(showSlides, theDuration[slideIndex] * 1000);
@@ -279,7 +282,7 @@ function showSlides()
     }finally{
 
       //setTimeout(showSlides, theDuration[slideIndex] * 1000 + 1000)
-      setTimeout(bruteForceVideo, 1000, video, 1);
+      setTimeout(bruteForceVideo, 2000, video, 2);
     }
   }else{
     setTimeout(showSlides, theDuration[slideIndex] * 1000); 
