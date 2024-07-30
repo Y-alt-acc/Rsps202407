@@ -3,7 +3,9 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "rsps_database_ads";
-$tbname = "table_list_ads";
+$tbads = "table_list_ads";
+$tbmoney = "table_list_money";
+$tbschedule = "table_list_schedule";
 $tbuser = "table_list_user";
 $userweb = "admin";
 $passweb = "root";
@@ -37,7 +39,7 @@ if (!mysqli_query($conn, $sql))
 {
    echo "Error creating user table: " . mysqli_error($conn);
 }
-$sql = "CREATE TABLE IF NOT EXISTS $tbname
+$sql = "CREATE TABLE IF NOT EXISTS $tbads
 (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   uuid CHAR(36) NOT NULL DEFAULT UUID(),
@@ -54,7 +56,39 @@ if (!mysqli_query($conn, $sql))
 {
    echo "Error creating ads table: " . mysqli_error($conn);
 }
-
+$sql = "CREATE TABLE IF NOT EXISTS $tbmoney
+(
+  table_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  uuid CHAR(36) NOT NULL DEFAULT UUID(),
+  user VARCHAR(100),
+  money_path VARCHAR(255) NOT NULL,
+  money_tag VARCHAR(255) NOT NULL,
+  money_txt VARCHAR(255) NOT NULL,
+  add_date DATE DEFAULT NOW(),
+  exp_date DATETIME DEFAULT NOW(),
+  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  )";
+  if (!mysqli_query($conn, $sql)) 
+  {
+     echo "Error creating money table: " . mysqli_error($conn);
+  }
+$sql = "CREATE TABLE IF NOT EXISTS $tbschedule
+(
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  uuid CHAR(36) NOT NULL DEFAULT UUID(),
+  user VARCHAR(100),
+  table_id INT UNSIGNED ,
+  doc_name VARCHAR(255) NOT NULL,
+  doc_schedule VARCHAR(255) NOT NULL,
+  add_date DATE DEFAULT NOW(),
+  exp_date DATETIME DEFAULT NOW(),
+  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (table_id) REFERENCES table_list_money(table_id)
+  )";
+if (!mysqli_query($conn, $sql)) 
+{
+   echo "Error creating schedule table: " . mysqli_error($conn);
+}
 $sql = "SELECT * FROM table_list_user WHERE user ='$userweb'"; 
 
 if(mysqli_query($conn, $sql)->num_rows == 0 ){
