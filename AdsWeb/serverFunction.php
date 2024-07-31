@@ -1,11 +1,11 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "zaViewer";
+$password = "I(XWzqFegEa8kn[3";
 $dbname = "rsps_database_ads";
 $tbname = "table_list_ads";
 function  conStart(){
-    return mysqli_connect("localhost", "root", "", "rsps_database_ads");    
+    return mysqli_connect("localhost", "zaViewer", "I(XWzqFegEa8kn[3", "rsps_database_ads");    
 }
 function conEnd($conn){
     $conn->close();

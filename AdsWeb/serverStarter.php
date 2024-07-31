@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "rspsuper";
+$password = "rspSehat10@85";
 $dbname = "rsps_database_ads";
 $tbads = "table_list_ads";
 $tbmoney = "table_list_money";
