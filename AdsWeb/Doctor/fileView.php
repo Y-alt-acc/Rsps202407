@@ -1,7 +1,7 @@
 <?php
-require_once '../Function/serverfunction.php';
-require_once '../Function/commonfunction.php';
-$data = viewAds(1);
+require_once 'serverfunction.php';
+require_once 'commonfunction.php';
+$data = viewAds(2);
 
 ?>
 
@@ -95,7 +95,7 @@ while ($row = mysqli_fetch_row($data))
 echo "</table> </div>";
 ?>
 <br>
-<form action="../Login/homeUser.html" method="post" 
+<form action="./homeUser.html" method="post" 
         enctype="button">
         <input type="submit" name="submit" value="Back">
     </form>

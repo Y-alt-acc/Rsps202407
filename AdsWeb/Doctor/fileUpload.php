@@ -1,6 +1,6 @@
 <?php
-require_once '../Function/serverfunction.php';
-require_once '../Function/commonfunction.php';
+require_once 'serverfunction.php';
+require_once 'commonfunction.php';
 if (isset($_POST["submit"])) 
 {
     $conn = conStart();

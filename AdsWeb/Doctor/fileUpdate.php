@@ -1,9 +1,9 @@
 <?php 
-require_once '../Function/serverfunction.php';
-require_once '../Function/commonfunction.php';
+require_once 'serverfunction.php';
+require_once 'commonfunction.php';
 if (isset($_POST["submit"]))
 {   
-    update(1, $_POST['id'], $_POST['media_tag'],$_POST['media_txt'],$_POST['exp_date']);
+    update(2, $_POST['id'], $_POST['media_tag'],$_POST['media_txt'],$_POST['exp_date']);
 }
 if($_FILES['media'] != NULL)
 {

@@ -5,11 +5,11 @@ function redirect($url) {
     die();
 }
 function serverGetImg(){
-    require_once('./serverFunction.php');
+    require_once('serverFunction.php');
     return viewActiveImg(1);
 }
 function serverGetTxt(){
-    require_once('./serverFunction.php');
+    require_once('serverFunction.php');
     return viewActiveTxt(1);
 }
 ?>

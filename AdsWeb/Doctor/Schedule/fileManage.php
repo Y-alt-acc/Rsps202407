@@ -1,8 +1,8 @@
 <?php 
-require_once '../Function/serverfunction.php';
-require_once '../Function/commonfunction.php';
+require_once 'serverfunction.php';
+require_once 'commonfunction.php';
     $data = $_POST['data'];
-    $data = mysqli_fetch_assoc(conquery(find(1,$data)));
+    $data = mysqli_fetch_assoc(conquery(find(3,$data)));
 ?>
 
 <!DOCTYPE html>

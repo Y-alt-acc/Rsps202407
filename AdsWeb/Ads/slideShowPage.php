@@ -1,5 +1,5 @@
 <?php
-  require_once("./commonFunction.php");
+  require_once("../Function/commonFunction.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -144,24 +144,24 @@ video
             $result = serverGetImg();
             if($result->num_rows == 0)
             {
-              redirect("./home.html");
+              redirect("../Login/home.html");
             }
             while($data = mysqli_fetch_assoc($result))
             {
-              $mime = mime_content_type($data["media_path"]);
+              $mime = mime_content_type('../'.$data["media_path"]);
               if(strstr($mime,"video/"))
               {
                 echo 
                 '<div class="myslides" name="vid">
                 <video preload="metadata">
-                    <source src="'. $data["media_path"]. '#t=0.1" type="'.$mime.'">
+                    <source src="../'. $data["media_path"]. '#t=0.1" type="'.$mime.'">
                   Your browser does not support the video tag.
                 </video>
                 </div>';
               }else if(strstr($mime, "image/")) {
                 echo
                 '<div class ="myslides" name = "img" >
-                  <img src="'.$data["media_path"].'">
+                  <img src="../'.$data["media_path"].'">
                 </div>
                 ';
               }
