@@ -1,4 +1,4 @@
 <?php
-require 'commonfunction.php';
+require_once 'commonfunction.php';
 redirect("./slideShowPage.php");
 ?>

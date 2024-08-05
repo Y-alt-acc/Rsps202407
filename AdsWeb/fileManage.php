@@ -2,7 +2,7 @@
 require_once 'serverfunction.php';
 require_once 'commonfunction.php';
     $data = $_POST['data'];
-    $data = mysqli_fetch_assoc(conquery(find($data)));
+    $data = mysqli_fetch_assoc(conquery(find(1,$data)));
 ?>
 
 <!DOCTYPE html>

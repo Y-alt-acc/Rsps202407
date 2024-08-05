@@ -123,14 +123,14 @@ video
   font-family: 'Times New Roman', Times, serif;
   position: relative;
   animation-name: text-mov-bot;
-  animation-duration: 40s;
+  animation-duration: 30s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
 @keyframes text-mov-bot
 {
-  from {left: 100%;}
-  to {left: -100%;}
+  from {left: 87%;}
+  to {left: -87%;}
 }
 </style>
 <head>

@@ -3,7 +3,7 @@ require_once 'serverfunction.php';
 require_once 'commonfunction.php';
 if (isset($_POST["submit"]))
 {   
-    update($_POST['id'], $_POST['media_tag'],$_POST['media_txt'],$_POST['exp_date']);
+    update(1, $_POST['id'], $_POST['media_tag'],$_POST['media_txt'],$_POST['exp_date']);
 }
 if($_FILES['media'] != NULL)
 {

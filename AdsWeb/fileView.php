@@ -1,7 +1,7 @@
 <?php
 require_once 'serverfunction.php';
 require_once 'commonfunction.php';
-$data = viewAds();
+$data = viewAds(1);
 
 ?>
 

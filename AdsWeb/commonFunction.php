@@ -6,10 +6,10 @@ function redirect($url) {
 }
 function serverGetImg(){
     require_once('./serverFunction.php');
-    return viewActiveImg();
+    return viewActiveImg(1);
 }
 function serverGetTxt(){
     require_once('./serverFunction.php');
-    return viewActiveTxt();
+    return viewActiveTxt(1);
 }
 ?>

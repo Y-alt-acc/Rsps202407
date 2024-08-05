@@ -4,7 +4,7 @@ $username = "rspsuper";
 $password = "rspSehat10@85";
 $dbname = "rsps_database_ads";
 $tbads = "table_list_ads";
-$tbmoney = "table_list_money";
+$tbmoney = "table_list_doctor";
 $tbschedule = "table_list_schedule";
 $tbuser = "table_list_user";
 $userweb = "admin";
@@ -61,9 +61,9 @@ $sql = "CREATE TABLE IF NOT EXISTS $tbmoney
   table_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   uuid CHAR(36) NOT NULL DEFAULT UUID(),
   user VARCHAR(100),
-  money_path VARCHAR(255) NOT NULL,
-  money_tag VARCHAR(255) NOT NULL,
-  money_txt VARCHAR(255) NOT NULL,
+  doctor_path VARCHAR(255) NOT NULL,
+  doctor_tag VARCHAR(255) NOT NULL,
+  doctor_txt VARCHAR(255) NOT NULL,
   add_date DATE DEFAULT NOW(),
   exp_date DATETIME DEFAULT NOW(),
   reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -77,13 +77,11 @@ $sql = "CREATE TABLE IF NOT EXISTS $tbschedule
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   uuid CHAR(36) NOT NULL DEFAULT UUID(),
   user VARCHAR(100),
-  table_id INT UNSIGNED ,
   doc_name VARCHAR(255) NOT NULL,
   doc_schedule VARCHAR(255) NOT NULL,
   add_date DATE DEFAULT NOW(),
   exp_date DATETIME DEFAULT NOW(),
-  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (table_id) REFERENCES table_list_money(table_id)
+  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )";
 if (!mysqli_query($conn, $sql)) 
 {
