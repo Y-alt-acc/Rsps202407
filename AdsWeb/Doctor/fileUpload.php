@@ -4,15 +4,14 @@ require_once '../Function/commonfunction.php';
 if (isset($_POST["submit"])) 
 {
     $conn = conStart();
-    $stmt = $conn->prepare("INSERT INTO table_list_doctor(user, doctor_path, doctor_tag, doctor_txt, exp_date) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss",$user,$docPath, $docTag, $docTxt, $expiredDate);
+    $stmt = $conn->prepare("INSERT INTO table_list_doctor(doc_user, doc_path, doc_name, doc_txt) VALUES ( ?, ?, ?, ?)");
+    $stmt->bind_param("ssss",$user,$docPath, $docTag, $docTxt, );
     
     $user = $_SESSION['user'];
     
     $uploadedFile = $_FILES['wajah'];
     $docTag = $_POST['doc_tag'];
     $docTxt = $_POST['doc_txt'];
-    $expiredDate = $_POST['exp_date'];
     $targetDir = "../wajah/".date("Y-m-d-h-i-s",time())."/";
     mkdir($targetDir);
     $fileName = basename($uploadedFile['name']);
@@ -32,5 +31,5 @@ if (isset($_POST["submit"]))
     conEnd($conn);
     conEnd($stmt);
 }
-// goToView();
+goToView();
 ?>

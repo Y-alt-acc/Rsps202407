@@ -2,9 +2,9 @@
 $servername = "localhost";
 $username = "rspsuper";
 $password = "rspSehat10@85";
-$dbname = "rsps_database_ads";
-$tbads = "table_list_ads";
-$tbmoney = "table_list_doctor";
+$dbname = "rsps_database_tv";
+$tbmedia = "table_list_media";
+$tbdoctor = "table_list_doctor";
 $tbschedule = "table_list_schedule";
 $tbuser = "table_list_user";
 $userweb = "admin";
@@ -27,46 +27,45 @@ if (!$conn->select_db($dbname))
 
 $sql = "CREATE TABLE IF NOT EXISTS $tbuser
 (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  uuid CHAR(36) NOT NULL DEFAULT UUID(),
-  user VARCHAR(100) NOT NULL,
-  pass VARCHAR(255) NOT NULL,
-  add_date DATE DEFAULT NOW(),
-  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  usr_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  usr_uuid CHAR(36) NOT NULL DEFAULT UUID(),
+  usr_name VARCHAR(100) NOT NULL,
+  usr_pass VARCHAR(255) NOT NULL,
+  usr_add_date DATE DEFAULT NOW(),
+  usr_reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )";
 
 if (!mysqli_query($conn, $sql)) 
 {
    echo "Error creating user table: " . mysqli_error($conn);
 }
-$sql = "CREATE TABLE IF NOT EXISTS $tbads
+$sql = "CREATE TABLE IF NOT EXISTS $tbmedia
 (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  uuid CHAR(36) NOT NULL DEFAULT UUID(),
-  user VARCHAR(100),
-  media_path VARCHAR(255) NOT NULL,
-  media_tag VARCHAR(255) NOT NULL,
-  media_txt VARCHAR(255) NOT NULL,
-  add_date DATE DEFAULT NOW(),
-  exp_date DATETIME DEFAULT NOW(),
-  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  med_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  med_uuid CHAR(36) NOT NULL DEFAULT UUID(),
+  med_user VARCHAR(100),
+  med_path VARCHAR(255) NOT NULL,
+  med_tag VARCHAR(255) NOT NULL,
+  med_txt VARCHAR(255) NOT NULL,
+  med_add_date DATE DEFAULT NOW(),
+  med_exp_date DATETIME DEFAULT NOW(),
+  med_reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )";
 
 if (!mysqli_query($conn, $sql)) 
 {
    echo "Error creating ads table: " . mysqli_error($conn);
 }
-$sql = "CREATE TABLE IF NOT EXISTS $tbmoney
+$sql = "CREATE TABLE IF NOT EXISTS $tbdoctor
 (
-  table_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  uuid CHAR(36) NOT NULL DEFAULT UUID(),
-  user VARCHAR(100),
-  doctor_path VARCHAR(255) NOT NULL,
-  doctor_tag VARCHAR(255) NOT NULL,
-  doctor_txt VARCHAR(255) NOT NULL,
-  add_date DATE DEFAULT NOW(),
-  exp_date DATETIME DEFAULT NOW(),
-  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  doc_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  doc_uuid CHAR(36) NOT NULL DEFAULT UUID(),
+  doc_user VARCHAR(100),
+  doc_path VARCHAR(255) NOT NULL,
+  doc_name VARCHAR(255) NOT NULL,
+  doc_txt VARCHAR(255) NOT NULL,
+  doc_add_date DATE DEFAULT NOW(),
+  doc_reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )";
   if (!mysqli_query($conn, $sql)) 
   {
@@ -74,30 +73,29 @@ $sql = "CREATE TABLE IF NOT EXISTS $tbmoney
   }
 $sql = "CREATE TABLE IF NOT EXISTS $tbschedule
 (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  uuid CHAR(36) NOT NULL DEFAULT UUID(),
-  user VARCHAR(100),
-  doc_name VARCHAR(255) NOT NULL,
-  doc_schedule VARCHAR(255) NOT NULL,
-  add_date DATE DEFAULT NOW(),
-  exp_date DATETIME DEFAULT NOW(),
-  reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  sch_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  sch_uuid CHAR(36) NOT NULL DEFAULT UUID(),
+  sch_user VARCHAR(100),
+  sch_day VARCHAR(255) NOT NULL,
+  sch_schedule VARCHAR(255) NOT NULL,
+  sch_add_date DATE DEFAULT NOW(),
+  sch_reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )";
 if (!mysqli_query($conn, $sql)) 
 {
    echo "Error creating schedule table: " . mysqli_error($conn);
 }
-$sql = "SELECT * FROM table_list_user WHERE user ='$userweb'"; 
+$sql = "SELECT * FROM table_list_user WHERE usr_name ='$userweb'"; 
 
 if(mysqli_query($conn, $sql)->num_rows == 0 ){
   $hash = password_hash($passweb, PASSWORD_DEFAULT);
-  $sql = "INSERT INTO table_list_user (user, pass) VALUE('$userweb','$hash')";
+  $sql = "INSERT INTO table_list_user (usr_name, usr_pass) VALUE('$userweb','$hash')";
 
   if (!mysqli_query($conn, $sql)) 
   {
     echo "Error creating admin: " . mysqli_error($conn);
   }
-  $sql = "INSERT INTO table_list_user (user, pass) VALUE('test','$hash')";
+  $sql = "INSERT INTO table_list_user (usr_name, usr_pass) VALUE('test','$hash')";
 
   if (!mysqli_query($conn, $sql)) 
   {

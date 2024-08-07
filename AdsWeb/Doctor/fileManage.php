@@ -12,49 +12,44 @@ require_once '../Function/commonfunction.php';
     <meta charset="UTF-8">
     <meta name="viewport" content=
         "width=device-width, initial-scale=1.0">
-    <title>Ads Manage</title>
-
+    <title>Doctor Manage</title>
 </head>
-
 <body>
-<h1>Ads Manage</h1>
+<h1>Doctor Manage</h1>
 <form action="fileUpdate.php" method="post" 
         enctype="multipart/form-data">
-        <input type="hidden" id="id" name="id" value =<?php echo $data['id']?>> 
-        <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['media_path']; ?>>
-        <label for="media">Media:</label>
+        <input type="hidden" id="id" name="id" value =<?php echo $data['doc_id']?>> 
+        <input type="hidden" id="doc_path" name="doc_path" value =<?php echo $data['doc_path']; ?>>
+        <label for="doc">Doc:</label>
         <br>
         
         <?php 
-            $mime = mime_content_type($data["media_path"]);
+            $mime = mime_content_type($data["doc_path"]);
             if(strstr($mime,"video/"))
             {
                 echo 
                 '<div>
                 <video preload="metadata" controls>
-                    <source src="'. $data["media_path"]. '#t=0.1" type="'.$mime.'">
+                    <source src="'. $data["doc_path"]. '#t=0.1" type="'.$mime.'">
                 Your browser does not support the video tag.
                 </video>
                 </div>';
             }else if(strstr($mime, "image/")) {
                 echo
                 '<div>
-                <img src="'.$data["media_path"].'">
+                <img src="'.$data["doc_path"].'">
                 </div>
                 ';
             }
         ?>
         <br><br>
-        <input type="file" id="media" name="media">
+        <input type="file" id="doc" name="doc">
         <br><br>
-        <label for="media_tag">Tag:</label>
-        <input type="text" name="media_tag" value=<?php echo $data['media_tag'] ?>>
+        <label for="doc_name">Tag:</label>
+        <input type="text" name="doc_name" value=<?php echo $data['doc_name'] ?>>
         <br><br>
-        <label for="media_txt">Deskripsi:</label>
-        <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ><?php echo $data['media_txt'] ?></textarea>
-        <br><br>
-        <label for="exp_date">Expired Date:</label>
-        <input type="datetime-local" id="exp_date" name="exp_date" value="<?php echo $data['exp_date'] ?>">
+        <label for="doc_txt">Deskripsi:</label>
+        <textarea id="doc_txt" name="doc_txt" rows="13"  maxlength="254" ><?php echo $data['doc_txt'] ?></textarea>
         <br><br>
         <input type="submit" name="submit" value="Change">
 </form>

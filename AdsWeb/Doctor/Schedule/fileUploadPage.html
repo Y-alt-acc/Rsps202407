@@ -11,18 +11,12 @@
 <body>
 <form action="./fileUpload.php" method="post" 
     enctype="multipart/form-data">
-    <label for="media[]">Select Media Files:</label>
-    <input type="file" name="media[]" multiple>
+    <label for="sch_tag">Tag</label>
+    <input type="text" name="sch_tag">
     <br><br>
-    <label for="media_tag">Tag</label>
-    <input type="text" name="media_tag">
+    <label for="sch_txt">Deskripsi Default</label>
     <br><br>
-    <label for="media_txt">Deskripsi Default</label>
-    <br><br>
-    <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ></textarea>
-    <br><br>
-    <label for="exp_date">Expired Date:</label>
-    <input type="datetime-local" id="exp_date" name="exp_date">
+    <textarea id="sch_txt" name="sch_txt" rows="13"  maxlength="254" ></textarea>
     <br><br>
     <input type="submit" name="submit" value="Upload">
 </form>

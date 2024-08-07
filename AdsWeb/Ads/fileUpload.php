@@ -4,7 +4,7 @@ require_once '../Function/commonfunction.php';
 if (isset($_POST["submit"])) 
 {
     $conn = conStart();
-    $stmt = $conn->prepare("INSERT INTO table_list_ads (user, media_path, media_tag, media_txt, exp_date) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO table_list_media (med_user, med_path, med_tag, med_txt, med_exp_date) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss",$user,$mediaPath, $mediaTag, $mediaTxt, $expiredDate);
     
     $user = $_SESSION['user'];

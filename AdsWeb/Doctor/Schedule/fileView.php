@@ -1,7 +1,13 @@
 <?php
 require_once '../../Function/serverfunction.php';
 require_once '../../Function/commonfunction.php';
-$data = viewAds(3);
+if(isset($_POST['data']))
+{
+    $data = viewAds(3,$_POST['data'] );
+}else
+{   
+    $data = viewAds(3);
+}
 
 ?>
 

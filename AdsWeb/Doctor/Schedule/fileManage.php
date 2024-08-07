@@ -20,41 +20,13 @@ require_once '../../Function/commonfunction.php';
 <h1>Ads Manage</h1>
 <form action="./fileUpdate.php" method="post" 
         enctype="multipart/form-data">
-        <input type="hidden" id="id" name="id" value =<?php echo $data['id']?>> 
-        <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['media_path']; ?>>
-        <label for="media">Media:</label>
-        <br>
-        
-        <?php 
-            $mime = mime_content_type($data["media_path"]);
-            if(strstr($mime,"video/"))
-            {
-                echo 
-                '<div>
-                <video preload="metadata" controls>
-                    <source src="'. $data["media_path"]. '#t=0.1" type="'.$mime.'">
-                Your browser does not support the video tag.
-                </video>
-                </div>';
-            }else if(strstr($mime, "image/")) {
-                echo
-                '<div>
-                <img src="'.$data["media_path"].'">
-                </div>
-                ';
-            }
-        ?>
+        <input type="hidden" id="sch_id" name="sch_id" value =<?php echo $data['sch_id']?>>
         <br><br>
-        <input type="file" id="media" name="media">
+        <label for="sch_day">Tag:</label>
+        <input type="text" name="sch_day" value=<?php echo $data['sch_day'] ?>>
         <br><br>
-        <label for="media_tag">Tag:</label>
-        <input type="text" name="media_tag" value=<?php echo $data['media_tag'] ?>>
-        <br><br>
-        <label for="media_txt">Deskripsi:</label>
-        <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ><?php echo $data['media_txt'] ?></textarea>
-        <br><br>
-        <label for="exp_date">Expired Date:</label>
-        <input type="datetime-local" id="exp_date" name="exp_date" value="<?php echo $data['exp_date'] ?>">
+        <label for="sch_schedule">Deskripsi:</label>
+        <textarea id="sch_schedule" name="sch_schedule" rows="13"  maxlength="254" ><?php echo $data['sch_schedule'] ?></textarea>
         <br><br>
         <input type="submit" name="submit" value="Change">
 </form>

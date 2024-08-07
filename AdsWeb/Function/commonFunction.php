@@ -20,8 +20,17 @@ function serverGetImg(){
     require_once('serverFunction.php');
     return viewActiveImg(1);
 }
+
 function serverGetTxt(){
     require_once('serverFunction.php');
     return viewActiveTxt(1);
+}
+function serverGetImgDoc(){
+    require_once('serverFunction.php');
+    return viewActiveImg(2);
+}
+function serverGetTxtDoc(){
+    require_once('serverFunction.php');
+    return viewActiveTxt(2);
 }
 ?>

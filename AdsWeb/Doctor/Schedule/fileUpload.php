@@ -4,34 +4,13 @@ require_once '../../Function/commonfunction.php';
 if (isset($_POST["submit"])) 
 {
     $conn = conStart();
-    $stmt = $conn->prepare("INSERT INTO table_list_ads (user, media_path, media_tag, media_txt, exp_date) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss",$user,$mediaPath, $mediaTag, $mediaTxt, $expiredDate);
+    $stmt = $conn->prepare("INSERT INTO table_list_schedule (sch_user, sch_day, sch_schedule) VALUES ( ?, ?, ?)");
+    $stmt->bind_param("sss",$user, $schDay, $schSchedule,);
     
     $user = $_SESSION['user'];
-    
-    $uploadedFiles = $_FILES['media'];
-    $mediaTag = $_POST['media_tag'];
-    $mediaTxt = $_POST['media_txt'];
-    $expiredDate = $_POST['exp_date'];
-    $targetDir = "slide/".date("Y-m-d-h-i-s",time())."/";
-    mkdir($targetDir);
-    $i = 1;
-    foreach ($uploadedFiles['name'] as $key => $value) {
-        $fileName = basename($uploadedFiles['name'][$key]);
-        $targetFilePath = $targetDir. $fileName;
-        $i++;
-        if (file_exists($targetFilePath)) 
-        {
-            echo "Sorry, file already exists.<br>";
-        } else {
-            if (move_uploaded_file($uploadedFiles["tmp_name"][$key], $targetFilePath)) {
-                $mediaPath = $targetFilePath;
-                $stmt->execute();
-            } else {
-                echo "Sorry, there was an error uploading your " . $fileName . ".<br>";
-            }
-        }
-    }
+    $schDay = $_POST['sch_tag'];
+    $schSchedule = $_POST['sch_txt'];
+    $stmt->execute();
     conEnd($conn);
     conEnd($stmt);
 }

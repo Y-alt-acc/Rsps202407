@@ -20,26 +20,26 @@ require_once '../Function/commonfunction.php';
 <h1>Ads Manage</h1>
 <form action="fileUpdate.php" method="post" 
         enctype="multipart/form-data">
-        <input type="hidden" id="id" name="id" value =<?php echo $data['id']?>> 
-        <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['media_path']; ?>>
+        <input type="hidden" id="id" name="id" value =<?php echo $data['med_id']?>> 
+        <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['med_path']; ?>>
         <label for="media">Media:</label>
         <br>
         
         <?php 
-            $mime = mime_content_type($data["media_path"]);
+            $mime = mime_content_type($data["med_path"]);
             if(strstr($mime,"video/"))
             {
                 echo 
                 '<div>
                 <video preload="metadata" controls>
-                    <source src="'. $data["media_path"]. '#t=0.1" type="'.$mime.'">
+                    <source src="'. $data["med_path"]. '#t=0.1" type="'.$mime.'">
                 Your browser does not support the video tag.
                 </video>
                 </div>';
             }else if(strstr($mime, "image/")) {
                 echo
                 '<div>
-                <img src="'.$data["media_path"].'">
+                <img src="'.$data["med_path"].'">
                 </div>
                 ';
             }
@@ -48,13 +48,13 @@ require_once '../Function/commonfunction.php';
         <input type="file" id="media" name="media">
         <br><br>
         <label for="media_tag">Tag:</label>
-        <input type="text" name="media_tag" value=<?php echo $data['media_tag'] ?>>
+        <input type="text" name="media_tag" value=<?php echo $data['med_tag'] ?>>
         <br><br>
         <label for="media_txt">Deskripsi:</label>
-        <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ><?php echo $data['media_txt'] ?></textarea>
+        <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ><?php echo $data['med_txt'] ?></textarea>
         <br><br>
         <label for="exp_date">Expired Date:</label>
-        <input type="datetime-local" id="exp_date" name="exp_date" value="<?php echo $data['exp_date'] ?>">
+        <input type="datetime-local" id="exp_date" name="exp_date" value="<?php echo $data['med_exp_date'] ?>">
         <br><br>
         <input type="submit" name="submit" value="Change">
 </form>
