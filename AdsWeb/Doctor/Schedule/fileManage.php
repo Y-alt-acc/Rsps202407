@@ -1,6 +1,6 @@
 <?php 
-require_once 'serverfunction.php';
-require_once 'commonfunction.php';
+require_once '../../Function/serverfunction.php';
+require_once '../../Function/commonfunction.php';
     $data = $_POST['data'];
     $data = mysqli_fetch_assoc(conquery(find(3,$data)));
 ?>
@@ -18,7 +18,7 @@ require_once 'commonfunction.php';
 
 <body>
 <h1>Ads Manage</h1>
-<form action="fileUpdate.php" method="post" 
+<form action="./fileUpdate.php" method="post" 
         enctype="multipart/form-data">
         <input type="hidden" id="id" name="id" value =<?php echo $data['id']?>> 
         <input type="hidden" id="media_path" name="media_path" value =<?php echo $data['media_path']; ?>>

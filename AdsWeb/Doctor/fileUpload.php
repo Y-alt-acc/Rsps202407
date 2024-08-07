@@ -1,39 +1,36 @@
 <?php
-require_once 'serverfunction.php';
-require_once 'commonfunction.php';
+require_once '../Function/serverfunction.php';
+require_once '../Function/commonfunction.php';
 if (isset($_POST["submit"])) 
 {
     $conn = conStart();
-    $stmt = $conn->prepare("INSERT INTO table_list_ads (user, media_path, media_tag, media_txt, exp_date) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss",$user,$mediaPath, $mediaTag, $mediaTxt, $expiredDate);
+    $stmt = $conn->prepare("INSERT INTO table_list_doctor(user, doctor_path, doctor_tag, doctor_txt, exp_date) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss",$user,$docPath, $docTag, $docTxt, $expiredDate);
     
     $user = $_SESSION['user'];
     
-    $uploadedFiles = $_FILES['media'];
-    $mediaTag = $_POST['media_tag'];
-    $mediaTxt = $_POST['media_txt'];
+    $uploadedFile = $_FILES['wajah'];
+    $docTag = $_POST['doc_tag'];
+    $docTxt = $_POST['doc_txt'];
     $expiredDate = $_POST['exp_date'];
-    $targetDir = "slide/".date("Y-m-d-h-i-s",time())."/";
+    $targetDir = "../wajah/".date("Y-m-d-h-i-s",time())."/";
     mkdir($targetDir);
-    $i = 1;
-    foreach ($uploadedFiles['name'] as $key => $value) {
-        $fileName = basename($uploadedFiles['name'][$key]);
-        $targetFilePath = $targetDir. $fileName;
-        $i++;
-        if (file_exists($targetFilePath)) 
-        {
-            echo "Sorry, file already exists.<br>";
+    $fileName = basename($uploadedFile['name']);
+    $targetFilePath = $targetDir. $fileName;
+    if (file_exists($targetFilePath)) 
+    {
+        echo "Sorry, file already exists.<br>";
+    } else {
+        if (move_uploaded_file($uploadedFile["tmp_name"], $targetFilePath)) {
+            $docPath = $targetFilePath;
+            $stmt->execute();
         } else {
-            if (move_uploaded_file($uploadedFiles["tmp_name"][$key], $targetFilePath)) {
-                $mediaPath = $targetFilePath;
-                $stmt->execute();
-            } else {
-                echo "Sorry, there was an error uploading your " . $fileName . ".<br>";
-            }
+            echo "Sorry, there was an error uploading your " . $fileName . ".<br>";
         }
     }
+    
     conEnd($conn);
     conEnd($stmt);
 }
-redirect("./fileView.php");
+// goToView();
 ?>

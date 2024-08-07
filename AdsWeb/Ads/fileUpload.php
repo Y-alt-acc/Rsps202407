@@ -13,7 +13,7 @@ if (isset($_POST["submit"]))
     $mediaTag = $_POST['media_tag'];
     $mediaTxt = $_POST['media_txt'];
     $expiredDate = $_POST['exp_date'];
-    $targetDir = "slide/".date("Y-m-d-h-i-s",time())."/";
+    $targetDir = "../slide/".date("Y-m-d-h-i-s",time())."/";
     mkdir($targetDir);
     $i = 1;
     foreach ($uploadedFiles['name'] as $key => $value) {
@@ -35,5 +35,5 @@ if (isset($_POST["submit"]))
     conEnd($conn);
     conEnd($stmt);
 }
-redirect("./fileView.php");
+goToView();
 ?>

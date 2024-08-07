@@ -1,6 +1,6 @@
 <?php
-require_once 'serverfunction.php';
-require_once 'commonfunction.php';
+require_once '../../Function/serverfunction.php';
+require_once '../../Function/commonfunction.php';
 $data = viewFolder();
 
 ?>
@@ -53,7 +53,7 @@ while ($row = mysqli_fetch_row($data))
 echo "</table>";
 ?>
 <br>
-<form action="./homeUser.html" method="post" 
+<form action="../../homeUser.html" method="post" 
         enctype="button">
         <input type="submit" name="submit" value="Back">
     </form>

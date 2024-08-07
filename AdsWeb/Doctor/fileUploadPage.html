@@ -9,24 +9,24 @@
 </head>
 
 <body>
-<form action="fileUpload.php" method="post" 
+<form action="./fileUpload.php" method="post" 
     enctype="multipart/form-data">
-    <label for="media[]">Select Media Files:</label>
-    <input type="file" name="media[]" multiple>
+    <label for="wajah">Select Face:</label>
+    <input type="file" name="wajah" >
     <br><br>
-    <label for="media_tag">Tag</label>
-    <input type="text" name="media_tag">
+    <label for="doc_tag">Tag</label>
+    <input type="text" name="doc_tag">
     <br><br>
-    <label for="media_txt">Deskripsi Default</label>
+    <label for="doc_txt">Deskripsi Default</label>
     <br><br>
-    <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ></textarea>
+    <textarea id="doc_txt" name="doc_txt" rows="13"  maxlength="254" ></textarea>
     <br><br>
     <label for="exp_date">Expired Date:</label>
     <input type="datetime-local" id="exp_date" name="exp_date">
     <br><br>
     <input type="submit" name="submit" value="Upload">
 </form>
-<form action="./homeUser.html" method="post" 
+<form action="../homeUser.html" method="post" 
     enctype="button">
     <input type="submit" name="submit" value="cancel">
 </form>

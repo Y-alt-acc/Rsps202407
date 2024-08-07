@@ -1,6 +1,6 @@
 <?php
-require_once 'serverfunction.php';
-require_once 'commonfunction.php';
+require_once '../../Function/serverfunction.php';
+require_once '../../Function/commonfunction.php';
 if (isset($_POST["submit"])) 
 {
     $conn = conStart();
@@ -35,5 +35,5 @@ if (isset($_POST["submit"]))
     conEnd($conn);
     conEnd($stmt);
 }
-redirect("./fileView.php");
+goToView();
 ?>

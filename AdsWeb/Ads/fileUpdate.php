@@ -11,6 +11,6 @@ if($_FILES['media'] != NULL)
     $uploadedImage = $_FILES['media'];
     move_uploaded_file($uploadedImage["tmp_name"], $_POST['media_path']);
 }
-redirect('./fileView.php');
+goToView();
 
 ?>

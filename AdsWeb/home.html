@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+body {
+margin: 0;
+}
+
+#grid {
+  height: 100vh;
+  transition: 500ms;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3px;
+  background: navajowhite;
+}
+
+:where(.left, .right) {
+  background: #4CAF50;
+  transition: 300ms;
+}
+:where(.center, .left , .right){
+  background: #4CAF50;
+  transition: 300ms;
+}
+:where(.left, .right):hover {
+  background: #4CAF50;
+  transition: 300ms;
+}
+
+#grid:has(.left:hover) {
+  grid-template-columns: 2fr 0.5fr 0.5fr;
+}
+#grid:has(.center:hover) {
+  grid-template-columns: 0.5fr 2fr 0.5fr;
+}
+#grid:has(.right:hover) {
+  grid-template-columns: 0.5fr 0.5fr 2fr;
+}
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=
+        "width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+<div id="grid">
+<div class="left" onclick="window.open('./Login/login.php', '_self')"> home</div>
+<div class="center" onclick="window.open('./Doctor/slideDoctorPage.php', '_self')"> view Doctor</div>
+<div class="right" onclick="window.open('./Ads/slideShowPage.php', '_self')">view Ads</div>
+</div>
+
+
+</body>
+
+</html>

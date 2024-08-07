@@ -95,7 +95,7 @@ while ($row = mysqli_fetch_row($data))
 echo "</table> </div>";
 ?>
 <br>
-<form action="../Login/homeUser.html" method="post" 
+<form action="../homeUser.html" method="post" 
         enctype="button">
         <input type="submit" name="submit" value="Back">
     </form>

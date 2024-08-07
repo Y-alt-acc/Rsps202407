@@ -106,10 +106,14 @@ if(mysqli_query($conn, $sql)->num_rows == 0 ){
 }
 mysqli_close($conn);
 
-if(!is_dir("../slide"))
+if(!is_dir("./slide"))
 {
-  mkdir("../slide");
+  mkdir("./slide");
 }
-header('Location: ../Login/home.html');
+if(!is_dir("./wajah"))
+{
+  mkdir("./wajah-");
+}
+header('Location: ./home.html');
 die();
 ?>

@@ -17,7 +17,7 @@
   display: grid;
   grid-template-columns: 2% 60% 18% 18% 2%;
   
-  grid-template-rows: 3% 20% 71% 6%;
+  grid-template-rows: 3% 25% 66% 6%;
   grid-template-areas: 
     "header header header header header"
     "sidebarleft media txt txt sidebarright"
