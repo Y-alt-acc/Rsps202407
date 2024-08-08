@@ -216,7 +216,7 @@ function viewActiveTxt($switch)
             $query = "SELECT  doc_txt FROM table_list_doctor" ;
             break;
         case 3:
-            $query = "SELECT table_list_doctor.doc_name, table_list_schedule.sch_day , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid";
+            $query = "SELECT table_list_doctor.doc_name , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid";
             break;
         default:
           break;

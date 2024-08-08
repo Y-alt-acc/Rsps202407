@@ -33,4 +33,8 @@ function serverGetTxtDoc(){
     require_once('serverFunction.php');
     return viewActiveTxt(2);
 }
+function serverGetTxtSch(){
+    require_once('serverFunction.php');
+    return viewActiveTxt(3);
+}
 ?>

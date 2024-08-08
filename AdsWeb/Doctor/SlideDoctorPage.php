@@ -15,14 +15,14 @@
 .grid-continer
 {
   display: grid;
-  grid-template-columns: 2% 60% 18% 18% 2%;
+  grid-template-columns: 2% 60% 36% 2%;
   
   grid-template-rows: 3% 25% 66% 6%;
   grid-template-areas: 
-    "header header header header header"
-    "sidebarleft media txt txt sidebarright"
-    "sidebarleft media doctor schedule sidebarright"
-    "footer footer footer footer footer";
+    "header header header  header"
+    "sidebarleft media txt  sidebarright"
+    "sidebarleft media schedule sidebarright"
+    "footer footer footer  footer";
     width: 100vw;
     height: 100vh;
     align-items: center;
@@ -69,19 +69,12 @@
   grid-area: txt;
   background-color: #444444;
 }
-.dctr
-{
-  width: 100%;
-  height:100%;
-  grid-area:doctor;
-  background-color: #FF0000;
-}
 .schdl
 {
   width: 100%;
   height:100%;
   grid-area:schedule;
-  background-color: #0000FF;
+  background-color: #DDDDDD;
 }
 .myslides
 {
@@ -140,6 +133,33 @@ video
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
+#Adverts {
+
+font-family: 'Times New Roman', Times, serif;
+border-collapse: collapse;
+width: 100%;
+}
+#Adverts table
+{
+  max-width: 100vw;
+}
+
+#Adverts td, #Adverts th {
+border: 1px solid #ddd;
+padding: 8px;
+}
+
+#Adverts tr:nth-child(even){background-color: #f2f2f2;}
+
+#Adverts tr:hover {background-color: #ddd;}
+
+#Adverts th {
+padding-top: 12px;
+padding-bottom: 12px;
+text-align: left;
+background-color: #04AA6D;
+color: white;
+}
 @keyframes text-mov-bot
 {
   from {left: 100%;}
@@ -192,12 +212,37 @@ video
         '
         ?>
       </div>
-      <?php 
-      echo "" ;
-      ?>
-      <div class="dctr">
-      </div>
       <div class="schdl">
+        <?php 
+          $data = serverGetTxtSch();
+          // while($data = mysqli_fetch_assoc($result))
+          // echo '
+          // <div class="text-block">
+          //   <p>'. $data["sch_day"].'</p>
+          // </div>
+          // '
+          echo '<div ><table id="Adverts" class="data-table">
+            <tr class="data-heading" >';
+          echo '<th colspan = 3> Monday </th>'; 
+          echo'</tr>
+            <tr class="data-heading" >';
+            while ($property = mysqli_fetch_field($data)) 
+            {
+                echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
+            }
+            echo '</tr>'; 
+
+            while ($row = mysqli_fetch_row($data)) 
+            {
+                echo "<tr>";
+                foreach ($row as $item) 
+                {
+                echo '<td>' . htmlspecialchars($item) . '</td>';
+                }
+                echo '</tr>';
+            }
+            echo "</table> </div>";
+        ?>
       </div>
       <div class="sideright"></div>
       <div class="bottom"><h1 class = "text-mov">SELAMAT DATANG DI RUMAH SAKIT PREMIER SURABAYA</h1></div>
