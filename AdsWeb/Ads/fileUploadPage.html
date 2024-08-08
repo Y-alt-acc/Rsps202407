@@ -12,7 +12,7 @@
 <form action="fileUpload.php" method="post" 
     enctype="multipart/form-data">
     <label for="media[]">Select Media Files:</label>
-    <input type="file" name="media[]" multiple>
+    <input type="file" name="media[]" multiple required>
     <br><br>
     <label for="media_tag">Tag</label>
     <input type="text" name="media_tag">
@@ -22,7 +22,7 @@
     <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ></textarea>
     <br><br>
     <label for="exp_date">Expired Date:</label>
-    <input type="datetime-local" id="exp_date" name="exp_date">
+    <input type="datetime-local" id="exp_date" name="exp_date" required>
     <br><br>
     <input type="submit" name="submit" value="Upload">
 </form>

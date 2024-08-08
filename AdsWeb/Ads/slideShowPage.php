@@ -185,7 +185,7 @@ video
   </body>
 </head>
 <script>
-let slideIndex = 0;
+let slideIndex = -1;
 let clicked = false;
 let theDuration = [];
 

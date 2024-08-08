@@ -144,7 +144,7 @@ function viewFolder()
     conEnd($conn);
     return $result;
 }
-function viewAds($switch,$id=0)
+function viewAds($switch,$uuid=0)
 {
     switch ($switch) {
         case 1:
@@ -166,9 +166,9 @@ function viewAds($switch,$id=0)
         case 3:
             if($_SESSION["user"] == "admin")
             {
-                $query = "SELECT  * FROM table_list_schedule WHERE sch_id = '$id'";    
+                $query = "SELECT  * FROM table_list_schedule";    
             }else{
-                    $query = "SELECT  sch_id, SUBSTRING_INDEX(sch_path, '/', -1) as File_name , sch_schedule FROM table_list_schedule WHERE sch_user='$_SESSION[user] AND sch_id = '$id''";
+                    $query = "SELECT  sch_id, SUBSTRING_INDEX(sch_path, '/', -1) as File_name , sch_schedule FROM table_list_schedule WHERE sch_user='$_SESSION[user] AND sch_uuid = '$uuid''";
             }
             break;
         default:
@@ -178,7 +178,7 @@ function viewAds($switch,$id=0)
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;
-}
+} 
 function viewActiveImg($switch)
 {
     $conn = conStart();
@@ -213,10 +213,10 @@ function viewActiveTxt($switch)
             $query = "SELECT  med_txt FROM table_list_media WHERE med_exp_date >= NOW() ORDER BY med_exp_date ASC, med_path ASC" ;
             break;
         case 2:
-            $query = "SELECT  doc_txt FROM table_list_doctor ORDER BY doc_path ASC" ;
+            $query = "SELECT  doc_txt FROM table_list_doctor" ;
             break;
         case 3:
-            $query = "SELECT  sche_schedule FROM table_list_schedule  ORDER BY sch_path ASC" ;
+            $query = "SELECT table_list_doctor.doc_name, table_list_schedule.sch_day , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid";
             break;
         default:
           break;

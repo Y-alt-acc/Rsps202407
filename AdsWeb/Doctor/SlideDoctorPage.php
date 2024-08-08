@@ -192,15 +192,20 @@ video
         '
         ?>
       </div>
-      <div class="dctr"></div>
-      <div class="schdl"></div>
+      <?php 
+      echo "" ;
+      ?>
+      <div class="dctr">
+      </div>
+      <div class="schdl">
+      </div>
       <div class="sideright"></div>
       <div class="bottom"><h1 class = "text-mov">SELAMAT DATANG DI RUMAH SAKIT PREMIER SURABAYA</h1></div>
     </div>
   </body>
 </head>
 <script>
-let slideIndex = 0;
+let slideIndex = -1;
 let clicked = false;
 let theDuration = [];
 

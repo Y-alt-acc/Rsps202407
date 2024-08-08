@@ -54,7 +54,7 @@ while ($property = mysqli_fetch_field($data))
 {
     echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<th> Up </th><th> Down </th><th> Schedule </th><th> Change </th><th> Delete </th>';
+echo '<th> Up </th><th> Down </th><th> Schedule </th><th> Add Schedule </th><th> Change </th><th> Delete </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -79,8 +79,14 @@ while ($row = mysqli_fetch_row($data))
     </td>
     <td>
         <form action='./Schedule/fileView.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['1'];?>>
+        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
         <input type="submit" name="submit" value="Schedule">
+    </form>
+    </td>
+    <td>
+        <form action='./Schedule/fileUploadPage.php' method="post">
+        <input type="hidden" name="data" value=<?php echo $row['1'];?>>
+        <input type="submit" name="submit" value="Add Schedule">
     </form>
     </td>
     <td>
