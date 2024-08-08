@@ -1,7 +1,7 @@
 <?php
 require_once '../Function/serverfunction.php';
 require_once '../Function/commonfunction.php';
-if (isset($_POST["submit"])) 
+if (isset($_POST["submit"]) && $_SESSION['user']!=NULL) 
 {
     $conn = conStart();
     $stmt = $conn->prepare("INSERT INTO table_list_doctor(doc_user, doc_path, doc_name, doc_txt) VALUES ( ?, ?, ?, ?)");

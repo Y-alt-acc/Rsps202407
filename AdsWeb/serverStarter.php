@@ -74,6 +74,7 @@ $sql = "CREATE TABLE IF NOT EXISTS $tbdoctor
 $sql = "CREATE TABLE IF NOT EXISTS $tbschedule
 (
   sch_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  doc_uuid CHAR(36) NOT NULL,
   sch_uuid CHAR(36) NOT NULL DEFAULT UUID(),
   sch_user VARCHAR(100),
   sch_day VARCHAR(255) NOT NULL,

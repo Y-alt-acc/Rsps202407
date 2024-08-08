@@ -20,6 +20,7 @@ require_once '../../Function/commonfunction.php';
 <h1>Ads Manage</h1>
 <form action="./fileUpdate.php" method="post" 
         enctype="multipart/form-data">
+        <input type="hidden" id="sch_id" name="sch_id" value =<?php echo $_POST['data']?>>
         <input type="hidden" id="sch_id" name="sch_id" value =<?php echo $data['sch_id']?>>
         <br><br>
         <label for="sch_day">Tag:</label>

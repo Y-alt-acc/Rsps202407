@@ -22,7 +22,6 @@ require_once '../Function/commonfunction.php';
         <input type="hidden" id="doc_path" name="doc_path" value =<?php echo $data['doc_path']; ?>>
         <label for="doc">Doc:</label>
         <br>
-        
         <?php 
             $mime = mime_content_type($data["doc_path"]);
             if(strstr($mime,"video/"))

@@ -1,7 +1,7 @@
 <?php
 require_once '../Function/serverfunction.php';
 require_once '../Function/commonfunction.php';
-if (isset($_POST["submit"])) 
+if (isset($_POST["submit"]) && $_SESSION['user']!=NULL) 
 {
     $conn = conStart();
     $stmt = $conn->prepare("INSERT INTO table_list_media (med_user, med_path, med_tag, med_txt, med_exp_date) VALUES (?, ?, ?, ?, ?)");
