@@ -133,6 +133,19 @@ video
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
+.data-heading
+{
+  font-family: 'Times New Roman', Times, serif;
+  font-size : 2em;
+  text-align: center;
+}
+.data-text
+{
+  font-family: 'Times New Roman', Times, serif;
+  font-size : 2em;
+  text-align: center;
+}
+
 #Adverts {
 
 font-family: 'Times New Roman', Times, serif;
@@ -156,7 +169,7 @@ padding: 8px;
 #Adverts th {
 padding-top: 12px;
 padding-bottom: 12px;
-text-align: left;
+
 background-color: #04AA6D;
 color: white;
 }
@@ -234,7 +247,7 @@ color: white;
 
             while ($row = mysqli_fetch_row($data)) 
             {
-                echo "<tr>";
+                echo '<tr class="data-text">';
                 foreach ($row as $item) 
                 {
                 echo '<td>' . htmlspecialchars($item) . '</td>';
