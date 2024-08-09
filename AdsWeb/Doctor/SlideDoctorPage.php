@@ -15,11 +15,11 @@
 .grid-continer
 {
   display: grid;
-  grid-template-columns: 2% 60% 36% 2%;
-  grid-template-rows: 3% 25% 66% 6%;
+  grid-template-columns: 2% 36% 60% 2%;
+  grid-template-rows: 3% 12% 79% 6%;
   grid-template-areas: 
     "header header header  header"
-    "sidebarleft media txt  sidebarright"
+    "sidebarleft txt txt  sidebarright"
     "sidebarleft media schedule sidebarright"
     "footer footer footer  footer";
     width: 100vw;
@@ -83,6 +83,14 @@
 {
   display:none;
 }
+.mydayslides
+{
+  display: none;
+}
+.mydaytext
+{
+  display: none;
+}
 .myschedule
 {
   display:none;
@@ -93,8 +101,8 @@ body
 }
 img
 {
-  max-width: 60vw;
-  min-height: 91vh;
+  max-width: 36vw;
+  min-height: 79vh;
   display:block;
   margin-left: auto; 
   margin-right: auto;
@@ -102,8 +110,8 @@ img
 }
 video
 {
-  max-width: 60vw;
-  min-height: 91vh;
+  max-width: 36vw;
+  min-height: 79vh;
   display:block;
   margin-left: auto; 
   margin-right: auto; 
@@ -190,13 +198,9 @@ color: white;
       <div class="sideleft"></div>
       <div class="media">
         <?php
-          for($i = 1; $i <= 7; $i++){
+          // for($i = 1; $i <= 7; $i++){
+            $i = 0;
             $result = serverGetImgDoc($i);
-          }
-          if($result->num_rows == 0)
-          {
-            redirect("./home.html");
-          }
           while($data = mysqli_fetch_assoc($result))
           {
             $mime = mime_content_type($data["doc_path"]);
@@ -206,35 +210,40 @@ color: white;
               '<div class="myslides" name="vid">
               <video preload="metadata">
                   <source src="'. $data["doc_path"]. '#t=0.1" type="'.$mime.'">
-                Your browser does not support the video tag.
-              </video>
+                  Your browser does not support the video tag.
+                  </video>
               </div>';
             }else if(strstr($mime, "image/")) {
               echo
               '<div class ="myslides" name = "img" >
                 <img src="'.$data["doc_path"].'">
-              </div>
-              ';
+                </div>
+                ';
+              }
             }
-          }
-        ?>
+          // }
+          ?>
       </div>
       <div class="quote">
-        <?php
-        for($i = 1; $i <= 7; $i++){
-          $result = serverGetTxtDoc($i);
-        }
-        while($data = mysqli_fetch_assoc($result))
-        echo '
-        <div class="text-block">
-          <p>'. $data["doc_txt"].'</p>
+        <div>
         </div>
-        '
+        <?php
+        // for($i = 1; $i <= 7; $i++){
+          $i = 0;
+          $result = serverGetTxtDoc($i);
+          while($data = mysqli_fetch_assoc($result))
+          echo '
+          <div class="text-block">
+          <p>'. $data["doc_txt"].'</p>
+          </div>
+          ';
+        // }
         ?>
       </div>
       <div class="schdl">
         <?php 
           for($i = 1; $i <= 7; $i++){
+            
             $data = serverGetTxtSch($i);
             echo '<div class="myschedule" name="'.GetDay($i).'" ><table id="Adverts" class="data-table">
             <tr class="data-heading" >';
