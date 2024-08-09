@@ -147,13 +147,13 @@ video
 .data-heading
 {
   font-family: 'Times New Roman', Times, serif;
-  font-size : 2em;
+  font-size : 1.7em;
   text-align: center;
 }
 .data-text
 {
   font-family: 'Times New Roman', Times, serif;
-  font-size : 2em;
+  font-size : 1.7em;
   text-align: center;
 }
 
@@ -198,9 +198,11 @@ color: white;
       <div class="sideleft"></div>
       <div class="media">
         <?php
-          // for($i = 1; $i <= 7; $i++){
-            $i = 0;
+          for($i = 1; $i <= 7; $i++){
+
             $result = serverGetImgDoc($i);
+            
+            echo '<div class="mydayslides">';
           while($data = mysqli_fetch_assoc($result))
           {
             $mime = mime_content_type($data["doc_path"]);
@@ -221,23 +223,28 @@ color: white;
                 ';
               }
             }
-          // }
+            echo '</div>';
+          }
           ?>
       </div>
       <div class="quote">
         <div>
         </div>
         <?php
-        // for($i = 1; $i <= 7; $i++){
-          $i = 0;
+        for($i = 1; $i <= 7; $i++){
           $result = serverGetTxtDoc($i);
+          echo '<div class="mydaytext">';
           while($data = mysqli_fetch_assoc($result))
-          echo '
-          <div class="text-block">
-          <p>'. $data["doc_txt"].'</p>
-          </div>
-          ';
-        // }
+          {
+
+            echo '
+            <div class="text-block">
+            <p>'. $data["doc_txt"].'</p>
+            </div>
+            ';
+          }
+          echo '</div>';
+        }
         ?>
       </div>
       <div class="schdl">
@@ -280,7 +287,6 @@ let slideIndex = -1;
 let scheduleIndex = -1;
 let clicked = false;
 let theDuration = [];
-
 document.addEventListener('click', e => {
   clicked = true;
   if(document.getElementsByClassName("myslides")[slideIndex].getAttribute('name') == "vid")
@@ -346,18 +352,24 @@ function bruteForceVideo(video, time)
 function showScedule()
 {
   let i;
-  let schedule =document.getElementsByClassName("myschedule");
+  let schedule = document.getElementsByClassName("myschedule");
+  let daySlide = document.getElementsByClassName("mydayslides");
+  let dayText = document.getElementsByClassName("mydaytext");
   scheduleIndex++;
   if(scheduleIndex >= schedule.length)
   {
     scheduleIndex = 0;
   }
   schedule[scheduleIndex].style.display = "block";
+  daySlide[scheduleIndex].style.display = "block";
+  dayText[scheduleIndex].style.display = "block";
   for (i = 0; i < schedule.length; i++) 
   {
     if(i!=scheduleIndex)
     { 
       schedule[i].style.display = "none";
+      daySlide[i].style.display = "none";
+      dayText[i].style.display = "none";
     }
   }
   showSlides();
@@ -375,6 +387,11 @@ function showSlides()
     return;
     //location.reload();
   }
+  if(slides[slideIndex].parentNode.style.display == "none"){
+    slideIndex--;
+    showScedule();
+    return;
+  };
   slides[slideIndex].style.display = "block"; 
   quotes[slideIndex].style.display = "block";
 

@@ -224,7 +224,7 @@ function viewActiveTxt($switch)
 function viewActiveDocImg($day)
 {
     $conn = conStart();
-    $query = "SELECT table_list_doctor.doc_path from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC";
+    $query = "SELECT table_list_doctor.doc_path from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC , table_list_doctor.doc_name ASC";
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;
@@ -232,7 +232,7 @@ function viewActiveDocImg($day)
 function viewActiveDocTxt($day)
 {
     $conn = conStart();
-    $query = "SELECT table_list_doctor.doc_txt from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC";
+    $query = "SELECT table_list_doctor.doc_txt from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC , table_list_doctor.doc_name ASC";
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;
@@ -240,7 +240,7 @@ function viewActiveDocTxt($day)
 function viewActiveSch($day)
 {
     $conn = conStart();
-    $query = "SELECT table_list_doctor.doc_name , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC";
+    $query = "SELECT table_list_doctor.doc_name , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;

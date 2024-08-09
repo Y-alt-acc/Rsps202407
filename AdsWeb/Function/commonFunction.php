@@ -27,13 +27,13 @@ function serverGetTxt(){
 }
 function serverGetImgDoc($switch){
     require_once('serverFunction.php');
-    // return viewActiveDocImg(GetDay($switch));
-    return viewActiveImg(2);
+    return viewActiveDocImg(GetDay($switch));
+    //return viewActiveImg(2);
 }
 function serverGetTxtDoc($switch){
     require_once('serverFunction.php');
-    // return viewActiveDocTxt(GetDay($switch));
-    return viewActiveTxt(2);
+    return viewActiveDocTxt(GetDay($switch));
+    //return viewActiveTxt(2);
 }
 function serverGetTxtSch($switch){
     require_once('serverFunction.php');
