@@ -16,7 +16,6 @@
 {
   display: grid;
   grid-template-columns: 2% 60% 36% 2%;
-  
   grid-template-rows: 3% 25% 66% 6%;
   grid-template-areas: 
     "header header header  header"
@@ -84,6 +83,10 @@
 {
   display:none;
 }
+.myschedule
+{
+  display:none;
+}
 body
 {
   overflow: hidden;
@@ -109,7 +112,7 @@ video
 .text-block
 {
   
-  display: block;
+  display: none;
   overflow-wrap: break-word;
   color: white;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
@@ -187,36 +190,40 @@ color: white;
       <div class="sideleft"></div>
       <div class="media">
         <?php
-            $result = serverGetImgDoc();
-            if($result->num_rows == 0)
+          for($i = 1; $i <= 7; $i++){
+            $result = serverGetImgDoc($i);
+          }
+          if($result->num_rows == 0)
+          {
+            redirect("./home.html");
+          }
+          while($data = mysqli_fetch_assoc($result))
+          {
+            $mime = mime_content_type($data["doc_path"]);
+            if(strstr($mime,"video/"))
             {
-              redirect("./home.html");
+              echo 
+              '<div class="myslides" name="vid">
+              <video preload="metadata">
+                  <source src="'. $data["doc_path"]. '#t=0.1" type="'.$mime.'">
+                Your browser does not support the video tag.
+              </video>
+              </div>';
+            }else if(strstr($mime, "image/")) {
+              echo
+              '<div class ="myslides" name = "img" >
+                <img src="'.$data["doc_path"].'">
+              </div>
+              ';
             }
-            while($data = mysqli_fetch_assoc($result))
-            {
-              $mime = mime_content_type($data["doc_path"]);
-              if(strstr($mime,"video/"))
-              {
-                echo 
-                '<div class="myslides" name="vid">
-                <video preload="metadata">
-                    <source src="'. $data["doc_path"]. '#t=0.1" type="'.$mime.'">
-                  Your browser does not support the video tag.
-                </video>
-                </div>';
-              }else if(strstr($mime, "image/")) {
-                echo
-                '<div class ="myslides" name = "img" >
-                  <img src="'.$data["doc_path"].'">
-                </div>
-                ';
-              }
-            }
-          ?>
+          }
+        ?>
       </div>
       <div class="quote">
         <?php
-        $result = serverGetTxtDoc();
+        for($i = 1; $i <= 7; $i++){
+          $result = serverGetTxtDoc($i);
+        }
         while($data = mysqli_fetch_assoc($result))
         echo '
         <div class="text-block">
@@ -227,34 +234,30 @@ color: white;
       </div>
       <div class="schdl">
         <?php 
-          $data = serverGetTxtSch();
-          // while($data = mysqli_fetch_assoc($result))
-          // echo '
-          // <div class="text-block">
-          //   <p>'. $data["sch_day"].'</p>
-          // </div>
-          // '
-          echo '<div ><table id="Adverts" class="data-table">
+          for($i = 1; $i <= 7; $i++){
+            $data = serverGetTxtSch($i);
+            echo '<div class="myschedule" name="'.GetDay($i).'" ><table id="Adverts" class="data-table">
             <tr class="data-heading" >';
-          echo '<th colspan = 3> Monday </th>'; 
+          echo "<th colspan = 3> ".GetDay($i)."</th>"; 
           echo'</tr>
-            <tr class="data-heading" >';
-            while ($property = mysqli_fetch_field($data)) 
+          <tr class="data-heading" >';
+          while ($property = mysqli_fetch_field($data)) 
             {
-                echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
+              echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
             }
             echo '</tr>'; 
 
             while ($row = mysqli_fetch_row($data)) 
             {
-                echo '<tr class="data-text">';
+              echo '<tr class="data-text">';
                 foreach ($row as $item) 
                 {
                 echo '<td>' . htmlspecialchars($item) . '</td>';
-                }
+              }
                 echo '</tr>';
             }
             echo "</table> </div>";
+          }
         ?>
       </div>
       <div class="sideright"></div>
@@ -262,8 +265,10 @@ color: white;
     </div>
   </body>
 </head>
+
 <script>
 let slideIndex = -1;
+let scheduleIndex = -1;
 let clicked = false;
 let theDuration = [];
 
@@ -275,7 +280,8 @@ document.addEventListener('click', e => {
   }
 });
 setDuration();
-showSlides(); 
+showScedule(); 
+
 function setDuration()
 {
   let slides = document.getElementsByClassName("myslides");
@@ -328,6 +334,25 @@ function bruteForceVideo(video, time)
     }
   }
 }
+function showScedule()
+{
+  let i;
+  let schedule =document.getElementsByClassName("myschedule");
+  scheduleIndex++;
+  if(scheduleIndex >= schedule.length)
+  {
+    scheduleIndex = 0;
+  }
+  schedule[scheduleIndex].style.display = "block";
+  for (i = 0; i < schedule.length; i++) 
+  {
+    if(i!=scheduleIndex)
+    { 
+      schedule[i].style.display = "none";
+    }
+  }
+  showSlides();
+}
 function showSlides() 
 {
   let i;
@@ -336,11 +361,14 @@ function showSlides()
   slideIndex++; 
   if (slideIndex >= slides.length) 
   {
-    slideIndex = 0; 
+    slideIndex = -1; 
+    showScedule();
+    return;
     //location.reload();
   }
   slides[slideIndex].style.display = "block"; 
   quotes[slideIndex].style.display = "block";
+
   
   for (i = 0; i < slides.length; i++) 
   {

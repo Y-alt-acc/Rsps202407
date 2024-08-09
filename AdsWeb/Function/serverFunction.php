@@ -189,7 +189,6 @@ function viewActiveImg($switch)
         case 2:
             $query = "SELECT  doc_path FROM table_list_doctor ORDER BY doc_path ASC" ;
             break;
-        case 3:
         default:
           break;
     }
@@ -215,9 +214,6 @@ function viewActiveTxt($switch)
         case 2:
             $query = "SELECT  doc_txt FROM table_list_doctor" ;
             break;
-        case 3:
-            $query = "SELECT table_list_doctor.doc_name , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid";
-            break;
         default:
           break;
     }
@@ -225,4 +221,32 @@ function viewActiveTxt($switch)
     conEnd($conn);
     return $result;
 }
+function viewActiveDocImg($day)
+{
+    $conn = conStart();
+    $query = "SELECT table_list_doctor.doc_path from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC";
+    $result = mysqli_query($conn, $query);
+    conEnd($conn);
+    return $result;
+}
+function viewActiveDocTxt($day)
+{
+    $conn = conStart();
+    $query = "SELECT table_list_doctor.doc_txt from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC";
+    $result = mysqli_query($conn, $query);
+    conEnd($conn);
+    return $result;
+}
+function viewActiveSch($day)
+{
+    $conn = conStart();
+    $query = "SELECT table_list_doctor.doc_name , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC";
+    $result = mysqli_query($conn, $query);
+    conEnd($conn);
+    return $result;
+}
+
+
+
+
 ?>
