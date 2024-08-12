@@ -13,20 +13,20 @@
     enctype="multipart/form-data">
     <input type="hidden" id="" name="doc_uuid" value ="<?php echo $_POST['data']?>">
     <label>Day</label><br>
-    <input type="radio" id="Monday" name="sch_day" value="Monday" checked>
-    <label for="Monday">Monday</label><br>
-    <input type="radio" id="Tuesday" name="sch_day" value="Tuesday">
-    <label for="Tuesday">Tuesday</label><br>
-    <input type="radio" id="Wednesday" name="sch_day" value="Wednesday">
-    <label for="Wednesday">Wednesday</label><br>
-    <input type="radio" id="Thursday" name="sch_day" value="Thursday">
-    <label for="Thursday">Thursday</label><br>
-    <input type="radio" id="Friday" name="sch_day" value="Friday">
-    <label for="Friday">Friday</label><br>
-    <input type="radio" id="Saturday" name="sch_day" value="Saturday">
-    <label for="Saturday">Saturday</label><br>
-    <input type="radio" id="Sunday" name="sch_day" value="Sunday">
-    <label for="Sunday">Sunday</label><br><br>
+    <input type="radio" id="Senin" name="sch_day" value="Senin" checked>
+    <label for="Senin">Senin</label><br>
+    <input type="radio" id="Selasa" name="sch_day" value="Selasa">
+    <label for="Selasa">Selasa</label><br>
+    <input type="radio" id="Rabu" name="sch_day" value="Rabu">
+    <label for="Rabu">Rabu</label><br>
+    <input type="radio" id="Kamis" name="sch_day" value="Kamis">
+    <label for="Kamis">Kamis</label><br>
+    <input type="radio" id="Jumat" name="sch_day" value="Jumat">
+    <label for="Jumat">Jumat</label><br>
+    <input type="radio" id="Sabtu" name="sch_day" value="Sabtu">
+    <label for="Sabtu">Sabtu</label><br>
+    <input type="radio" id="Minggu" name="sch_day" value="Minggu">
+    <label for="Minggu">Minggu</label><br><br>
     <label for="start">Start :</label><input type="time" id="start" name="sch_start" value = "00:00"  required>
     <label for="end">End :</label><input type="time" id="end" name="sch_end" value = "00:00" required>
     <br><br>

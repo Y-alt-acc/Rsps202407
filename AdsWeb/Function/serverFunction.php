@@ -71,6 +71,23 @@ function removeSingle($switch,$id)
       }
     
 }
+function getUUID($switch, $id)
+{
+    switch ($switch) {
+        case 1:
+            return "SELECT med_id FROM table_list_media WHERE med_id = $id";
+        case 2:
+            return "SELECT doc_id FROM table_list_doctor WHERE doc_id = $id";
+        case 3:
+            return "SELECT sch_id FROM table_list_schedule WHERE sch_id = $id";
+        default:
+          break;
+      }
+}
+function removeDocSch($uuid)
+{
+
+}
 function removeFolder($switch, $regDate, $user)
 {
     switch ($switch) {
