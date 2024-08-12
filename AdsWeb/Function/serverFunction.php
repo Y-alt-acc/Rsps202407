@@ -144,6 +144,34 @@ function viewFolder()
     conEnd($conn);
     return $result;
 }
+function viewMedia($limit, $offset)
+{
+    if($_SESSION["user"] == "admin")
+        {
+            $query = "SELECT  * FROM table_list_media";    
+            //$query = "SELECT  * FROM table_list_media LIMIT $limit, $offset ";    
+        
+        }else{
+            $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', -1) as File_name ,med_txt,med_exp_date FROM table_list_media WHERE med_user='$_SESSION[user]'";
+        }
+        $conn = conStart();
+        $result = mysqli_query($conn, $query);
+        conEnd($conn);
+        return $result;
+}
+function viewDoc($limit, $offset)
+{
+    if($_SESSION["user"] == "admin")
+        {
+            $query = "SELECT  * FROM table_list_doctor LIMIT $limit, $offset";    
+        }else{
+                $query = "SELECT  doc_id, SUBSTRING_INDEX(doc_path, '/', -1) as File_name ,doc_txt FROM table_list_doctor WHERE doc_user='$_SESSION[user]'";
+        }
+    $conn = conStart();
+    $result = mysqli_query($conn, $query);
+    conEnd($conn);
+    return $result;
+}
 function viewAds($switch,$uuid=0)
 {
     switch ($switch) {
@@ -240,7 +268,7 @@ function viewActiveDocTxt($day)
 function viewActiveSch($day)
 {
     $conn = conStart();
-    $query = "SELECT table_list_doctor.doc_name , table_list_schedule.sch_start, table_list_schedule.sch_end from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
+    $query = "SELECT table_list_doctor.doc_name AS 'Nama Doctor' , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai from table_list_doctor  INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid WHERE table_list_schedule.sch_day = '$day' ORDER BY table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;
