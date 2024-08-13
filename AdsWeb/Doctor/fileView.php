@@ -68,18 +68,22 @@ $data = viewAds(2);
   display: block;
 }
 #Adverts {
+  word-break: break-word;
   font-family: 'Times New Roman', Times, serif;
   border-collapse: collapse;
+  
   width: 100%;
 }
 #Adverts table
 {
     max-width: 100vw;
+    
 }
 
 #Adverts td, #Adverts th {
   border: 1px solid #ddd;
   padding: 8px;
+  
 }
 
 #Adverts tr:nth-child(even){background-color: #f2f2f2;}
@@ -87,6 +91,7 @@ $data = viewAds(2);
 #Adverts tr:hover {background-color: #ddd;}
 
 #Adverts th {
+  
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
@@ -130,7 +135,7 @@ while ($property = mysqli_fetch_field($data))
 {
     echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<th> Up </th><th> Down </th><th> Schedule </th><th> Add Schedule </th><th> Change </th><th> Delete </th>';
+echo '<th> Schedule </th><th> Add Schedule </th><th> Change </th><th> Delete </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -141,18 +146,6 @@ while ($row = mysqli_fetch_row($data))
     echo '<td>' . htmlspecialchars($item) . '</td>';
     }
     ?>
-    <td>
-        <form action='./fileUp.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="up">
-    </form>
-    </td>
-    <td>
-        <form action='./fileDown.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="down">
-    </form>
-    </td>
     <td>
         <form action='./Schedule/fileView.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>

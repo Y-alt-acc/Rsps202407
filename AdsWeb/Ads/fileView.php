@@ -69,6 +69,7 @@ $data = viewMedia(0,10);
 }
 
 #Adverts {
+  word-break: break-word;
   font-family: 'Times New Roman', Times, serif;
   border-collapse: collapse;
   width: 100%;

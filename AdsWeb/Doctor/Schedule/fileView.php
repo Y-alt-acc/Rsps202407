@@ -74,7 +74,7 @@ if(isset($_POST['data']))
   display: block;
 }
 #Adverts {
-
+  word-break: break-word;
   font-family: 'Times New Roman', Times, serif;
   border-collapse: collapse;
   width: 100%;
@@ -137,7 +137,7 @@ while ($property = mysqli_fetch_field($data))
 {
     echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<th> Up </th><th> Down </th><th> Change </th><th> Delete </th>';
+echo '<th> Change </th><th> Delete </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -148,18 +148,6 @@ while ($row = mysqli_fetch_row($data))
     echo '<td>' . htmlspecialchars($item) . '</td>';
     }
     ?>
-    <td>
-        <form action='./fileUp.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="up">
-    </form>
-    </td>
-    <td>
-        <form action='./fileDown.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="down">
-    </form>
-    </td>
     <td>
         <form action='./fileManage.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>

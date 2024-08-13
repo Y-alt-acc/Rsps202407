@@ -224,7 +224,7 @@ function viewAds($switch,$uuid=0)
         case 3:
             if($_SESSION["user"] == "admin")
             {
-                $query = "SELECT  * FROM table_list_schedule";    
+                $query = "SELECT  * FROM table_list_schedule ORDER BY FIELD(sch_day, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'), sch_start ASC";    
             }else{
                 $query = "SELECT  sch_id, SUBSTRING_INDEX(sch_path, '/', -1) as File_name , sch_schedule FROM table_list_schedule WHERE sch_user='$_SESSION[user]' AND sch_uuid = '$uuid''";
             }
