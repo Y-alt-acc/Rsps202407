@@ -30,8 +30,8 @@ function aaaaa()
 function userAdd($user, $pass)
 {
     $hash = password_hash($pass, PASSWORD_DEFAULT);
-    return "INSERT INTO table_list_user (usr_name, usr_pass) 
-    VALUE($user,PASSWORD($hash))";
+    return "INSERT INTO table_list_user (usr_name, usr_pass)
+    VALUE('$user','$hash')";
 }
 function loginadsweb($user, $pass)
 {
@@ -75,18 +75,18 @@ function getUUID($switch, $id)
 {
     switch ($switch) {
         case 1:
-            return "SELECT med_id FROM table_list_media WHERE med_id = $id";
+            return "SELECT med_uuid FROM table_list_media WHERE med_id = $id";
         case 2:
-            return "SELECT doc_id FROM table_list_doctor WHERE doc_id = $id";
+            return "SELECT doc_uuid FROM table_list_doctor WHERE doc_id = $id";
         case 3:
-            return "SELECT sch_id FROM table_list_schedule WHERE sch_id = $id";
+            return "SELECT sch_uuid FROM table_list_schedule WHERE sch_id = $id";
         default:
           break;
       }
 }
 function removeDocSch($uuid)
 {
-
+    return "DELETE FROM table_list_schedule WHERE doc_uuid = '$uuid'";
 }
 function removeFolder($switch, $regDate, $user)
 {
@@ -152,9 +152,22 @@ function viewFolder()
 {
     if($_SESSION["user"] == "admin")
     {
-        $query = "SELECT Distinct med_tag, SUBSTRING_INDEX(med_path, '/', 2) as File_name , med_add_date FROM table_list_media";    
+        $query = "SELECT Distinct med_tag, SUBSTRING_INDEX(SUBSTRING_INDEX(med_path, '/', 3),'/',-1) as File_name , med_add_date FROM table_list_media";
     }else{
-         $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', 2) as File_name ,media_txt, add_date ,exp_date FROM table_list_media WHERE user='$_SESSION[user]'";
+        $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', 2) as File_name ,media_txt, add_date ,exp_date FROM table_list_media WHERE user='$_SESSION[user]'";
+    }
+    $conn = conStart();
+    $result = mysqli_query($conn, $query);
+    conEnd($conn);
+    return $result;
+}
+function viewFolderFile($path)
+{
+    if($_SESSION["user"] == "admin")
+    {
+        $query = "SELECT  * FROM table_list_media WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(med_path, '/', 3),'/',-1) ='$path'";
+    }else{
+        $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', 2) as File_name ,media_txt, add_date ,exp_date FROM table_list_media WHERE user='$_SESSION[user]'";
     }
     $conn = conStart();
     $result = mysqli_query($conn, $query);
@@ -182,7 +195,7 @@ function viewDoc($limit, $offset)
         {
             $query = "SELECT  * FROM table_list_doctor LIMIT $limit, $offset";    
         }else{
-                $query = "SELECT  doc_id, SUBSTRING_INDEX(doc_path, '/', -1) as File_name ,doc_txt FROM table_list_doctor WHERE doc_user='$_SESSION[user]'";
+                $query = "SELECT  doc_id, SUBSTRING_INDEX(doc_path, '/', -1) as File_name ,doc_txt FROM table_list_doctor";
         }
     $conn = conStart();
     $result = mysqli_query($conn, $query);
@@ -213,7 +226,7 @@ function viewAds($switch,$uuid=0)
             {
                 $query = "SELECT  * FROM table_list_schedule";    
             }else{
-                    $query = "SELECT  sch_id, SUBSTRING_INDEX(sch_path, '/', -1) as File_name , sch_schedule FROM table_list_schedule WHERE sch_user='$_SESSION[user] AND sch_uuid = '$uuid''";
+                $query = "SELECT  sch_id, SUBSTRING_INDEX(sch_path, '/', -1) as File_name , sch_schedule FROM table_list_schedule WHERE sch_user='$_SESSION[user]' AND sch_uuid = '$uuid''";
             }
             break;
         default:

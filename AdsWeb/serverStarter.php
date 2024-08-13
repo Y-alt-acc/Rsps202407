@@ -46,7 +46,7 @@ $sql = "CREATE TABLE IF NOT EXISTS $tbmedia
   med_user VARCHAR(100),
   med_path VARCHAR(255) NOT NULL,
   med_tag VARCHAR(255) NOT NULL,
-  med_txt VARCHAR(255) NOT NULL,
+  med_txt VARCHAR(255),
   med_add_date DATE DEFAULT NOW(),
   med_exp_date DATETIME DEFAULT NOW(),
   med_reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -63,7 +63,8 @@ $sql = "CREATE TABLE IF NOT EXISTS $tbdoctor
   doc_user VARCHAR(100),
   doc_path VARCHAR(255) NOT NULL,
   doc_name VARCHAR(255) NOT NULL,
-  doc_txt VARCHAR(255) NOT NULL,
+  doc_spe VARCHAR(255) NOT NULL,
+  doc_txt VARCHAR(255),
   doc_add_date DATE DEFAULT NOW(),
   doc_reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )";

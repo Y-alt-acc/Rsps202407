@@ -4,13 +4,14 @@ require_once '../Function/commonfunction.php';
 if (isset($_POST["submit"]) && $_SESSION['user']!=NULL) 
 {
     $conn = conStart();
-    $stmt = $conn->prepare("INSERT INTO table_list_doctor(doc_user, doc_path, doc_name, doc_txt) VALUES ( ?, ?, ?, ?)");
-    $stmt->bind_param("ssss",$user,$docPath, $docTag, $docTxt, );
+    $stmt = $conn->prepare("INSERT INTO table_list_doctor(doc_user, doc_path, doc_name, doc_spe, doc_txt) VALUES ( ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss",$user,$docPath, $docName, $docSpe, $docTxt, );
     
     $user = $_SESSION['user'];
     
     $uploadedFile = $_FILES['wajah'];
-    $docTag = $_POST['doc_tag'];
+    $docName = $_POST['doc_name'];
+    $docSpe = $_POST['doc_spe'];
     $docTxt = $_POST['doc_txt'];
     $targetDir = "../wajah/".date("Y-m-d-h-i-s",time())."/";
     mkdir($targetDir);

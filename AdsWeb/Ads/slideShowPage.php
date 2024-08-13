@@ -144,7 +144,7 @@ video
             $result = serverGetImg();
             if($result->num_rows == 0)
             {
-              redirect("../Login/home.html");
+              redirect("../home.html");
             }
             while($data = mysqli_fetch_assoc($result))
             {
