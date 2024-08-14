@@ -3,12 +3,11 @@ require_once '../../Function/serverfunction.php';
 require_once '../../Function/commonfunction.php';
 if(isset($_POST['data']))
 {
-    $data = viewAds(3,$_POST['data'] );
+    $data = viewSch(0,10 ,$_POST['data'] );
 }else
 {   
-    $data = viewAds(3);
+    $data = viewSch(0,10);
 }
-
 ?>
 
 <!DOCTYPE html>

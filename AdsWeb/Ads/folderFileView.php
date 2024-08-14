@@ -1,7 +1,7 @@
 <?php
 require_once '../Function/serverfunction.php';
 require_once '../Function/commonfunction.php';
-$data = viewFolderFile($_POST['data']);
+$data = viewMediaFolderFile($_POST['data']);
 
 ?>
 
@@ -67,6 +67,36 @@ $data = viewFolderFile($_POST['data']);
 .navbar .dropdown:hover .dropdown-content {
   display: block;
 }
+#Adverts {
+
+  font-family: 'Times New Roman', Times, serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+#Adverts table
+{
+    max-width: 100vw;
+}
+
+#Adverts td, #Adverts th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#Adverts tr:nth-child(even){background-color: #f2f2f2;}
+
+#Adverts tr:hover {background-color: #ddd;}
+
+#Adverts th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+#Adverts td {
+  word-break: break-word;
+}
 </style>
 <head>
     <meta charset="UTF-8">
@@ -94,17 +124,17 @@ $data = viewFolderFile($_POST['data']);
             </div>
         </li>
         <li ><a href="../Doctor/Schedule/fileView.php">Schedule</a></li>
-        <li style="float: right;"><a href="../Login/logout.php">Log Out</a></li>
+        <li style="float: right;"><a href="./Login/logout.php">Log Out</a></li>
         </ul>
 </div>
 <?php
-echo '<table class="data-table">
+echo '<div ><table id="Adverts" class="data-table">
 <tr class="data-heading">';
 while ($property = mysqli_fetch_field($data)) 
 {
-    echo '<td>' . htmlspecialchars($property->name) . '</td>';
+    echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<td> change </td><td> delete </td>';
+echo '<th> Up </th><th> Down </th><th> Change </th><th> Delete </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -116,7 +146,19 @@ while ($row = mysqli_fetch_row($data))
     }
     ?>
     <td>
-        <form action='./folderFileView.php' method="post">
+        <form action='./fileUp.php' method="post">
+        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
+        <button >&#x21e7</button>
+    </form>
+    </td>
+    <td >
+        <form action='./fileDown.php' method="post" >
+        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
+        <button >&#x21e9</button>
+    </form>
+    </td>
+    <td>
+        <form action='./fileManage.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
         <button>&#8634</button>
     </form>
@@ -130,7 +172,7 @@ while ($row = mysqli_fetch_row($data))
     <?php
     echo '</tr>';
 }
-echo "</table>";
+echo "</table> </div>";
 ?>
 
 </html>

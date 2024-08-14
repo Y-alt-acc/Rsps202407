@@ -1,7 +1,7 @@
 <?php
 require_once '../Function/serverfunction.php';
 require_once '../Function/commonfunction.php';
-$data = viewAds(2);
+$data = viewDoc(0,10);
 
 ?>
 
@@ -150,7 +150,7 @@ while ($row = mysqli_fetch_row($data))
     ?>
     <td>
         <form action='./Schedule/fileView.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
+        <input type="hidden" name="data" value=<?php echo $row['1'];?>>
         <button>&#128065</button>
     </form>
     </td>

@@ -2,7 +2,7 @@
 require_once '../Function/serverfunction.php';
 require_once '../Function/commonfunction.php';
 
-$data = viewFolder();
+$data = viewMediaFolder();
 
 ?>
 
@@ -68,6 +68,36 @@ $data = viewFolder();
 .navbar .dropdown:hover .dropdown-content {
   display: block;
 }
+#Adverts {
+
+font-family: 'Times New Roman', Times, serif;
+border-collapse: collapse;
+width: 100%;
+}
+#Adverts table
+{
+  max-width: 100vw;
+}
+
+#Adverts td, #Adverts th {
+border: 1px solid #ddd;
+padding: 8px;
+}
+
+#Adverts tr:nth-child(even){background-color: #f2f2f2;}
+
+#Adverts tr:hover {background-color: #ddd;}
+
+#Adverts th {
+padding-top: 12px;
+padding-bottom: 12px;
+text-align: left;
+background-color: #04AA6D;
+color: white;
+}
+#Adverts td {
+word-break: break-word;
+}
 </style>
 <head>
     <meta charset="UTF-8">
@@ -99,13 +129,13 @@ $data = viewFolder();
         </ul>
 </div>
 <?php
-echo '<table class="data-table">
+echo '<div ><table id="Adverts" class="data-table">
 <tr class="data-heading">';
 while ($property = mysqli_fetch_field($data)) 
 {
-    echo '<td>' . htmlspecialchars($property->name) . '</td>';
+    echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<td> View </td><td> delete </td>';
+echo '<th> Lihat </th><th> Hapus </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -123,15 +153,16 @@ while ($row = mysqli_fetch_row($data))
     </form>
     </td>
     <td>
-        <form action='./fileDelete.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
+        <form action='./folderDelete.php' method="post">
+        <input type="hidden" name="med_tag" value=<?php echo $row['0'];?>>
+        <input type="hidden" name="folder" value=<?php echo $row['1'];?>>
         <button>&#215</button>
     </form>
     </td>
     <?php
     echo '</tr>';
 }
-echo "</table>";
+echo "</table> </div>";
 ?>
 
 </html>

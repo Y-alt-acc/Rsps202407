@@ -98,22 +98,6 @@ $data = viewMedia(0,10);
 #Adverts td {
   word-break: break-word;
 }
-.arrow-up{
-    padding: 8px;
-  border: solid black;
-  border-width: 0 5px 5px 0;
-  display: inline-block;
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-.arrow-down{
-    padding: 8px;
-  border: solid black;
-  border-width: 0 5px 5px 0;
-  display: inline-block;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
 </style>
 <head>
     <meta charset="UTF-8">
