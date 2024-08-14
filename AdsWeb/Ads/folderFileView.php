@@ -94,7 +94,7 @@ $data = viewFolderFile($_POST['data']);
             </div>
         </li>
         <li ><a href="../Doctor/Schedule/fileView.php">Schedule</a></li>
-        <li style="float: right;"><a href="./Login/logout.php">Log Out</a></li>
+        <li style="float: right;"><a href="../Login/logout.php">Log Out</a></li>
         </ul>
 </div>
 <?php
@@ -118,13 +118,13 @@ while ($row = mysqli_fetch_row($data))
     <td>
         <form action='./folderFileView.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="change">
+        <button>&#8634</button>
     </form>
     </td>
     <td>
         <form action='./fileDelete.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="Delete">
+        <button>&#215</button>
     </form>
     </td>
     <?php

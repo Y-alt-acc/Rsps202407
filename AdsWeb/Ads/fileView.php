@@ -69,7 +69,7 @@ $data = viewMedia(0,10);
 }
 
 #Adverts {
-  word-break: break-word;
+
   font-family: 'Times New Roman', Times, serif;
   border-collapse: collapse;
   width: 100%;
@@ -94,6 +94,25 @@ $data = viewMedia(0,10);
   text-align: left;
   background-color: #04AA6D;
   color: white;
+}
+#Adverts td {
+  word-break: break-word;
+}
+.arrow-up{
+    padding: 8px;
+  border: solid black;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+.arrow-down{
+    padding: 8px;
+  border: solid black;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
 </style>
 <head>
@@ -122,7 +141,7 @@ $data = viewMedia(0,10);
             </div>
         </li>
         <li ><a href="../Doctor/Schedule/fileView.php">Schedule</a></li>
-        <li style="float: right;"><a href="./Login/logout.php">Log Out</a></li>
+        <li style="float: right;"><a href="../Login/logout.php">Log Out</a></li>
         </ul>
 </div>
 <?php
@@ -146,25 +165,25 @@ while ($row = mysqli_fetch_row($data))
     <td>
         <form action='./fileUp.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="up">
+        <button >&#x21e7</button>
     </form>
     </td>
-    <td>
-        <form action='./fileDown.php' method="post">
+    <td >
+        <form action='./fileDown.php' method="post" >
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="down">
+        <button >&#x21e9</button>
     </form>
     </td>
     <td>
         <form action='./fileManage.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="change">
+        <button>&#8634</button>
     </form>
     </td>
     <td>
         <form action='./fileDelete.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="Delete">
+        <button>&#215</button>
     </form>
     </td>
     <?php
@@ -172,5 +191,4 @@ while ($row = mysqli_fetch_row($data))
 }
 echo "</table> </div>";
 ?>
-
 </html>

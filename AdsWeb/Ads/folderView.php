@@ -95,7 +95,7 @@ $data = viewFolder();
             </div>
         </li>
         <li ><a href="../Doctor/Schedule/fileView.php">Schedule</a></li>
-        <li style="float: right;"><a href="./Login/logout.php">Log Out</a></li>
+        <li style="float: right;"><a href="../Login/logout.php">Log Out</a></li>
         </ul>
 </div>
 <?php
@@ -105,7 +105,7 @@ while ($property = mysqli_fetch_field($data))
 {
     echo '<td>' . htmlspecialchars($property->name) . '</td>';
 }
-echo '<td> change </td><td> delete </td>';
+echo '<td> View </td><td> delete </td>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -119,13 +119,13 @@ while ($row = mysqli_fetch_row($data))
     <td>
         <form action='./folderFileView.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['1'];?>>
-        <input type="submit" name="submit" value="change">
+        <button>&#128065</button>
     </form>
     </td>
     <td>
         <form action='./fileDelete.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="Delete">
+        <button>&#215</button>
     </form>
     </td>
     <?php

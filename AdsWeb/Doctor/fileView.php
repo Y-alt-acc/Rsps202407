@@ -68,7 +68,6 @@ $data = viewAds(2);
   display: block;
 }
 #Adverts {
-  word-break: break-word;
   font-family: 'Times New Roman', Times, serif;
   border-collapse: collapse;
   
@@ -98,6 +97,9 @@ $data = viewAds(2);
   background-color: #04AA6D;
   color: white;
 }
+#Adverts td {
+  word-break: break-word;
+}
 </style>
 <head>
     <meta charset="UTF-8">
@@ -125,7 +127,7 @@ $data = viewAds(2);
             </div>
         </li>
         <li ><a href="../Doctor/Schedule/fileView.php">Schedule</a></li>
-        <li style="float: right;"><a href="./Login/logout.php">Log Out</a></li>
+        <li style="float: right;"><a href="../Login/logout.php">Log Out</a></li>
         </ul>
 </div>
 <?php
@@ -149,25 +151,25 @@ while ($row = mysqli_fetch_row($data))
     <td>
         <form action='./Schedule/fileView.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="Schedule">
+        <button>&#128065</button>
     </form>
     </td>
     <td>
         <form action='./Schedule/fileUploadPage.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['1'];?>>
-        <input type="submit" name="submit" value="Add Schedule">
+        <button>&#43</button>
     </form>
     </td>
     <td>
         <form action='./fileManage.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="change">
+        <button>&#8634</button>
     </form>
     </td>
     <td>
         <form action='./fileDelete.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="Delete">
+        <button>&#215</button>
     </form>
     </td>
     <?php

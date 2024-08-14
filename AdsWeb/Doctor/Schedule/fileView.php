@@ -74,7 +74,6 @@ if(isset($_POST['data']))
   display: block;
 }
 #Adverts {
-  word-break: break-word;
   font-family: 'Times New Roman', Times, serif;
   border-collapse: collapse;
   width: 100%;
@@ -99,6 +98,9 @@ if(isset($_POST['data']))
   text-align: left;
   background-color: #04AA6D;
   color: white;
+}
+#Adverts td {
+  word-break: break-word;
 }
 </style>
 <head>
@@ -127,7 +129,7 @@ if(isset($_POST['data']))
             </div>
         </li>
         <li ><a href="../../Doctor/Schedule/fileView.php">Schedule</a></li>
-        <li style="float: right;"><a href="./Login/logout.php">Log Out</a></li>
+        <li style="float: right;"><a href="../../Login/logout.php">Log Out</a></li>
         </ul>
 </div>
 <?php
@@ -137,7 +139,7 @@ while ($property = mysqli_fetch_field($data))
 {
     echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<th> Change </th><th> Delete </th>';
+echo '<th> Delete </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -149,15 +151,9 @@ while ($row = mysqli_fetch_row($data))
     }
     ?>
     <td>
-        <form action='./fileManage.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="change">
-    </form>
-    </td>
-    <td>
         <form action='./fileDelete.php' method="post">
         <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <input type="submit" name="submit" value="Delete">
+        <button >&#215</button>
     </form>
     </td>
     <?php
