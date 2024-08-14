@@ -132,21 +132,28 @@
             <div class="dropdown-content">
                 <a href="../../Ads/fileUploadpage.html">Upload</a>
                 <a href="../../Ads/folderView.php">View Folder</a>
+                <a href="../../Ads/ViewAll.php">View All</a>
             </div>
             </li>
         <li class="dropdown">
             <a href="../../Doctor/fileView.php" class="dropbtn">Doctor</a>
             <div class="dropdown-content">
             <a href="../../Doctor/fileUploadpage.html">Upload</a>
+            <a href="../../Doctor/ViewAll.php">View All</a>
             </div>
         </li>
-        <li ><a href="../../Doctor/Schedule/fileView.php">Schedule</a></li>
+        <li class="dropdown">
+              <a href="../../Doctor/Schedule/fileView.php" class="dropbtn">Schedule</a>
+              <div class="dropdown-content">
+                <a href="../../Doctor/Schedule/ViewAll.php">View All</a>
+              </div>
+            </li>
         <li style="float: right;"><a href="../../Login/logout.php">Log Out</a></li>
         </ul>
 </div>
 <div class="container">
     <form action="./fileUpload.php" method="post" enctype="multipart/form-data">
-        <input type="hidden" id="" name="doc_uuid" value ="<?php echo $_POST['data']?>">
+        <input type="hidden" name="doc_uuid" value ="<?php echo $_POST['data']?>">
         <div class="row">
         <div class="col-25">
             <label>Hari</label><br>
@@ -186,7 +193,7 @@
         </div>
         </div>
         <div class="row">
-        <input type="submit" value="submit" value="Upload" enctype="button">
+        <input type="submit" name="submit" value="Upload">
         </form>
         <form action="../../homeUser.html" method="post" enctype="button">
             <input type="submit" name="submit" value="cancel" style="background-color: crimson;float:left">

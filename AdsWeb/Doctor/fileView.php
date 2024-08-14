@@ -118,15 +118,22 @@ $data = viewDoc(0,10);
             <div class="dropdown-content">
                 <a href="../Ads/fileUploadpage.html">Upload</a>
                 <a href="../Ads/folderView.php">View Folder</a>
+                <a href="../Ads/ViewAll.php">View All</a>
             </div>
             </li>
         <li class="dropdown">
             <a href="../Doctor/fileView.php" class="dropbtn">Doctor</a>
             <div class="dropdown-content">
             <a href="../Doctor/fileUploadpage.html">Upload</a>
+            <a href="../Doctor/ViewAll.php">View All</a>
             </div>
         </li>
-        <li ><a href="../Doctor/Schedule/fileView.php">Schedule</a></li>
+        <li class="dropdown">
+              <a href="../Doctor/Schedule/fileView.php" class="dropbtn">Schedule</a>
+              <div class="dropdown-content">
+                <a href="../Doctor/Schedule/ViewAll.php">View All</a>
+              </div>
+            </li>
         <li style="float: right;"><a href="../Login/logout.php">Log Out</a></li>
         </ul>
 </div>
@@ -135,6 +142,7 @@ echo '<div ><table id="Adverts" class="data-table">
 <tr class="data-heading">';
 while ($property = mysqli_fetch_field($data)) 
 {
+  if(htmlspecialchars($property->name)!='Uuid'||$_SESSION['user']=="admin")
     echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
 echo '<th> Schedule </th><th> Add Schedule </th><th> Change </th><th> Delete </th>';
@@ -143,9 +151,13 @@ echo '</tr>';
 while ($row = mysqli_fetch_row($data)) 
 {
     echo "<tr>";
+    $i=0;
     foreach ($row as $item) 
     {
-    echo '<td>' . htmlspecialchars($item) . '</td>';
+      $i++;
+      if($i!=2||$_SESSION['user']=="admin"){
+        echo '<td>' . htmlspecialchars($item) . '</td>';
+      }
     }
     ?>
     <td>

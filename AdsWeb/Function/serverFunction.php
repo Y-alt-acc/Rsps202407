@@ -92,20 +92,6 @@ function removeMediaFolder($tag,$folder)
 {
     return "DELETE FROM table_list_media WHERE med_tag= '$tag' AND SUBSTRING_INDEX(SUBSTRING_INDEX(med_path, '/', 3),'/',-1) ='$folder'";
 }
-function removeFolder($switch, $regDate, $user)
-{
-    switch ($switch) {
-        case 1:
-            return "DELETE FROM table_list_media WHERE med_reg_date = '$regDate' AND med_user = '$user'";
-        case 2:
-            return "DELETE FROM table_list_doctor WHERE doc_reg_date = '$regDate' AND doc_user = '$user'";
-        case 3:
-            return "DELETE FROM table_list_schedule WHERE sch_reg_date = '$regDate' AND sch_user = '$user'";
-        default:
-          break;
-      }
-
-}
 function update($switch, $id, $inputTag, $inputTxt = NULL , $expDate = NULL)
 {
     $conn = conStart();
@@ -115,8 +101,8 @@ function update($switch, $id, $inputTag, $inputTxt = NULL , $expDate = NULL)
             $stmt->bind_param("sssi",$inputTag, $inputTxt, $expDate, $id);
             break;
         case 2:
-            $stmt = $conn->prepare("UPDATE table_list_doctor SET doc_name = ?, doc_txt = ? WHERE doc_id = ?");
-            $stmt->bind_param("ssi",$inputTag, $inputTxt, $id);
+            $stmt = $conn->prepare("UPDATE table_list_doctor SET doc_name = ?, doc_spe = ? , doc_txt = ? WHERE doc_id = ?");
+            $stmt->bind_param("sssi",$inputTag, $expDate, $inputTxt, $id);
             break;
         case 3:
             $stmt = $conn->prepare("UPDATE table_list_schedule SET sch_day = ?, sch_schedule = ? WHERE sch_id = ?");
@@ -158,7 +144,7 @@ function viewMediaFolder()
     {
         $query = "SELECT Distinct med_tag as 'Nama Tag', SUBSTRING_INDEX(SUBSTRING_INDEX(med_path, '/', 3),'/',-1) as 'Nama File' , med_add_date as Sejak FROM table_list_media";
     }else{
-        $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', 2) as File_name ,media_txt, add_date ,exp_date FROM table_list_media WHERE user='$_SESSION[user]'";
+        $query = "SELECT Distinct med_tag as 'Nama Tag', SUBSTRING_INDEX(SUBSTRING_INDEX(med_path, '/', 3),'/',-1) as 'Nama File' , med_add_date as Sejak FROM table_list_media WHERE med_user='$_SESSION[user]'";
     }
     $conn = conStart();
     $result = mysqli_query($conn, $query);
@@ -171,7 +157,7 @@ function viewMediaFolderFile($path)
     {
         $query = "SELECT  med_id as Id, med_uuid as Uuid, med_user as User, med_path as Path, med_tag as Tag, med_txt as 'Kata-kata', med_add_date as Sejak, med_exp_date as kadaluarsa, med_reg_date as Perubahan FROM table_list_media WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(med_path, '/', 3),'/',-1) ='$path'";
     }else{
-        $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', 2) as File_name ,media_txt, add_date ,exp_date FROM table_list_media WHERE user='$_SESSION[user]'";
+        $query = "SELECT  med_tag as Tag, med_txt as 'Kata-kata', med_add_date as Sejak, med_exp_date as kadaluarsa, med_reg_date as Perubahan FROM table_list_media WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(med_path, '/', 3),'/',-1) ='$path' AND med_user='$_SESSION[user]'";
     }
     $conn = conStart();
     $result = mysqli_query($conn, $query);
@@ -184,9 +170,8 @@ function viewMedia($limit, $offset)
         {
             $query = "SELECT  med_id as Id, med_uuid as Uuid, med_user as User, med_path as Path, med_tag as Tag, med_txt as 'Kata-kata', med_add_date as Sejak, med_exp_date as kadaluarsa, med_reg_date as Perubahan FROM table_list_media";    
             //$query = "SELECT  * FROM table_list_media LIMIT $limit, $offset ";    
-        
         }else{
-            $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', -1) as File_name ,med_txt,med_exp_date FROM table_list_media WHERE med_user='$_SESSION[user]'";
+            $query = "SELECT  med_id as Id,med_tag as Tag, med_txt as 'Kata-kata', med_add_date as Sejak, med_exp_date as kadaluarsa, med_reg_date as Perubahan FROM table_list_media WHERE med_user='$_SESSION[user]'";
         }
         $conn = conStart();
         $result = mysqli_query($conn, $query);
@@ -199,7 +184,8 @@ function viewDoc($limit, $offset, $uuid=0)
         {
             $query = "SELECT doc_id as Id, doc_uuid as Uuid, doc_user as User, doc_path as Path, doc_name as Nama, doc_spe as Spesialis, doc_txt as 'Kata-kata', doc_add_date as Sejak, doc_reg_date as Perubahan  FROM table_list_doctor";    
         }else{
-                $query = "SELECT  doc_id, SUBSTRING_INDEX(doc_path, '/', -1) as File_name ,doc_txt FROM table_list_doctor";
+            $query = "SELECT doc_id as Id, doc_uuid as Uuid, doc_name as Nama, doc_spe as Spesialis, doc_txt as 'Kata-kata', doc_add_date as Sejak, doc_reg_date as Perubahan  FROM table_list_doctor WHERE doc_user = '$_SESSION[user]' ";    
+        
         }
     $conn = conStart();
     $result = mysqli_query($conn, $query);
@@ -222,14 +208,22 @@ function viewSch($limit, $offset,$uuid=0)
                 from table_list_doctor  
                 INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid  
                 ORDER BY FIELD(table_list_schedule.sch_day, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'), table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
-            
             }
         }else{
             if($uuid !=0)
             {
-                $query = "SELECT  sch_id, SUBSTRING_INDEX(sch_path, '/', -1) as File_name , sch_schedule FROM table_list_schedule WHERE sch_uuid = '$uuid'";
+                $query = "SELECT table_list_doctor.doc_name AS 'Nama Doctor', table_list_schedule.sch_day as Hari , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai 
+                from table_list_doctor  
+                INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid  
+                WHERE table_list_schedule.doc_uuid = '$uuid' AND table_list_schedule.sch_user = '$_SESSION[user]'
+                ORDER BY FIELD(table_list_schedule.sch_day, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'), table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
             }else{
-                
+                $query = "SELECT table_list_doctor.doc_name AS 'Nama Doctor', table_list_schedule.sch_day as Hari , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai 
+                from table_list_doctor 
+                INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid  
+                WHERE table_list_schedule.sch_user = '$_SESSION[user]'
+                ORDER BY FIELD(table_list_schedule.sch_day, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'), table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
+            
             }
         }
     $conn = conStart();
@@ -237,41 +231,33 @@ function viewSch($limit, $offset,$uuid=0)
     conEnd($conn);
     return $result;
 }
-function viewAds($switch,$uuid=0)
+function viewMediaAll()
 {
-    switch ($switch) {
-        case 1:
-            if($_SESSION["user"] == "admin")
-            {
-                $query = "SELECT  * FROM table_list_media";    
-            }else{
-                $query = "SELECT  med_id, SUBSTRING_INDEX(med_path, '/', -1) as File_name ,med_txt,med_exp_date FROM table_list_media WHERE med_user='$_SESSION[user]'";
-            }
-            break;
-        case 2:
-            if($_SESSION["user"] == "admin")
-            {
-                $query = "SELECT  * FROM table_list_doctor";    
-            }else{
-                    $query = "SELECT  doc_id, SUBSTRING_INDEX(doc_path, '/', -1) as File_name ,doc_txt FROM table_list_doctor WHERE doc_user='$_SESSION[user]'";
-            }
-            break;
-        case 3:
-            if($_SESSION["user"] == "admin")
-            {
-                $query = "SELECT  * FROM table_list_schedule ORDER BY FIELD(sch_day, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'), sch_start ASC";    
-            }else{
-                $query = "SELECT  sch_id, SUBSTRING_INDEX(sch_path, '/', -1) as File_name , sch_schedule FROM table_list_schedule WHERE sch_user='$_SESSION[user]' AND sch_uuid = '$uuid''";
-            }
-            break;
-        default:
-          break;
-    }
+    $query = "SELECT  med_tag as Tag, med_txt as 'Kata-kata', med_add_date as Sejak, med_exp_date as kadaluarsa, med_reg_date as Perubahan FROM table_list_media";
+        $conn = conStart();
+        $result = mysqli_query($conn, $query);
+        conEnd($conn);
+        return $result;
+}
+function viewDocAll()
+{
+    $query = "SELECT doc_name as Nama, doc_spe as Spesialis, doc_txt as 'Kata-kata', doc_add_date as Sejak, doc_reg_date as Perubahan  FROM table_list_doctor";    
     $conn = conStart();
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;
-} 
+}
+function ViewSchAll()
+{
+    $query = "SELECT table_list_doctor.doc_name AS 'Nama Doctor', table_list_schedule.sch_day as Hari , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai 
+            from table_list_doctor
+            INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid  
+            ORDER BY FIELD(table_list_schedule.sch_day, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'), table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
+    $conn = conStart();
+    $result = mysqli_query($conn, $query);
+    conEnd($conn);
+    return $result;      
+}
 function viewActiveImg($switch)
 {
     $conn = conStart();
@@ -285,14 +271,6 @@ function viewActiveImg($switch)
         default:
           break;
     }
-    $result = mysqli_query($conn, $query);
-    conEnd($conn);
-    return $result;
-}
-function viewDeactiveImg($switch)
-{
-    $conn = conStart();
-    $query = "SELECT  med_path FROM table_list_media WHERE med_exp_date < NOW() ORDER BY med_exp_date DESC , med_path ASC  " ;
     $result = mysqli_query($conn, $query);
     conEnd($conn);
     return $result;

@@ -5,7 +5,7 @@ if (isset($_POST["submit"]) && $_SESSION['user']!=NULL)
 {
     $conn = conStart();
     $stmt = $conn->prepare("INSERT INTO table_list_doctor(doc_user, doc_path, doc_name, doc_spe, doc_txt) VALUES ( ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss",$user,$docPath, $docName, $docSpe, $docTxt, );
+    $stmt->bind_param("sssss",$user,$docPath, $docName, $docSpe, $docTxt );
     
     $user = $_SESSION['user'];
     

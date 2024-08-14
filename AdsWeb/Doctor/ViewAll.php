@@ -1,7 +1,7 @@
 <?php
 require_once '../Function/serverfunction.php';
 require_once '../Function/commonfunction.php';
-$data = viewMedia(0,10);
+$data = viewDocAll();
 
 ?>
 
@@ -142,7 +142,6 @@ while ($property = mysqli_fetch_field($data))
 {
     echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
-echo '<th> Up </th><th> Down </th><th> Change </th><th> Delete </th>';
 echo '</tr>'; 
 
 while ($row = mysqli_fetch_row($data)) 
@@ -152,32 +151,6 @@ while ($row = mysqli_fetch_row($data))
     {
     echo '<td>' . htmlspecialchars($item) . '</td>';
     }
-    ?>
-    <td>
-        <form action='./fileUp.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <button >&#x21e7</button>
-    </form>
-    </td>
-    <td >
-        <form action='./fileDown.php' method="post" >
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <button >&#x21e9</button>
-    </form>
-    </td>
-    <td>
-        <form action='./fileManage.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <button>&#8634</button>
-    </form>
-    </td>
-    <td>
-        <form action='./fileDelete.php' method="post">
-        <input type="hidden" name="data" value=<?php echo $row['0'];?>>
-        <button>&#215</button>
-    </form>
-    </td>
-    <?php
     echo '</tr>';
 }
 echo "</table> </div>";
