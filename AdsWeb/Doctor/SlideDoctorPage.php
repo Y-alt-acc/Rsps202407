@@ -306,7 +306,7 @@ function setDuration()
     {
       theDuration.push(10);
     }else{
-      theDuration.push(1);
+      theDuration.push(15);
     }
   }
 }
