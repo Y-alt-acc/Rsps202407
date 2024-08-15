@@ -25,55 +25,55 @@
     width: 100vw;
     height: 100vh;
     align-items: center;
-    background-color: #222222;
+    background-color: #454B1B;
 }
 .top
 {
   width: 100%;
   height:100%;
   grid-area: header;
-  background-color: #BBBBBB;
+  background-color: #355E3B;
 }
 .bottom
 {
   width: 100%;
   height:100%;
   grid-area: footer;
-  background-color: #BBBBBB;
+  background-color: #355E3B;
 }
 .sideleft
 {
   width: 100%;
   height:100%;
   grid-area: sidebarleft;
-  background-color: #BBBBBB;
+  background-color: #355E3B;
 }
 .sideright
 {
   width: 100%;
   height:100%;
   grid-area: sidebarright;
-  background-color: #BBBBBB;
+  background-color: #355E3B;
 }
 .media
 {
   width: 100%;
   height:100%;
   grid-area: media;
-  background-color: #999999;
+  background-color: #4F7942;
 }
 .quote
 {
   width: 100%;
   grid-area: txt;
-  background-color: #444444;
+  background-color: #2E8B57;
 }
 .schdl
 {
   width: 100%;
   height:100%;
   grid-area:schedule;
-  background-color: #DDDDDD;
+  background-color: #00A36C;
 }
 .myslides
 {
@@ -173,7 +173,8 @@ border: 1px solid #ddd;
 padding: 8px;
 }
 
-#Adverts tr:nth-child(even){background-color: #f2f2f2;}
+#Adverts tr:nth-child(odd){background-color: 	#93C572;}
+#Adverts tr:nth-child(even){background-color: #5F9EA0;}
 
 #Adverts tr:hover {background-color: #ddd;}
 
