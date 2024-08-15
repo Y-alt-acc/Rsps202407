@@ -103,7 +103,7 @@ $data = viewMedia(0,10);
     <meta charset="UTF-8">
     <meta name="viewport" content=
         "width=device-width, initial-scale=1.0">
-    <title>Ads View</title>
+    <title>Media View</title>
 
 </head>
 

@@ -2,7 +2,14 @@
 <html lang="en">
 <style>
 body {
-margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background: #1b1f21;
+  text-align: center;
 }
 
 #grid {
@@ -12,8 +19,27 @@ margin: 0;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 3px;
   background: navajowhite;
+  
+}
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
+p {
+  background: black;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  font-size: clamp(1.1rem, 5vmin, 2.8rem);
+  transition: opacity 300ms;
+}
 :where(.left, .right) {
   background: #4CAF50;
   transition: 300ms;
@@ -47,9 +73,9 @@ margin: 0;
 
 <body>
 <div id="grid">
-<div class="left" onclick="window.open('./Login/login.html', '_self') "> home</div>
-<div class="center" onclick="window.open('./Doctor/slideDoctorPage.php', '_self')"> view Doctor</div>
-<div class="right" onclick="window.open('./Ads/slideShowPage.php', '_self')">view Ads</div>
+<div class="left" onclick="window.open('./Login/login.html', '_self')"><p> Home</p><img src="./Img/Home.png" ></div>
+<div class="center" onclick="window.open('./Doctor/slideDoctorPage.php', '_self')"><p>view Doctor</p><img src="./Img/Doctor.jpg" ></div>
+<div class="right" onclick="window.open('./Ads/slideShowPage.php', '_self')"><p>view Ads</p><img src="./Img/Media.jpg" ></div>
 </div>
 
 
