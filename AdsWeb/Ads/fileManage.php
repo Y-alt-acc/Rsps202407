@@ -120,7 +120,28 @@ require_once '../Function/commonfunction.php';
     display: table;
     clear: both;
   }
-  
+  img
+{
+  max-width: 30vw;
+  min-height: 45vh;
+  max-height: 45vh;
+  display:block;
+  margin-left: auto; 
+  margin-right: auto; 
+  /* object-fit: contain; */
+  object-fit: fill;
+}
+video
+{
+  max-width: 30vw;
+  min-height: 45vh;
+  max-height: 45vh;
+  display:block;
+  margin-left: auto; 
+  margin-right: auto; 
+  /* object-fit: contain;   */
+  object-fit: fill;
+}
 </style>
 <head>
     <meta charset="UTF-8">
@@ -203,7 +224,7 @@ require_once '../Function/commonfunction.php';
             <label for="media_txt">Deskripsi:</label>
         </div>
         <div class="col-75">
-            <textarea id="media_txt" name="media_txt" rows="13"  maxlength="254" ><?php echo $data['med_txt'] ?></textarea>
+            <textarea id="media_txt" name="media_txt" rows="5"  maxlength="254" ><?php echo $data['med_txt'] ?></textarea>
         </div>
         </div>
         <div class="row">

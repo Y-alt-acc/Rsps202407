@@ -120,7 +120,26 @@ require_once '../Function/commonfunction.php';
         display: table;
         clear: both;
         }
-        
+img
+{
+  max-width: 18vw;
+  min-height: 39vh;
+  max-height: 39vh;
+  display:block;
+  margin-left: auto; 
+  margin-right: auto;
+  object-fit: fill;
+}
+video
+{
+  max-width: 18vw;
+  min-height: 39vh;
+  max-height: 39vh;
+  display:block;
+  margin-left: auto; 
+  margin-right: auto; 
+  object-fit: fill;
+}
 </style>
 <head>
     <meta charset="UTF-8">
