@@ -19,7 +19,7 @@
   grid-template-rows: 3% 12% 79% 6%;
   grid-template-areas: 
     "header header header  header"
-    "sidebarleft txt txt  sidebarright"
+    "sidebarleft names txt  sidebarright"
     "sidebarleft media schedule sidebarright"
     "footer footer footer  footer";
     width: 100vw;
@@ -62,6 +62,12 @@
   grid-area: media;
   background-color: #4F7942;
 }
+.name
+{
+  width: 100%;
+  grid-area: names;
+  background-color: 		#008080;
+}
 .quote
 {
   width: 100%;
@@ -82,6 +88,11 @@
 .mytext
 {
   display:none;
+}
+.myname
+{
+  display:none;
+  
 }
 .mydayslides
 {
@@ -119,13 +130,23 @@ video
 }
 .text-block
 {
+  display: none;
+  overflow-wrap: break-word;
+  color: white;
   
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  text-align: center;
+  font-size : 2em;
+  font-family: 'Times New Roman', Times, serif;
+}
+.text-name
+{
   display: none;
   overflow-wrap: break-word;
   color: white;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   text-align: center;
-  font-size : 2em;
+  font-size : 3em;
   font-family: 'Times New Roman', Times, serif;
 }
 .text-mov
@@ -228,9 +249,25 @@ color: white;
           }
           ?>
       </div>
+      <div class="name">
+        <?php
+          for($i = 1; $i <= 7; $i++){
+            $result = serverGetNameDoc($i);
+            echo '<div class="myname">';
+            while($data = mysqli_fetch_assoc($result))
+            {
+
+              echo '
+              <div class="text-name">
+              <p>'. $data["doc_name"].'</p>
+              </div>
+              ';
+            }
+            echo '</div>';
+          }
+        ?>
+      </div>
       <div class="quote">
-        <div>
-        </div>
         <?php
         for($i = 1; $i <= 7; $i++){
           $result = serverGetTxtDoc($i);
@@ -356,6 +393,7 @@ function showScedule()
   let schedule = document.getElementsByClassName("myschedule");
   let daySlide = document.getElementsByClassName("mydayslides");
   let dayText = document.getElementsByClassName("mydaytext");
+  let dayName = document.getElementsByClassName("myname");
   scheduleIndex++;
   if(scheduleIndex >= schedule.length)
   {
@@ -364,6 +402,7 @@ function showScedule()
   schedule[scheduleIndex].style.display = "block";
   daySlide[scheduleIndex].style.display = "block";
   dayText[scheduleIndex].style.display = "block";
+  dayName[scheduleIndex].style.display = "block";
   for (i = 0; i < schedule.length; i++) 
   {
     if(i!=scheduleIndex)
@@ -371,6 +410,7 @@ function showScedule()
       schedule[i].style.display = "none";
       daySlide[i].style.display = "none";
       dayText[i].style.display = "none";
+      dayName[i].style.display = "none";
     }
   }
   showSlides();
@@ -380,6 +420,7 @@ function showSlides()
   let i;
   let slides = document.getElementsByClassName("myslides");
   let quotes = document.getElementsByClassName("text-block");
+  let name = document.getElementsByClassName("text-name");
   slideIndex++; 
   if (slideIndex >= slides.length) 
   {
@@ -395,6 +436,7 @@ function showSlides()
   };
   slides[slideIndex].style.display = "block"; 
   quotes[slideIndex].style.display = "block";
+  name[slideIndex].style.display = "block";
 
   
   for (i = 0; i < slides.length; i++) 
@@ -403,6 +445,7 @@ function showSlides()
     { 
       slides[i].style.display = "none";  
       quotes[i].style.display = "none";
+      name[i].style.display = "none";
     }
   }
   if(slides[slideIndex].getAttribute('name') == "vid")

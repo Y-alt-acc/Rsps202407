@@ -35,6 +35,11 @@ function serverGetTxtDoc($switch){
     return viewActiveDocTxt(GetDay($switch));
     //return viewActiveTxt(2);
 }
+function serverGetnameDoc($switch){
+    require_once('serverFunction.php');
+    return viewActiveDocName(GetDay($switch));
+    //return viewActiveTxt(2);
+}
 function serverGetTxtSch($switch){
     require_once('serverFunction.php');
     return viewActiveSch(GetDay($switch));

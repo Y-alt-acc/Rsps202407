@@ -6,8 +6,8 @@ if(isset($_SESSION["user"]) && $_SESSION["user"] == "admin"){
     $username = $_POST['user_name'];
     $password = $_POST['password'];
     conquery(userAdd($username, $password));
-    // goToHomeuser();
+    goToHomeuser();
 }else {
-    // goToHomse();
+    goToHome();
 }
 ?>
