@@ -166,7 +166,7 @@ video
   animation-iteration-count: infinite;
 }
 .data-heading
-// {
+{
   font-family: 'Times New Roman', Times, serif;
   font-size : 1.7em;
   text-align: center;
