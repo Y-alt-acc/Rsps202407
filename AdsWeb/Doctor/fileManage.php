@@ -212,7 +212,7 @@ video
             <label for="doc_name">Name:</label>
         </div>
         <div class="col-75">
-            <input type="text" name="doc_name" value=<?php echo $data['doc_name'] ?>>
+            <input type="text" name="doc_name" value="<?php echo $data['doc_name'] ?>">
         </div>
         </div>
         <div class="row">
@@ -220,7 +220,7 @@ video
             <label for="doc_spe">Spesialis </label>
         </div>
         <div class="col-75">
-            <input type="text" name="doc_spe" value=<?php echo $data['doc_spe'] ?>>
+            <input type="text" name="doc_spe" value="<?php echo $data['doc_spe'] ?>">
         </div>
         <div class="row">
         <div class="col-25">

@@ -1,10 +1,10 @@
 <?php
 $servername = "localhost";
-$username = "zaViewer";
-$password = "I(XWzqFegEa8kn[3";
+$username = "root";
+$password = "";
 $dbname = "rsps_database_tv";
 function  conStart(){
-    return mysqli_connect("localhost", "zaViewer", "I(XWzqFegEa8kn[3", "rsps_database_tv");    
+    return mysqli_connect("localhost", "root","", "rsps_database_tv");    
 }
 function conEnd($conn){
     $conn->close();
@@ -212,13 +212,13 @@ function viewSch($limit, $offset,$uuid=0)
         }else{
             if($uuid !=0)
             {
-                $query = "SELECT table_list_doctor.doc_name AS 'Nama Doctor', table_list_schedule.sch_day as Hari , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai 
+                $query = "SELECT table_list_schedule.sch_id as Id, table_list_doctor.doc_name AS 'Nama Doctor', table_list_schedule.sch_day as Hari , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai 
                 from table_list_doctor  
                 INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid  
                 WHERE table_list_schedule.doc_uuid = '$uuid' AND table_list_schedule.sch_user = '$_SESSION[user]'
                 ORDER BY FIELD(table_list_schedule.sch_day, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'), table_list_schedule.sch_start ASC, table_list_doctor.doc_name ASC";
             }else{
-                $query = "SELECT table_list_doctor.doc_name AS 'Nama Doctor', table_list_schedule.sch_day as Hari , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai 
+                $query = "SELECT table_list_schedule.sch_id as Id, table_list_doctor.doc_name AS 'Nama Doctor', table_list_schedule.sch_day as Hari , table_list_schedule.sch_start AS Mulai, table_list_schedule.sch_end AS Selesai 
                 from table_list_doctor 
                 INNER JOIN table_list_schedule ON table_list_doctor.doc_uuid = table_list_schedule.doc_uuid  
                 WHERE table_list_schedule.sch_user = '$_SESSION[user]'

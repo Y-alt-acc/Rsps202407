@@ -1,14 +1,14 @@
 <?php
 $servername = "localhost";
-$username = "rspsuper";
-$password = "rspSehat10@85";
+$username = "root";
+$password = "";
 $dbname = "rsps_database_tv";
 $tbmedia = "table_list_media";
 $tbdoctor = "table_list_doctor";
 $tbschedule = "table_list_schedule";
 $tbuser = "table_list_user";
 $userweb = "admin";
-$passweb = "root";
+$passweb = "rsps2024";
 
 $conn = mysqli_connect($servername, $username, $password);
 if (!$conn) 
@@ -98,12 +98,6 @@ if(mysqli_query($conn, $sql)->num_rows == 0 ){
   {
     echo "Error creating admin: " . mysqli_error($conn);
   }
-  $sql = "INSERT INTO table_list_user (usr_name, usr_pass) VALUE('test','$hash')";
-
-  if (!mysqli_query($conn, $sql)) 
-  {
-    echo "Error creating user: " . mysqli_error($conn);
-  }
 }
 mysqli_close($conn);
 
@@ -113,7 +107,7 @@ if(!is_dir("./slide"))
 }
 if(!is_dir("./wajah"))
 {
-  mkdir("./wajah-");
+  mkdir("./wajah");
 }
 header('Location: ./home.html');
 die();

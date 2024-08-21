@@ -216,7 +216,7 @@ video
             <label for="media_tag">Tag:</label>
         </div>
         <div class="col-75">
-            <input type="text" name="media_tag" value=<?php echo $data['med_tag'] ?>>   
+            <input type="text" name="media_tag" value="<?php echo $data['med_tag'] ?>">   
         </div>
         </div>
         <div class="row">

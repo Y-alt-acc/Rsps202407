@@ -136,7 +136,7 @@ video
   
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   text-align: center;
-  font-size : 2em;
+  font-size : 3em;
   font-family: 'Times New Roman', Times, serif;
 }
 .text-name
@@ -146,7 +146,7 @@ video
   color: white;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   text-align: center;
-  font-size : 3em;
+  font-size : 2.5em;
   font-family: 'Times New Roman', Times, serif;
 }
 .text-mov
@@ -166,7 +166,7 @@ video
   animation-iteration-count: infinite;
 }
 .data-heading
-{
+// {
   font-family: 'Times New Roman', Times, serif;
   font-size : 1.7em;
   text-align: center;

@@ -143,6 +143,7 @@ echo '<div ><table id="Adverts" class="data-table">
 <tr class="data-heading">';
 while ($property = mysqli_fetch_field($data)) 
 {
+	if(htmlspecialchars($property->name)!='Id'||$_SESSION['user']=="admin")
     echo '<th>' . htmlspecialchars($property->name) . '</th>';  //get field name for header
 }
 echo '<th> Delete </th>';
@@ -151,9 +152,13 @@ echo '</tr>';
 while ($row = mysqli_fetch_row($data)) 
 {
     echo "<tr>";
+    $i=0;
     foreach ($row as $item) 
     {
-    echo '<td>' . htmlspecialchars($item) . '</td>';
+      $i++;
+      if($i!=1||$_SESSION['user']=="admin"){
+        echo '<td>' . htmlspecialchars($item) . '</td>';
+      }
     }
     ?>
     <td>
