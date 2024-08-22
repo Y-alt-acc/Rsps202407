@@ -355,6 +355,7 @@ let scheduleIndex = -1;
 let clicked = false;
 let theDuration = [];
 let musicIndex = 0;
+let videoPlayed = false;
 document.addEventListener('click', e => {
   if(document.getElementsByClassName("myslides")[slideIndex].getAttribute('name') == "vid")
   {
@@ -429,35 +430,52 @@ function bruteForceVideo(video, time)
 
 function audioEnded() {
   musicIndex++;
+  audio = document.getElementsByClassName("myaudio");  
     if(musicIndex>=audio.length){
       musicIndex = 0;
     }
+    
     audioBruteForce(audio);
 }
 function audioLoad()
 {
   let audio = document.getElementsByClassName("myaudio");
-  audio[musicIndex].load();
-  audio[musicIndex].muted = false;  
-  audio[musicIndex].play();
+  if(!audioPaused)
+  {
+    audio[musicIndex].load();
+
+    audio[musicIndex].oncanplay = function(e)
+    {
+      audio[musicIndex].play();
+      
+    }
+  }
   
 }
 function audioPause()
 {
-  let sound = document.getElementsByClassName("myaudio");
-  if(sound[musicIndex]!=null)
+  let audio = document.getElementsByClassName("myaudio");
+  audioPaused = true;
+  if(audio[musicIndex]!=null)
   {
-    audioPaused = true;
-    sound[musicIndex].pause() ;
+    audio[musicIndex].pause() ;
   }
 }
 function audioUnpause()
 { 
-  let sound = document.getElementsByClassName("myaudio");
-  if(sound[musicIndex]!=null&&clicked&&audioPaused)
+  let audio = document.getElementsByClassName("myaudio");
+  if(audio[musicIndex]!=null&&clicked && audio[musicIndex].paused == true && videoPlayed == false)
   {
-    audioPaused = false;
-    sound[musicIndex].play() ;
+    try{
+      audio[musicIndex].play() ;
+      audioPaused = false;
+    }catch{
+
+    }finally{
+      if(videoPlayed == false){
+        setTimeout(audioUnpause(), 2000);
+      }
+    }
   }
 }
 function audioBruteForce(audio)
@@ -466,13 +484,14 @@ function audioBruteForce(audio)
   {
     try
     {
-        audioLoad();
-      }catch{
-      }finally{
-        setTimeout(audioBruteForce, 5000, audio);
-      }
+      audioLoad();
+    }catch{
+    }finally{
+      setTimeout(audioBruteForce, 2000, audio);
+    }
     }
 }
+
 function showScedule()
 {
   let i;
@@ -534,9 +553,11 @@ function showSlides()
       name[i].style.display = "none";
     }
   }
+  videoPlayed = false;
   audioUnpause();
   if(slides[slideIndex].getAttribute('name') == "vid")
   {
+    videoPlayed = true;
     audioPause();
     video = slides[slideIndex].querySelector("video");
     try

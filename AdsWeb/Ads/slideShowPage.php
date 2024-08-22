@@ -299,15 +299,9 @@ function audioLoad()
   if(!audioPaused)
   {
     audio[musicIndex].load();
-    if(audioPaused){
-      audio[musicIndex].muted = true;  
-    }else{
-      audio[musicIndex].muted = false;  
-    }
     audio[musicIndex].oncanplay = function(e)
     {
       audio[musicIndex].play();
-      
     }
   }
   
@@ -332,7 +326,9 @@ function audioUnpause()
     }catch{
 
     }finally{
-      setTimeout(audioUnpause(), 2000);
+      if(videoPlayed == false){
+        setTimeout(audioUnpause(), 2000);
+      }
     }
   }
 }
