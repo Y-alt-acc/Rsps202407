@@ -89,6 +89,10 @@
 {
   display:none;
 }
+.myaudio
+{
+  display:block;
+}
 .myname
 {
   display:none;
@@ -244,7 +248,7 @@ color: white;
                 </div>
                 ';
               }
-            }
+            } 
             echo '</div>';
           }
           ?>
@@ -317,20 +321,55 @@ color: white;
       <div class="sideright"></div>
       <div class="bottom"><h1 class = "text-mov">SELAMAT DATANG DI RUMAH SAKIT PREMIER SURABAYA</h1></div>
     </div>
+    <div>
+      <?php
+      $dir = "../Music/";
+      // Open a directory, and read its contents
+      if (is_dir($dir)){
+        if ($dh = opendir($dir)){
+          while (($file = readdir($dh)) !== false ){
+            if($file != "." && $file!= "..")
+            {
+              echo $file;
+              $mime = mime_content_type("../Music/".$file);
+
+              echo '
+              <audio  class="myaudio" name="aud" onended="audioEnded()">
+              <source src="../Music/'. $file. '#t=0.1" type="'.$mime.'">
+              Your browser does not support the Audio tag.
+              </audio>';
+              }
+          }
+          closedir($dh);
+        }
+      }
+      ?>
+      </div>
   </body>
 </head>
 
 <script>
+let audioPaused =  false;
 let slideIndex = -1;
 let scheduleIndex = -1;
 let clicked = false;
 let theDuration = [];
+let musicIndex = 0;
 document.addEventListener('click', e => {
-  clicked = true;
   if(document.getElementsByClassName("myslides")[slideIndex].getAttribute('name') == "vid")
   {
-      video.muted = false; 
+    video.muted = false; 
   }
+  if(clicked == false){
+
+    if(document.getElementsByClassName("myaudio")[musicIndex])
+    {
+      
+      audio=document.getElementsByClassName("myaudio");
+      audioBruteForce(audio);
+    }
+  }
+  clicked = true;
 });
 setDuration();
 showScedule(); 
@@ -368,7 +407,7 @@ function loadVideo(video, i)
 }
 function bruteForceVideo(video, time)
 {
-  
+
   if(time > theDuration[slideIndex] && video.paused)
   {
     showSlides();
@@ -386,6 +425,55 @@ function bruteForceVideo(video, time)
       setTimeout(showSlides, theDuration[slideIndex] * 1000);
     }
   }
+}
+
+function audioEnded() {
+  musicIndex++;
+    console.log(musicIndex);
+    if(musicIndex>=audio.length){
+      musicIndex = 0;
+    }
+    audioBruteForce(audio);
+}
+function audioLoad()
+{
+  let audio = document.getElementsByClassName("myaudio");
+  audio[musicIndex].load();
+  console.log("aaa");
+  audio[musicIndex].muted = false;  
+  audio[musicIndex].play();
+  
+}
+function audioPause()
+{
+  let sound = document.getElementsByClassName("myaudio");
+  if(sound[musicIndex]!=null)
+  {
+    audioPause = true;
+    sound[musicIndex].pause() ;
+  }
+}
+function audioUnpause()
+{ 
+  let sound = document.getElementsByClassName("myaudio");
+  if(sound[musicIndex]!=null&&clicked&&audioPaused)
+  {
+    audioPause = false;
+    sound[musicIndex].play() ;
+  }
+}
+function audioBruteForce(audio)
+{
+  if(audio[musicIndex].paused)
+  {
+    try
+    {
+        audioLoad();
+      }catch{
+      }finally{
+        setTimeout(audioBruteForce, 5000, audio);
+      }
+    }
 }
 function showScedule()
 {
@@ -448,8 +536,10 @@ function showSlides()
       name[i].style.display = "none";
     }
   }
+  audioUnpause();
   if(slides[slideIndex].getAttribute('name') == "vid")
   {
+    audioPause();
     video = slides[slideIndex].querySelector("video");
     try
     {
