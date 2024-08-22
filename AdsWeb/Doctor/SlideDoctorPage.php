@@ -429,7 +429,6 @@ function bruteForceVideo(video, time)
 
 function audioEnded() {
   musicIndex++;
-    console.log(musicIndex);
     if(musicIndex>=audio.length){
       musicIndex = 0;
     }
@@ -439,7 +438,6 @@ function audioLoad()
 {
   let audio = document.getElementsByClassName("myaudio");
   audio[musicIndex].load();
-  console.log("aaa");
   audio[musicIndex].muted = false;  
   audio[musicIndex].play();
   
@@ -449,7 +447,7 @@ function audioPause()
   let sound = document.getElementsByClassName("myaudio");
   if(sound[musicIndex]!=null)
   {
-    audioPause = true;
+    audioPaused = true;
     sound[musicIndex].pause() ;
   }
 }
@@ -458,7 +456,7 @@ function audioUnpause()
   let sound = document.getElementsByClassName("myaudio");
   if(sound[musicIndex]!=null&&clicked&&audioPaused)
   {
-    audioPause = false;
+    audioPaused = false;
     sound[musicIndex].play() ;
   }
 }

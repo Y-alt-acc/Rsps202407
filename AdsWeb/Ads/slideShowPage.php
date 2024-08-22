@@ -182,19 +182,52 @@ video
       <div class="sideright"></div><h1></h1>
       <div class="bottom"><h1 class = "text-mov">SELAMAT DATANG DI RUMAH SAKIT PREMIER SURABAYA</h1></div>
     </div>
+    <div>
+      <?php
+      $dir = "../Music/";
+      // Open a directory, and read its contents
+      if (is_dir($dir)){
+        if ($dh = opendir($dir)){
+          while (($file = readdir($dh)) !== false ){
+            if($file != "." && $file!= "..")
+            {
+              echo $file;
+              $mime = mime_content_type("../Music/".$file);
+
+              echo '
+              <audio  class="myaudio" name="aud" onended="audioEnded()">
+              <source src="../Music/'. $file. '#t=0.1" type="'.$mime.'">
+              Your browser does not support the Audio tag.
+              </audio>';
+              }
+          }
+          closedir($dh);
+        }
+      }
+      ?>
+      </div>
   </body>
 </head>
 <script>
-let slideIndex = -1;
-let clicked = false;
-let theDuration = [];
-
+  let audioPaused =  false;
+  let slideIndex = -1;
+  let clicked = false;
+  let theDuration = [];
+  let musicIndex = 0;
+  let videoPlayed = false;
 document.addEventListener('click', e => {
-  clicked = true;
   if(document.getElementsByClassName("myslides")[slideIndex].getAttribute('name') == "vid")
   {
       video.muted = false; 
   }
+  if(clicked == false){
+    if(document.getElementsByClassName("myaudio")[musicIndex])
+    { 
+      audio=document.getElementsByClassName("myaudio");
+      audioBruteForce(audio);
+    }
+  clicked = true;
+}
 });
 setDuration();
 showSlides(); 
@@ -250,6 +283,73 @@ function bruteForceVideo(video, time)
     }
   }
 }
+
+function audioEnded() {
+  musicIndex++;
+  audio = document.getElementsByClassName("myaudio");  
+    if(musicIndex>=audio.length){
+      musicIndex = 0;
+    }
+    
+    audioBruteForce(audio);
+}
+function audioLoad()
+{
+  let audio = document.getElementsByClassName("myaudio");
+  if(!audioPaused)
+  {
+    audio[musicIndex].load();
+    if(audioPaused){
+      audio[musicIndex].muted = true;  
+    }else{
+      audio[musicIndex].muted = false;  
+    }
+    audio[musicIndex].oncanplay = function(e)
+    {
+      audio[musicIndex].play();
+      
+    }
+  }
+  
+}
+function audioPause()
+{
+  let audio = document.getElementsByClassName("myaudio");
+  audioPaused = true;
+  if(audio[musicIndex]!=null)
+  {
+    audio[musicIndex].pause() ;
+  }
+}
+function audioUnpause()
+{ 
+  let audio = document.getElementsByClassName("myaudio");
+  if(audio[musicIndex]!=null&&clicked && audio[musicIndex].paused == true && videoPlayed == false)
+  {
+    try{
+      audio[musicIndex].play() ;
+      audioPaused = false;
+    }catch{
+
+    }finally{
+      setTimeout(audioUnpause(), 2000);
+    }
+  }
+}
+function audioBruteForce(audio)
+{
+  if(audio[musicIndex].paused)
+  {
+    try
+    {
+      audioLoad();
+    }catch{
+    }finally{
+      setTimeout(audioBruteForce, 2000, audio);
+    }
+    }
+}
+
 function showSlides() 
 {
   let i;
@@ -272,8 +372,12 @@ function showSlides()
       quotes[i].style.display = "none";
     }
   }
+  videoPlayed = false;
+  audioUnpause();
   if(slides[slideIndex].getAttribute('name') == "vid")
   {
+    videoPlayed = true;
+    audioPause();
     video = slides[slideIndex].querySelector("video");
     try
     {
