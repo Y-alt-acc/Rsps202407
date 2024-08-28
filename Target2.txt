@@ -1,0 +1,19 @@
+RULE For Data Kultur
+1. DON'T USE THE SAME TECHNIQUE AGAIN. unless in a pinch.
+2. Use the google things. API, Appscript, sheets.
+3. Maybe use Python.
+4. Finish this Quickly.
+5. KISS(Keep It Simple Stupid)
+6. Few Stage Deployment. (Fixed, Flexible, With Better UI)
+
+List
+1. Fixed Formula for the sheets
+2. Add condition for everything. Start from Date, Gender, Age, SIR.
+3. Add Sort, descending for effectiveness
+4. Add View Only (making new Sheet Every Time).
+5. Add Select Option for bateria
+6. Add More Insert Option, e.g. form, csv.
+.
+.
+.
+x. Make it Android Portable <<-- not happening
