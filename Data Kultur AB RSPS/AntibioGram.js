@@ -13,30 +13,66 @@ function onEdit(e)
   {
     ViewSettingChangeCheck(e);
   }
-  // if(e.source.getRange(1,1).getValue == "Script" &&
-  //     (  
-  //       e.range.getColumn() == 4 ||
-  //       e.range.getColumn() == 5 ||
-  //       e.range.getColumn() == 7 ||
-  //       e.range.getColumn() == 8 ||
-  //       e.range.getColumn() == 9 ||
-  //       (e.range.getColumn() % 4 == 0)
-  //     )
-  //   )
-  // {
-  // }
+  if(e.source.getActiveSheet().getRange(1,1).getValue() == "View Script") 
+  {
+    if(e.range.getRow() == 4 && e.range.getColumn() == 3)
+    {
+      viewHideColumn(e);
+    }
+  }
+}
+function viewHideColumn(e)
+{
+  let DataCulView = e.source.getActiveSheet();
+  if(DataCulView.getRange(1,3).getValue() == "Jumlah Isolat")
+  {
+    let maxRow = DataCulView.getRange(1,4).getValue();
+    if(e.range.getCell(1,1).getValue == "True")
+    {
+      let viewArray = DataCulView.getRange(5,3,maxRow).getValues();
+
+      for(let i = 0; i< maxRow; i++)
+      {
+        console.log(viewArray[i]);
+
+        if(viewArray[i] == "0")
+        {
+          DataCulView.hideRows(i+5);
+        }
+      }
+    }else{
+      DataCulView.showRows(5,maxRow);
+    }
+  }else if(DataCulView.getRange(1,3).getValue() == "Jumlah Obat"){
+    let maxRow = DataCulView.getRange(1,4).getValue();
+    if(e.range.getCell(1,1).getValue == "True")
+    {
+      let viewArray = DataCulView.getRange(6,4,maxRow).getValues();
+
+      for(let i = 0; i< maxRow; i++)
+      {
+        if(viewArray[i] == "0")
+        {
+          DataCulView.hideRows(i+5);
+          DataCulView.hideRows(i+6);
+        }
+      }
+    }else{
+      DataCulView.showRows(5,maxRow);
+    }
+  }
 }
 function ViewSettingChangeCheck(e)
 {
-  DataCulSetting = e.source.getSheetByName("Pengaturan");
-  SettingVariableValues = DataCulSetting.getRange(3,2,14).getValues();
-  DatabaseName = SettingVariableValues[0].toString();
-  ViewName = SettingVariableValues[1].toString();
+  let DataCulSetting = e.source.getSheetByName("Pengaturan");
+  let SettingVariableValues = DataCulSetting.getRange(3,2,14).getValues();
+  let DatabaseName = SettingVariableValues[0].toString();
+  let ViewName = SettingVariableValues[1].toString();
   
-  DataCulMaster = e.source.getSheetByName(DatabaseName);
+  let DataCulMaster = e.source.getSheetByName(DatabaseName);
   if( DataCulMaster)
   {
-    DataCulView = e.source.getSheetByName(ViewName);
+    let DataCulView = e.source.getSheetByName(ViewName);
     if(DataCulView == null)
     {
       DataCulView = e.source.insertSheet(ViewName);
@@ -78,16 +114,26 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
 
   if(sampleCount > 0 && toleranceCount > 0 && maxBakteri > 0 && maxObat > 0){
     DataCulView.clear();
+    DataCulView.getDataRange().setDataValidation(null);
     if(WriteBerdasarkan == "Bakteri")
     {
       ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2, 1 ,1 , maxBakteri, maxObat,  bakteriStart, obatStart,databaseObatStart);
       DataCulView.setFrozenColumns(3);
+      var cell = DataCulView.getRange(5,4,maxBakteri+1);
+      var rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
+      cell.setDataValidation(rule);
     }else{
       ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2 , 1 ,1 , maxObat , maxBakteri,obatStart ,bakteriStart, databaseObatStart);
       DataCulView.setFrozenColumns(4);
+      var cell = DataCulView.getRange(5,5,maxObat*toleranceCount*2);
+      var rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
+      cell.setDataValidation(rule);
     }
     DataCulView.autoResizeColumn(2);
     DataCulView.setFrozenRows(3);
+    var cell = DataCulView.getRange('C4');
+    var rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
+    cell.setDataValidation(rule);
   }
 }
 
@@ -123,7 +169,7 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
       {
         j++;
         ViewArray[i+k+4][1] = rowArray[l][1]; 
-        ViewArray[i+k+4][3] = "False"; 
+        ViewArray[i+k+4][3] = "FALSE"; 
         if(sortingValues[0][1])
         {
           if(sortingValues[0][3] == "Termasuk")
@@ -209,8 +255,12 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
   }
   ViewArray[0][0] = "View Script";
   ViewArray[0][2] = "Jumlah Isolat";
+  ViewArray[0][3] = maxRow;
   ViewArray[2][1] = "Total";
   ViewArray[2][2] = "=COUNTIF("+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+")";
+  ViewArray[3][1] = "Hide Empty Row";
+  ViewArray[3][2] = "FALSE";
+  ViewArray[3][3] = "Sort";
   DataCulView.getRange(row,column,maxRow+5,toleranceCount  * maxColumn+5).setValues(ViewArray);
 }
 
@@ -242,6 +292,8 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
       if(toleranceValues[0][0]){
         ViewArray[i*toleranceCount+k][2]= "%Sensitive";
         ViewArray[i*toleranceCount+k+1][2]= "Total";
+        ViewArray[i*toleranceCount+k][4] = "FALSE";
+        ViewArray[i*toleranceCount+k+1][4] = "FALSE";
         if(sortingValues[0][1])
         {
           if(sortingValues[0][3] == "Termasuk")
@@ -258,6 +310,8 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
       if(toleranceValues[1][0]){
         ViewArray[i*toleranceCount+k][2] = "%Intermediate";
         ViewArray[i*toleranceCount+k+1][2] = "Total";
+        ViewArray[i*toleranceCount+k][4] = "FALSE";
+        ViewArray[i*toleranceCount+k+1][4] = "FALSE";
         if(sortingValues[0][1])
         {
           if(sortingValues[0][3] == "Termasuk")
@@ -274,6 +328,8 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
       if(toleranceValues[2][0]){
         ViewArray[i*toleranceCount+k][2] = "%Resistensi";
         ViewArray[i*toleranceCount+k+1][2] = "Total";
+        ViewArray[i*toleranceCount+k][4] = "FALSE";
+        ViewArray[i*toleranceCount+k+1][4] = "FALSE";
         if(sortingValues[0][1])
         {
           if(sortingValues[0][3] == "Termasuk")
@@ -344,8 +400,12 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
   }
   ViewArray[0][0] = "View Script";
   ViewArray[0][2] = "Jumlah Obat";
+  ViewArray[0][3] = maxRow * toleranceCount;
   ViewArray[2][1] = "Total";
   ViewArray[2][2] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart)+"$"+3 + ":$" + columnToLetter(Number(databaseObatStart)+Number(maxRow))+","+tolerancePath(toleranceValues , toleranceCount/2)+")";
+  ViewArray[3][1] = "Hide Empty Row";
+  ViewArray[3][2] = "FALSE";
+  ViewArray[3][4] = "Sort";
   DataCulView.getRange(row,column,toleranceCount * maxRow+5, maxColumn+5).setValues(ViewArray);
 }
 function ViewSortAdd(values, DataCulMaster, DataCulSetting)
