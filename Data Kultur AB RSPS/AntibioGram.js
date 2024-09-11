@@ -13,6 +13,18 @@ function onEdit(e)
   {
     ViewSettingChangeCheck(e);
   }
+  // if(e.source.getRange(1,1).getValue == "Script" &&
+  //     (  
+  //       e.range.getColumn() == 4 ||
+  //       e.range.getColumn() == 5 ||
+  //       e.range.getColumn() == 7 ||
+  //       e.range.getColumn() == 8 ||
+  //       e.range.getColumn() == 9 ||
+  //       (e.range.getColumn() % 4 == 0)
+  //     )
+  //   )
+  // {
+  // }
 }
 function ViewSettingChangeCheck(e)
 {
@@ -36,10 +48,8 @@ function ViewSettingChangeCheck(e)
 function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVariableValues)
 {
   let maxBakteri = SettingVariableValues[7];
-  let bakteriColumn = SettingVariableValues[6];
   let bakteriStart = letterToColumn(SettingVariableValues[8].toString());
   let maxObat = SettingVariableValues[10];
-  let obatColumn = SettingVariableValues[9];
   let obatStart = letterToColumn(SettingVariableValues[11].toString());
   let databaseObatStart = letterToColumn(SettingVariableValues[13].toString())
   
@@ -70,27 +80,23 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
     DataCulView.clear();
     if(WriteBerdasarkan == "Bakteri")
     {
-      ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2, 1 ,1 , maxBakteri, maxObat, bakteriColumn, obatColumn, bakteriStart, obatStart,databaseObatStart);
+      ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2, 1 ,1 , maxBakteri, maxObat,  bakteriStart, obatStart,databaseObatStart);
+      DataCulView.setFrozenColumns(3);
     }else{
-      ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2 , 1 ,1 , maxObat , maxBakteri, obatColumn, bakteriColumn,obatStart ,bakteriStart, databaseObatStart);
+      ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2 , 1 ,1 , maxObat , maxBakteri,obatStart ,bakteriStart, databaseObatStart);
+      DataCulView.setFrozenColumns(4);
     }
     DataCulView.autoResizeColumn(2);
-    DataCulView.setFrozenColumns(3);
     DataCulView.setFrozenRows(3);
   }
 }
 
-function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount, row, column, maxRow, maxColumn, numRow, numColumn, startRow, startColumn, databaseObatStart)
+function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount, row, column, maxRow, maxColumn, startRow, startColumn, databaseObatStart)
 {
   let k = 0;
   let DatabaseName = DataCulMaster.getName();
-  let DatabaseLetter = "";
   let sampleName = samplePath(sampleValues, sampleCount);
-  let viewSorted = "";
-  if (sortingValues[0][1])
-  {
-    viewSorted = ViewSortAdd(sortingValues, DataCulMaster, DataCulSetting);
-  }
+  let viewSorted = ViewSortAdd(sortingValues, DataCulMaster, DataCulSetting);
   let ViewArray = new Array();
   for(let i = 0; i < maxRow+5;i++)
   {
@@ -117,6 +123,7 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
       {
         j++;
         ViewArray[i+k+4][1] = rowArray[l][1]; 
+        ViewArray[i+k+4][3] = "False"; 
         if(sortingValues[0][1])
         {
           if(sortingValues[0][3] == "Termasuk")
@@ -139,7 +146,7 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
   let columnArray = DataCulSetting.getRange(5,startColumn, maxColumn, 3).getValues();
   for(let i = 0, l = 0; i < numCount;l++)
   {
-    k = 3;
+    k = 4;
     if(columnArray[l][1])
     {
       if(toleranceValues[0][0]){
@@ -178,44 +185,48 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
     }
     for(let j = 0 , l = 0; j < maxColumn; l++)
     {
-      k = 3; 
+      k = 4; 
       if(columnArray[l][1])
       {
         if(toleranceValues[0][0]){
-          ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(j*toleranceCount+2+k)+(i+5)+"/$"+columnToLetter(3)+(i+5)+"*100";
-          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"S\""+ viewSorted;
+          ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(j*toleranceCount+2+k)+(i+n+5)+"/$"+columnToLetter(3)+(i+n+5)+"*100";
+          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"S\""+ viewSorted;
           k+=2;
         }
         if(toleranceValues[1][0]){
-          ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(l*toleranceCount+2+k)+(i+5)+"/$"+columnToLetter(3)+(i+5)+"*100";
-          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"I\""+ viewSorted;
+          ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(l*toleranceCount+2+k)+(i+n+5)+"/$"+columnToLetter(3)+(i+n+5)+"*100";
+          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"I\""+ viewSorted;
           k+=2;
         }
         if(toleranceValues[2][0]){
-          ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(j*toleranceCount+2+k)+(i+5)+"/$"+columnToLetter(3)+(i+5)+"*100";
-          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"R\""+ viewSorted;
+          ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(j*toleranceCount+2+k)+(i+n+5)+"/$"+columnToLetter(3)+(i+n+5)+"*100";
+          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"R\""+ viewSorted;
           k+=2;
         }
         j++;
       }
     }
   }
+  ViewArray[0][0] = "View Script";
   ViewArray[0][2] = "Jumlah Isolat";
   ViewArray[2][1] = "Total";
-  ViewArray[2][2] = "=COUNTIF('Data Master'!$H$3:$H,"+ sampleName+ ")";
+  ViewArray[2][2] = "=COUNTIF("+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+")";
   DataCulView.getRange(row,column,maxRow+5,toleranceCount  * maxColumn+5).setValues(ViewArray);
-
-
 }
 
-function ViewWriteObat(DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount, row, column, maxRow, maxColumn, numRow, numColumn, startRow, startColumn, databaseObatStart)
+function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount, row, column, maxRow, maxColumn, startRow, startColumn, databaseObatStart)
 {
+
   let k = 0;
+  let DatabaseName = DataCulMaster.getName();
+  let sampleName = samplePath(sampleValues, sampleCount);
+  let viewSorted = ViewSortAdd(sortingValues, DataCulMaster, DataCulSetting);
+
   let ViewArray = new Array();
-  for(let i = 0; i < toleranceCount *maxRow+5;i++)
+  for(let i = 0; i < toleranceCount * maxRow+5;i++)
   {
     ViewArray[i] = new Array();
-    for(let j = 0; j <  MaxColumn+5; j++)
+    for(let j = 0; j <  maxColumn+5; j++)
     {
       ViewArray[i][j]=null;
     }
@@ -229,78 +240,113 @@ function ViewWriteObat(DataCulSetting, DataCulView, sortingValues, sampleValues,
     {
       ViewArray[i*toleranceCount+k][1] = rowArray[l][2];
       if(toleranceValues[0][0]){
-        ViewArray[2][i*toleranceCount+k] = "%Sensitive";
-        ViewArray[2][i*toleranceCount+k+1] = "Total";
+        ViewArray[i*toleranceCount+k][2]= "%Sensitive";
+        ViewArray[i*toleranceCount+k+1][2]= "Total";
+        if(sortingValues[0][1])
+        {
+          if(sortingValues[0][3] == "Termasuk")
+          {
+            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+          }else{
+            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")-COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+          }
+        }else{
+          ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+        }
         k+=2;
       }
       if(toleranceValues[1][0]){
-        ViewArray[2][i*toleranceCount+k] = "%Intermediate";
-        ViewArray[2][i*toleranceCount+k+1] = "Total";
+        ViewArray[i*toleranceCount+k][2] = "%Intermediate";
+        ViewArray[i*toleranceCount+k+1][2] = "Total";
+        if(sortingValues[0][1])
+        {
+          if(sortingValues[0][3] == "Termasuk")
+          {
+            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+          }else{
+            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")-COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+          }
+        }else{
+          ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+        }
         k+=2;
       }
       if(toleranceValues[2][0]){
-        ViewArray[2][i*toleranceCount+k] = "%Resistensi";
-        ViewArray[2][i*toleranceCount+k+1] = "Total";
+        ViewArray[i*toleranceCount+k][2] = "%Resistensi";
+        ViewArray[i*toleranceCount+k+1][2] = "Total";
+        if(sortingValues[0][1])
+        {
+          if(sortingValues[0][3] == "Termasuk")
+          {
+            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+          }else{
+            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")-COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+          }
+        }else{
+          ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+        }
         k+=2;
       }
       i++;
       
     }
   }
-    k = 0;
+  k = 0;
+  
   for(let i = 0, index = startColumn; i < maxColumn;)
   {
     numCount = DataCulSetting.getRange(3,index).getValue();
     let columnArray = DataCulSetting.getRange(5,index, maxColumn, 3).getValues();
-    if(i>0)
-    {
-      k++;
-    }
+
     for(let j = 0, l = 0; j < numCount;l++)
     {
       if(columnArray[l][0])
       {
         j++;
-        ViewArray[1][i+k+4] = columnArray[l][1]; 
+        ViewArray[1][i+5] = columnArray[l][1]; 
         if(sortingValues[0][1])
         {
           if(sortingValues[0][3] == "Termasuk")
           {
-            ViewArray[2][i+k+4] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+k+5)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[2][i+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
           }else{
-            ViewArray[2][i+k+4] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+k+5)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +") - COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +  viewSorted;
+            ViewArray[2][i+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +") - COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+6) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +  viewSorted;
           }
         }else{
-          ViewArray[2][i+k+4] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+k+5)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+          ViewArray[2][i+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
         }
         i++
       }
     }
     index += 4;
   }
-  // for(let i = 0; i < maxRow; i++)
-  // {
-  //   for(let j = 0; j < MaxColumn; j++)
-  //   {
-  //     k = 4; 
-  //     if(values[15][3]){
-  //       ViewArray[i*tolerance+k][j+4] = "="+columnToLetter(j+5)+(i*tolerance+2+k)+"/$"+columnToLetter(j+5)+(3)+"*100";
-  //       ViewArray[i*tolerance+k+1][j+4] = "=COUNTIFS('Data Master'!$J$3:$J,"+ columnToLetter(j+5) +"$2,'Data Master'!$H$3:$H,$A$3,'Data Master'!$"+columnToLetter(i+12)+"$"+3 + ":$" + columnToLetter(i+10)+",\"S\""+ ViewSortAdd(values);
-  //       k+=2;
-  //     }
-  //     if(values[16][3]){
-  //       ViewArray[i*tolerance+k][j+4] = "="+columnToLetter(j+5)+(i*tolerance+2+k)+"/$"+columnToLetter(j+5)+(3)+"*100";
-  //       ViewArray[i*tolerance+k+1][j+4] = "=COUNTIFS('Data Master'!$J$3:$J,"+ columnToLetter(j+5) +"$2,'Data Master'!$H$3:$H,$A$3,'Data Master'!$"+columnToLetter(i+12)+"$"+3 + ":$" + columnToLetter(i+10)+",\"I\""+ ViewSortAdd(values);
-  //       k+=2;
-  //     }
-  //     if(values[17][3]){
-  //       ViewArray[i*tolerance+k][j+4] = "="+columnToLetter(j+5)+(i*tolerance+2+k)+"/$"+columnToLetter(j+5)+(3)+"*100";
-  //       ViewArray[i*tolerance+k+1][j+4] = "=COUNTIFS('Data Master'!$J$3:$J,"+ columnToLetter(j+5) +"$2,'Data Master'!$H$3:$H,$A$3,'Data Master'!$"+columnToLetter(i+12)+"$"+3 + ":$" + columnToLetter(i+10)+",\"R\""+ ViewSortAdd(values);
-  //       k+=2;
-  //     }
-  //   }
-  // }
-  DataCulView.getRange(row,column,toleranceCount * maxRow+5, MaxColumn+5).setValues(ViewArray);
+  for(let i = 0; i < maxRow; i++)
+  {
+    for(let j = 0; j < maxColumn; j++)
+    {
+      k = 4; 
+      if(toleranceValues[0][0]){
+        ViewArray[i*toleranceCount+k][j+5] = "="+columnToLetter(j+6)+(i*toleranceCount+2+k)+"/$"+columnToLetter(j+6)+(3)+"*100";
+        ViewArray[i*toleranceCount+k+1][j+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"S\""+ viewSorted;
+        k+=2;
+      }
+      if(toleranceValues[1][0]){
+        ViewArray[i*toleranceCount+k][j+5] = "="+columnToLetter(j+6)+(i*toleranceCount+2+k)+"/$"+columnToLetter(j+6)+(3)+"*100";
+        ViewArray[i*toleranceCount+k+1][j+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"I\""+ viewSorted;
+        k+=2;
+      }
+      if(toleranceValues[2][0]){
+        ViewArray[i*toleranceCount+k][j+5] = "="+columnToLetter(j+6)+(i*toleranceCount+2+k)+"/$"+columnToLetter(j+6)+(3)+"*100";
+        ViewArray[i*toleranceCount+k+1][j+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"R\""+ viewSorted;
+        k+=2;
+      }
+    }
+  }
+  ViewArray[0][0] = "View Script";
+  ViewArray[0][2] = "Jumlah Obat";
+  ViewArray[2][1] = "Total";
+  ViewArray[2][2] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart)+"$"+3 + ":$" + columnToLetter(Number(databaseObatStart)+Number(maxRow))+","+tolerancePath(toleranceValues , toleranceCount/2)+")";
+  DataCulView.getRange(row,column,toleranceCount * maxRow+5, maxColumn+5).setValues(ViewArray);
 }
 function ViewSortAdd(values, DataCulMaster, DataCulSetting)
 {
@@ -355,6 +401,29 @@ function ViewSortAdd(values, DataCulMaster, DataCulSetting)
   }
   StringAdd = StringAdd + ")";
   return StringAdd;
+}
+function tolerancePath(toleranceValues, toleranceCount)
+{
+  if(toleranceCount>0)
+  {
+    let StringTolerance ="{";
+    for(let i = 0, j = 0; i < toleranceCount;j++)
+    {
+      if(i>0)
+      {
+        StringTolerance = StringTolerance + ","
+      }
+      if(toleranceValues[j][0])
+      {
+        StringTolerance = StringTolerance + "\"" + toleranceValues[j][1] + "\"";
+        i++;
+      }
+    }
+    StringTolerance = StringTolerance + "}";
+    return StringTolerance;
+  }else{
+    return "\"S\"";
+  }
 }
 function samplePath(sampleValues, sampleCount)
 {
