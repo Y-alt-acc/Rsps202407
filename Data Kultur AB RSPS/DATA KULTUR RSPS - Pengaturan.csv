@@ -1,15 +1,15 @@
 Variable,,,Sorting,,,,,,,Sample,,,,Tolerance,,,,Gram Positif,,,,Gram Negatif,,,,Obat,,
-Tombol Semua,TRUE,,Semua,TRUE,,,,,,Semua,TRUE,,,Semua,TRUE,,,Semua,TRUE,,,Semua,TRUE,,,Semua,TRUE,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Database,Data Master,,,,,,,,,Count,6,,,Count,3,,,Count,14,,,Count,19,,,Count,91,
 View,View,,Alamat,Checklist,Nama,Pengaturan,Start,End,,Alamat,Checklist,Nama,,,Checklist,Nama,,,Checklist,Nama,,,Checklist,Nama,,Alamat,Checklist,Nama
 ,,,J,TRUE,Jumlah Isolat,Termasuk,,,,H,TRUE,Sputum,,,TRUE,S,,,TRUE,Enterococcus faecalis,,,TRUE,Acinetobacter baumanii,,Carbapenems,TRUE,loracarbef
 Kolom Sorting,D,,,,Urutan,Turun,,,,,TRUE,Darah,,,TRUE,I,,,TRUE,Enterococcus faecium,,,TRUE,Acinetobacter junii,,,TRUE,Oxacilin
-Kolom Sample,K,,,,Berdasarkan,Obat,,,,,TRUE,Urin,,,TRUE,R,,,TRUE,Gemella haemolysans,,,TRUE,Achromobacter denitrificans,,,TRUE,Methicilin
-Kolom Tolerance,P,,C,TRUE,Usia,Dalam,1,100,,,TRUE,Feses,,,,,,,TRUE,Kocuria kristiane,,,TRUE,Burkholderia cepacia,,,TRUE,Flucloxacilin
-Jumlah Kolom Bakteri,2,,D,FALSE,Jenis Kelamin,Laki-laki,,,,,TRUE,Swab Dasar Luka/Pus,,,,,,,TRUE,Staphylococcus aureus,,,TRUE,Burkholderia pseudomallei,,,TRUE,Dicloxacilin
+Kolom Sample,K,,,,Berdasarkan,Bakteri,,,,,TRUE,Urin,,,TRUE,R,,,TRUE,Gemella haemolysans,,,TRUE,Achromobacter denitrificans,,,TRUE,Methicilin
+Kolom Tolerance,P,,C,FALSE,Usia,Dalam,1,100,,,TRUE,Feses,,,,,,,TRUE,Kocuria kristiane,,,TRUE,Burkholderia cepacia,,,TRUE,Flucloxacilin
+,,,D,FALSE,Jenis Kelamin,Laki-laki,,,,,TRUE,Swab Dasar Luka/Pus,,,,,,,TRUE,Staphylococcus aureus,,,TRUE,Burkholderia pseudomallei,,,TRUE,Dicloxacilin
 Jumlah Bakteri,33,,E,FALSE,Ruang,Intensif,,,,,TRUE,Cairan tubuh lain,,,,,,,TRUE,Staphylococcus capitis,,,TRUE,Enterobacter cloacae complex,,,TRUE,cloxacilin
 Kolom Bakteri,T,,F,FALSE,Tanggal,Luar,9/20/2023,9/26/2023,,,,,,,,,,,TRUE,Staphylococcus epidermidis,,,TRUE,Escherichia coli ,,,TRUE,Piperacilin
-Jumlah Kolom Obat ,11,,I,FALSE,Representatif,Representatif,,,,,,,,,,,,,TRUE,Staphylococcus haemolyticus,,,TRUE,Klebsiella oxytoca,,,TRUE,Piperacilin/Tazobactam
+,,,I,FALSE,Representatif,Representatif,,,,,,,,,,,,,TRUE,Staphylococcus haemolyticus,,,TRUE,Klebsiella oxytoca,,,TRUE,Piperacilin/Tazobactam
 Jumlah Obat,91,,K,FALSE,MDRO,Ya,,,,,,,,,,,,,TRUE,Staphylococcus hominis ssp hominis,,,TRUE,Klebsiella Pneumoniae,,,TRUE,Mezlocilin
 Kolom Obat,AA,,L,FALSE,MDRO,MDR,,,,,,,,,,,,,TRUE,Staphylococcus sciuri,,,TRUE,Klebsiella Pneumoniae ssp pneumoniae,,,TRUE,Azlocilin
 ,,,,,,,,,,,,,,,,,,,TRUE,Streptrococcus agalactiae,,,TRUE,Klebsiella Pneumoniae ssp ozaenae,,,TRUE,Ticarcilin/clavunalic acid

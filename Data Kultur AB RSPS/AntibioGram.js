@@ -19,9 +19,12 @@ function onEdit(e)
     {
       viewHideColumn(e);
     }
+    if(e.range.getRow() == 3 && e.range.getColumn() == 1)
+    {
+      viewConditionalFormat(e);
+    }
     if(e.range.getRow() > 4 && (e.range.getColumn() == 4 || e.range.getColumn() == 5))
     {
-      console.log("A");
       viewSortRow(e);
     }
   }
@@ -62,6 +65,127 @@ function viewHideColumn(e)
       }
     }else{
       DataCulView.showRows(5,maxRow);
+    }
+  }
+}
+function viewConditionalFormat(e)
+{
+  let DataCulView = e.source.getActiveSheet();
+  let maxRow = DataCulView.getRange(1,4).getValue();
+  let maxColumn = DataCulView.getRange(2,4).getValue();
+  let rules = DataCulView.getConditionalFormatRules();
+  let rule = "";
+  if(DataCulView.getRange(1,3).getValue() == "Jumlah Isolat")
+  {
+    if(e.range.getCell(1,1).getValue() == true)
+    {
+      let viewArray = DataCulView.getRange(3,5,1,maxColumn).getValues();
+      let conditionArray = "";
+      for(let i = 0; i < maxColumn; i++)
+      {
+        console.log(viewArray[0][i]);
+        if(viewArray[0][i] == "%Sensitive")
+        {
+          conditionArray = DataCulView.getRange(5,5+i,maxRow+1);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(0.1, 70)
+          .setBackground("#DD1111")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(70, 80)
+          .setBackground("#DDDD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(80, 100)
+          .setBackground("#11DD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+        }else if(viewArray[0][i] == "%Resistensi")
+        {
+          conditionArray = DataCulView.getRange(5,5+i,maxRow+1);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(0.1, 20)
+          .setBackground("#11DD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(20, 30)
+          .setBackground("#DDDD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(30, 100)
+          .setBackground("#DD1111")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+        }
+      }
+      DataCulView.setConditionalFormatRules(rules);
+    }else{
+      DataCulView.clearConditionalFormatRules();
+    }
+  }else if(DataCulView.getRange(1,3).getValue() == "Jumlah Obat"){
+    if(e.range.getCell(1,1).getValue() == true)
+    {
+      let viewArray = DataCulView.getRange(5,3,maxRow).getValues();
+      let conditionArray = "";
+      for(let i = 0; i < maxRow; i++)
+      { 
+        if(viewArray[i] == "%Sensitive")
+        {
+          conditionArray = DataCulView.getRange(5+i,5,1, maxColumn);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(0.1, 70)
+          .setBackground("#DD1111")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(70, 80)
+          .setBackground("#DDDD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(80, 100)
+          .setBackground("#11DD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+        }else if(viewArray[i] == "%Resistensi")
+        {
+          conditionArray = DataCulView.getRange(5+i,5,1, maxColumn);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(0.1, 20)
+          .setBackground("#11DD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(20, 30)
+          .setBackground("#DDDD11")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+          rule = SpreadsheetApp.newConditionalFormatRule()
+          .whenNumberBetween(30, 100)
+          .setBackground("#DD1111")
+          .setRanges([conditionArray])
+          .build();
+          rules.push(rule);
+        }
+      }
+      DataCulView.setConditionalFormatRules(rules);
+    }else{
+      DataCulView.clearConditionalFormatRules();
     }
   }
 }
@@ -149,6 +273,7 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
   if(toleranceCount > 0 && maxBakteri > 0 && maxObat > 0){
     DataCulView.clear();
     DataCulView.getRange(1,1,maxObat*toleranceCount*2,maxObat*toleranceCount*2).clearDataValidations();
+    DataCulView.clearConditionalFormatRules();
     if(WriteBerdasarkan == "Bakteri")
     {
       ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2, 1 ,1 , maxBakteri, maxObat,  bakteriStart, obatStart,databaseObatStart);
@@ -156,17 +281,27 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
       var cell = DataCulView.getRange(5,4,maxBakteri*1+1);
       var rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
       cell.setDataValidation(rule);
+      DataCulView.getRange(1,5,2,maxObat*toleranceCount*2).setFontWeight("bold");
+      DataCulView.getRange(5,1,maxBakteri,2).setFontWeight("bold");
+      DataCulView.getRange(5,1,maxBakteri,2).setFontStyle("italic");
     }else{
       ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2 , 1 ,1 , maxObat , maxBakteri,obatStart ,bakteriStart, databaseObatStart);
       DataCulView.setFrozenColumns(4);
       var cell = DataCulView.getRange(5,5,maxObat*toleranceCount*2);
       var rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
       cell.setDataValidation(rule);
+      DataCulView.getRange(1,6,2, maxBakteri).setFontWeight("bold");
+      DataCulView.getRange(1,6,2, maxBakteri).setFontStyle("italic");
+      DataCulView.getRange(5,1,maxObat*toleranceCount*2,2).setFontWeight("bold");
     }
     DataCulView.autoResizeColumn(2);
     DataCulView.setFrozenRows(3);
     var cell = DataCulView.getRange('C4');
     var rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
+    cell.setDataValidation(rule);
+
+    cell = DataCulView.getRange('A3');
+    rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
     cell.setDataValidation(rule);
 
     cell = DataCulView.getRange('D3');
@@ -226,19 +361,18 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
         {
           if(sortingValues[0][3] == "Termasuk")
           {
-            ViewArray[i+k+4][2] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[i+k+4][2] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted+"))";
           }else{
-            ViewArray[i+k+4][2] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +") - COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +  viewSorted;
+            ViewArray[i+k+4][2] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +"))) - ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +  viewSorted+"))";
           }
         }else{
-          ViewArray[i+k+4][2] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+          ViewArray[i+k+4][2] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+k+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))";
         }
         i++
       }
     }
     index += 4;
   }
-
 
   let numCount = DataCulSetting.getRange(3,startColumn+1).getValue();
   let columnArray = DataCulSetting.getRange(5,startColumn, maxColumn, 3).getValues();
@@ -292,17 +426,17 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
       {
         if(toleranceValues[0][0]){
           ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(j*toleranceCount+2+k)+(i+n+5)+"/$"+columnToLetter(3)+(i+n+5)+"*100";
-          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"S\""+ viewSorted;
+          ViewArray[i+4+n][j*toleranceCount+k+1] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"S\""+ viewSorted+"))";
           k+=2;
         }
         if(toleranceValues[1][0]){
           ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(l*toleranceCount+2+k)+(i+n+5)+"/$"+columnToLetter(3)+(i+n+5)+"*100";
-          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"I\""+ viewSorted;
+          ViewArray[i+4+n][j*toleranceCount+k+1] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"I\""+ viewSorted+"))";
           k+=2;
         }
         if(toleranceValues[2][0]){
           ViewArray[i+4+n][j*toleranceCount+k] = "="+columnToLetter(j*toleranceCount+2+k)+(i+n+5)+"/$"+columnToLetter(3)+(i+n+5)+"*100";
-          ViewArray[i+4+n][j*toleranceCount+k+1] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"R\""+ viewSorted;
+          ViewArray[i+4+n][j*toleranceCount+k+1] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+n+5) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(l+databaseObatStart)+"$"+3 + ":$" + columnToLetter(l+databaseObatStart)+",\"R\""+ viewSorted+"))";
           k+=2;
         }
         j++;
@@ -310,13 +444,15 @@ function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingVa
     }
   }
   ViewArray[0][0] = "View Script";
+  ViewArray[1][0] = "Colour";
+  ViewArray[2][0] = "FALSE";
   ViewArray[0][2] = "Jumlah Isolat";
   ViewArray[0][3] = maxRow;
   ViewArray[1][2] = "Jumlah Obat";
   ViewArray[1][3] = maxColumn*2;
   ViewArray[2][3] = sortingValues[1][3];
   ViewArray[2][1] = "Total";
-  ViewArray[2][2] = "=COUNTIF("+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+")";
+  ViewArray[2][2] = "=ArrayFormula(SUM(COUNTIF("+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+")))";
   ViewArray[3][1] = "Hide Empty Row";
   ViewArray[3][2] = "FALSE";
   ViewArray[3][3] = "Sort";
@@ -362,12 +498,12 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
         {
           if(sortingValues[0][3] == "Termasuk")
           {
-            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted+"))";
           }else{
-            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")-COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))-ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted+"))";
           }
         }else{
-          ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+          ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"S\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))";
         }
         k+=2;
       }
@@ -380,12 +516,12 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
         {
           if(sortingValues[0][3] == "Termasuk")
           {
-            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted+"))";
           }else{
-            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")-COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))-ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted+"))";
           }
         }else{
-          ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+          ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"I\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))";
         }
         k+=2;
       }
@@ -398,12 +534,12 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
         {
           if(sortingValues[0][3] == "Termasuk")
           {
-            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted + "))";
           }else{
-            ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")-COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))-ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted + "))";
           }
         }else{
-          ViewArray[i*toleranceCount+k+1][3] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+          ViewArray[i*toleranceCount+k+1][3] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart+l)+"$"+3 + ":$" + columnToLetter(databaseObatStart+l)+",\"R\","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))";
         }
         k+=2;
       }
@@ -428,12 +564,12 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
         {
           if(sortingValues[0][3] == "Termasuk")
           {
-            ViewArray[2][i+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted;
+            ViewArray[2][i+5] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName + viewSorted+"))";
           }else{
-            ViewArray[2][i+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +") - COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+6) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +  viewSorted;
+            ViewArray[2][i+5] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +"))) - ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +",$B"+ (i+6) +","+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +  viewSorted+"))";
           }
         }else{
-          ViewArray[2][i+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")";
+          ViewArray[2][i+5] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+columnToLetter(i+6)  +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName +")))";
         }
         i++
       }
@@ -447,29 +583,31 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
       k = 4; 
       if(toleranceValues[0][0]){
         ViewArray[i*toleranceCount+k][j+5] = "="+columnToLetter(j+6)+(i*toleranceCount+2+k)+"/$"+columnToLetter(j+6)+(3)+"*100";
-        ViewArray[i*toleranceCount+k+1][j+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"S\""+ viewSorted;
+        ViewArray[i*toleranceCount+k+1][j+5] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"S\""+ viewSorted+"))";
         k+=2;
       }
       if(toleranceValues[1][0]){
         ViewArray[i*toleranceCount+k][j+5] = "="+columnToLetter(j+6)+(i*toleranceCount+2+k)+"/$"+columnToLetter(j+6)+(3)+"*100";
-        ViewArray[i*toleranceCount+k+1][j+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"I\""+ viewSorted;
+        ViewArray[i*toleranceCount+k+1][j+5] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"I\""+ viewSorted+"))";
         k+=2;
       }
       if(toleranceValues[2][0]){
         ViewArray[i*toleranceCount+k][j+5] = "="+columnToLetter(j+6)+(i*toleranceCount+2+k)+"/$"+columnToLetter(j+6)+(3)+"*100";
-        ViewArray[i*toleranceCount+k+1][j+5] = "=COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"R\""+ viewSorted;
+        ViewArray[i*toleranceCount+k+1][j+5] = "=ArrayFormula(SUM(COUNTIFS("+ databasePath(DatabaseName,sortingValues[0][0]) +","+ columnToLetter(j+6) +"$2,"+ databasePath(DatabaseName,sampleValues[0][0]) +","+ sampleName+",'"+DatabaseName+"'!$"+columnToLetter(i+databaseObatStart)+"$"+3 + ":$" + columnToLetter(i+databaseObatStart)+",\"R\""+ viewSorted+"))";
         k+=2;
       }
     }
   }
   ViewArray[0][0] = "View Script";
+  ViewArray[1][0] = "Colour";
+  ViewArray[2][0] = "FALSE";
   ViewArray[0][2] = "Jumlah Obat";
   ViewArray[0][3] = maxRow * toleranceCount;
   ViewArray[1][2] = "Jumlah Isolat";
   ViewArray[1][3] = maxColumn;
   ViewArray[2][3] = sortingValues[1][3];
   ViewArray[2][1] = "Total";
-  ViewArray[2][2] = "=COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart)+"$"+3 + ":$" + columnToLetter(Number(databaseObatStart)+Number(maxRow))+","+tolerancePath(toleranceValues , toleranceCount/2)+")";
+  ViewArray[2][2] = "=ArrayFormula(SUM(COUNTIFS('"+DatabaseName+"'!$"+columnToLetter(databaseObatStart)+"$"+3 + ":$" + columnToLetter(Number(databaseObatStart)+Number(maxRow))+","+tolerancePath(toleranceValues , toleranceCount/2)+")))";
   ViewArray[3][1] = "Hide Empty Row";
   ViewArray[3][2] = "FALSE";
   ViewArray[3][4] = "Sort";
