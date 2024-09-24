@@ -1,7 +1,79 @@
+/*
+  Brief explanation version : 
+    Created or Update Viewer sheet if Setting sheet listed changed and the data based on database sheet.
+    A trigger on anysheet containing "View Script" at A1.
+    
+    setting triggered -> check if possible -> prepare the variable -> wiped the sheet -> set the formula -> set variable -> set the condition and validation -> protect sheet.
+
+  Normal Version:
+    onEdit : Check if cell is a trigger.
+    (any value beside true will show all(1) or removed it(2))
+    {
+    (1)  viewHideRow : only showing the non-empty sum row.
+    (2)  viewConditionalFormat: added only into %sensitive and %resistance. (both color are opposite of each other)
+    }
+    viewSortRow : sort the table based on the checked cell and show at the bottom of the table. last checked will be shown.
+    ViewSettingChangeCheck: check if the next step is possible,(database exist) and removed e from parameter by adding only necessary e parameter.
+    ViewSettingChange : The big chunk contain all the code
+    ViewWriteBacteria : formulating array in bacteria based
+    ViewWriteObat :formulating array in obat based
+    SetProtectionSheet : protect the viewer sheet except the trigger.
+    (only for the checked one)
+    {
+      ViewSortAdd : making string of conditional to countIFS.
+      tolerancePath : add actived tolerance to the sum of total obat.
+      samplePath : making string of checked sample.
+    }
+    databasePath : add flexibility by pointing at database and it column.
+    (imported code) to fix some needy appscript function
+    {
+      columnToLetter : number to letter
+      letterToColumn : letter to number
+    }
+  The single letter:
+    i for row
+    j for column
+    l for offset in case something not checked.
+    m for count of the table e.g. gram positif, gram negatif
+    n for the offset added to the table ussually multiplied by 4. was used in Obat until it result in TLE hell.
+
+    now k... it used everywhere. offset row, offset column, tolerance offset, bacteria offset. in short used to make sure the array in the correct place.
+
+  Note for weird thing :
+    make sure the viewsortadd function at the most back because it contain ")" at the back 
+    x * 1 to make it number so not concated but added 
+    toString() used because char didn't have string function needed for imported code
+    google sheet function used normal numbering from 1. while array use the default from 0
+    tolerancePath and samplePath required arrayformula and sum or it will only count the first one.
+  Missing Feature or inconvenient:
+    Setting
+    {
+      freeze everytime certain cell change : google script limitation
+      Obat Table too many row : breaking it into more column result in TLE.
+      Redundant table in Fungi : well it the exact code with bacteria code.
+    }
+    Viewer
+    {
+      No merge and title : Buggy AND cause TLE
+      Border : Too much performing get cell. most likely cause TLE.
+      extra checkbox between negatif and positif bacteria : not important enough just simple inconvenient
+      sort also has total : too complex for me to removed. not worth it. just ignored the total.
+      A1,C1,D1,D2 must not be removed. involved in trigger.
+      Top left too packed : can't be helped.
+    }
+  Limitation:  
+    30 second TLE really bottleneck the slow sript.
+    don't use (get,set range in any big loop.
+    sometime it fast enough sometime itsn't
+    might necessary later to split the code into different phase
+
+*/
+
 function onEdit(e)
 {
-  if((e.source.getSheetName() == "Pengaturan"||e.source.getSheetName() == "Setting") && e.range.getRow() > 4 &&
+  if((e.source.getSheetName() == "Pengaturan"||e.source.getSheetName() == "Setting") && e.range.getRow() > 2 &&
       (  
+        e.range.getColumn() == 2 ||
         e.range.getColumn() == 4 ||
         e.range.getColumn() == 5 ||
         e.range.getColumn() == 7 ||
@@ -16,7 +88,7 @@ function onEdit(e)
   {
     if(e.range.getRow() == 4 && e.range.getColumn() == 3)
     {
-      viewHideColumn(e);
+      viewHideRow(e);
     }
     if(e.range.getRow() == 3 && e.range.getColumn() == 1)
     {
@@ -28,7 +100,7 @@ function onEdit(e)
     }
   }
 }
-function viewHideColumn(e)
+function viewHideRow(e)
 {
   let DataCulView = e.source.getActiveSheet();
   if(DataCulView.getRange(1,3).getValue() == "Jumlah Isolat")
@@ -56,6 +128,7 @@ function viewHideColumn(e)
 
       for(let i = 0; i< maxRow; i++)
       {
+        // it also hide the S,I,R row since it only check the sum
         if(viewArray[i] == "0")
         {
           DataCulView.hideRows(i+5);
@@ -82,7 +155,6 @@ function viewConditionalFormat(e)
       let conditionArray = "";
       for(let i = 0; i < maxColumn; i++)
       {
-        console.log(viewArray[0][i]);
         if(viewArray[0][i] == "%Sensitive")
         {
           conditionArray = DataCulView.getRange(5,5+i,maxRow+1);
@@ -202,6 +274,7 @@ function viewSortRow(e)
   }else{
     boolsorting = false;
   }
+  // tranposed 2 time one for the sort one more to return as original.
   if(DataCulView.getRange(1,3).getValue() == "Jumlah Isolat")
   {
     if(e.range.getCell(1,1).getValue() == true)
@@ -283,7 +356,6 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
       DataCulView.getRange(1,5,2,maxObat*toleranceCount*2).setFontWeight("bold");
       DataCulView.getRange(5,1,maxBakteri,2).setFontWeight("bold");
       DataCulView.getRange(5,1,maxBakteri,2).setFontStyle("italic");
-      SetProtectionSheet(DataCulView, 4, maxBakteri * 1 + 1);
     }else{
       ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2 , 1 ,1 , maxObat , maxBakteri,obatStart ,bakteriStart, databaseObatStart);
       DataCulView.setFrozenColumns(4);
@@ -293,10 +365,7 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
       DataCulView.getRange(1,6,2, maxBakteri).setFontWeight("bold");
       DataCulView.getRange(1,6,2, maxBakteri).setFontStyle("italic");
       DataCulView.getRange(5,1,maxObat*toleranceCount*2,2).setFontWeight("bold");
-      SetProtectionSheet(DataCulView, 5, toleranceCount * 2 +1);
     }
-    DataCulView.autoResizeColumn(2);
-    DataCulView.setFrozenRows(3);
     var cell = DataCulView.getRange('C4');
     var rule = SpreadsheetApp.newDataValidation().requireCheckbox().build();
     cell.setDataValidation(rule);
@@ -323,6 +392,8 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
       cell.setValue("*");
     }
   }
+  DataCulView.autoResizeColumn(2);
+  DataCulView.setFrozenRows(3);
   if(WriteBerdasarkan == "Bakteri")
     {
       SetProtectionSheet(DataCulView, 4, maxBakteri * 1 + 1);
