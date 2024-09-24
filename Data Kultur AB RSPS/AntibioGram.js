@@ -1,11 +1,10 @@
 function onEdit(e)
 {
-  if(e.source.getSheetName() == "Pengaturan" && e.range.getRow() > 4 &&
+  if((e.source.getSheetName() == "Pengaturan"||e.source.getSheetName() == "Setting") && e.range.getRow() > 4 &&
       (  
         e.range.getColumn() == 4 ||
         e.range.getColumn() == 5 ||
         e.range.getColumn() == 7 ||
-        e.range.getColumn() == 8 ||
         e.range.getColumn() == 9 ||
         (e.range.getColumn() % 4 == 0)
       )
@@ -222,7 +221,7 @@ function viewSortRow(e)
 }
 function ViewSettingChangeCheck(e)
 {
-  let DataCulSetting = e.source.getSheetByName("Pengaturan");
+  let DataCulSetting = e.source.getSheetByName(e.source.getSheetName());
   let SettingVariableValues = DataCulSetting.getRange(3,2,14).getValues();
   let DatabaseName = SettingVariableValues[0].toString();
   let ViewName = SettingVariableValues[1].toString();
@@ -284,6 +283,7 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
       DataCulView.getRange(1,5,2,maxObat*toleranceCount*2).setFontWeight("bold");
       DataCulView.getRange(5,1,maxBakteri,2).setFontWeight("bold");
       DataCulView.getRange(5,1,maxBakteri,2).setFontStyle("italic");
+      SetProtectionSheet(DataCulView, 4, maxBakteri * 1 + 1);
     }else{
       ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount * 2 , 1 ,1 , maxObat , maxBakteri,obatStart ,bakteriStart, databaseObatStart);
       DataCulView.setFrozenColumns(4);
@@ -293,6 +293,7 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
       DataCulView.getRange(1,6,2, maxBakteri).setFontWeight("bold");
       DataCulView.getRange(1,6,2, maxBakteri).setFontStyle("italic");
       DataCulView.getRange(5,1,maxObat*toleranceCount*2,2).setFontWeight("bold");
+      SetProtectionSheet(DataCulView, 5, toleranceCount * 2 +1);
     }
     DataCulView.autoResizeColumn(2);
     DataCulView.setFrozenRows(3);
@@ -322,6 +323,12 @@ function ViewSettingChange(DataCulMaster,DataCulSetting, DataCulView, SettingVar
       cell.setValue("*");
     }
   }
+  if(WriteBerdasarkan == "Bakteri")
+    {
+      SetProtectionSheet(DataCulView, 4, maxBakteri * 1 + 1);
+    }else{
+      SetProtectionSheet(DataCulView, 5, maxObat * toleranceCount * 2 +1);
+    }
 }
 
 function ViewWriteBacteria(DataCulMaster, DataCulSetting, DataCulView, sortingValues, sampleValues, sampleCount, toleranceValues, toleranceCount, row, column, maxRow, maxColumn, startRow, startColumn, databaseObatStart)
@@ -612,6 +619,17 @@ function ViewWriteObat(DataCulMaster, DataCulSetting, DataCulView, sortingValues
   ViewArray[3][2] = "FALSE";
   ViewArray[3][4] = "Sort";
   DataCulView.getRange(row,column,toleranceCount * maxRow+5, maxColumn+5).setValues(ViewArray);
+}
+function SetProtectionSheet(sheetIn, columnIn, numRowIn)
+{
+  let protectedSheet = sheetIn.protect();
+  let unprotected = protectedSheet.getUnprotectedRanges();
+  unprotected.push(sheetIn.getRange('A3'));
+  unprotected.push(sheetIn.getRange('B1:B2'));
+  unprotected.push(sheetIn.getRange('C4'));
+  unprotected.push(sheetIn.getRange('D3'));
+  unprotected.push(sheetIn.getRange(5,columnIn,numRowIn));
+  protectedSheet.setUnprotectedRanges(unprotected);
 }
 function ViewSortAdd(values, DataCulMaster, DataCulSetting)
 {
